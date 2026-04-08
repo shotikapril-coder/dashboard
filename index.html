@@ -7,333 +7,54 @@
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #F7F6F2;
-    --surface: #FFFFFF;
-    --surface2: #F0EFE9;
-    --border: rgba(0,0,0,0.08);
-    --text: #1A1A18;
-    --text2: #6B6A65;
-    --text3: #9E9D97;
-    --green: #3B6D11;
-    --green-bg: #EAF3DE;
-    --red: #A32D2D;
-    --red-bg: #FCEBEB;
-    --blue: #185FA5;
-    --blue-bg: #E6F1FB;
-    --amber: #BA7517;
-    --amber-bg: #FAEEDA;
-    --accent: #D85A30;
+    --bg: #F7F6F2; --surface: #FFFFFF; --surface2: #F0EFE9;
+    --border: rgba(0,0,0,0.08); --text: #1A1A18; --text2: #6B6A65; --text3: #9E9D97;
+    --green: #3B6D11; --red: #A32D2D; --blue: #185FA5; --amber: #BA7517; --accent: #D85A30;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Golos Text', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  .app { max-width: 520px; margin: 0 auto; padding: 0 0 4rem; }
 
-  body {
-    font-family: 'Golos Text', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 0;
-  }
-
-  .app {
-    max-width: 520px;
-    margin: 0 auto;
-    padding: 0 0 4rem;
-  }
-
-  /* TOP HEADER */
-  .top-bar {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 1rem 1.25rem 0.75rem;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-
-  .top-bar-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .logo {
-    font-family: 'Unbounded', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
-    letter-spacing: -0.02em;
-  }
-
+  .top-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 1.25rem 0; position: sticky; top: 0; z-index: 10; }
+  .top-bar-inner { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
+  .logo { font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 600; }
   .logo span { color: var(--accent); }
+  .updated { font-size: 11px; color: var(--text3); }
 
-  .sync-indicator {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: var(--text3);
-  }
-
-  .dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: #ccc;
-    transition: background 0.3s;
-  }
-  .dot.live { background: #639922; }
-  .dot.loading { background: var(--amber); animation: pulse 1s infinite; }
-  .dot.error { background: var(--red); }
-
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-  /* MONTH NAV */
-  .month-nav {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    overflow-x: auto;
-    padding: 0.5rem 1.25rem 0;
-    scrollbar-width: none;
-  }
+  .month-nav { display: flex; overflow-x: auto; gap: 2px; padding-bottom: 0.75rem; scrollbar-width: none; }
   .month-nav::-webkit-scrollbar { display: none; }
-
-  .month-tab {
-    flex-shrink: 0;
-    font-family: 'Golos Text', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text3);
-    padding: 6px 14px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.15s;
-    border: none;
-    background: none;
-    white-space: nowrap;
-  }
-
+  .month-tab { flex-shrink: 0; font-family: 'Golos Text', sans-serif; font-size: 13px; font-weight: 500; color: var(--text3); padding: 6px 14px; border-radius: 20px; cursor: pointer; border: none; background: none; transition: all 0.15s; }
   .month-tab:hover { color: var(--text2); background: var(--surface2); }
-  .month-tab.active { color: var(--text); background: var(--text); color: var(--bg); }
+  .month-tab.active { background: var(--text); color: var(--bg); }
 
-  /* MAIN CONTENT */
   .content { padding: 1.25rem; }
 
-  /* HERO */
-  .hero {
-    background: var(--surface);
-    border-radius: 20px;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-    border: 1px solid var(--border);
-  }
+  .hero { background: var(--surface); border-radius: 20px; padding: 1.5rem; margin-bottom: 1rem; border: 1px solid var(--border); }
+  .hero-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; }
+  .hero-month { font-family: 'Unbounded', sans-serif; font-size: 20px; font-weight: 700; line-height: 1.2; }
+  .hero-year { font-family: 'Unbounded', sans-serif; font-size: 13px; color: var(--amber); margin-top: 2px; }
+  .hero-amount { font-family: 'Unbounded', sans-serif; font-size: 22px; font-weight: 700; text-align: right; line-height: 1.2; }
+  .hero-amount.pos { color: var(--green); } .hero-amount.neg { color: var(--red); }
+  .hero-amount-label { font-size: 11px; color: var(--text3); text-align: right; margin-top: 3px; }
 
-  .hero-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1.25rem;
-  }
+  .mini-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mini-stat { background: var(--surface2); border-radius: 12px; padding: 10px 12px; }
+  .mini-stat-label { font-size: 11px; color: var(--text3); margin-bottom: 4px; }
+  .mini-stat-value { font-size: 14px; font-weight: 600; }
+  .mini-stat-value.pos { color: var(--green); } .mini-stat-value.neg { color: var(--red); }
 
-  .hero-month {
-    font-family: 'Unbounded', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text);
-    line-height: 1.2;
-  }
+  .section-title { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin: 1.25rem 0 0.5rem; }
 
-  .hero-year {
-    font-family: 'Unbounded', sans-serif;
-    font-size: 13px;
-    font-weight: 400;
-    color: var(--amber);
-    margin-top: 2px;
-  }
-
-  .hero-amount {
-    font-family: 'Unbounded', sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    text-align: right;
-    line-height: 1.2;
-  }
-  .hero-amount.positive { color: var(--green); }
-  .hero-amount.negative { color: var(--red); }
-
-  .hero-amount-label {
-    font-size: 11px;
-    color: var(--text3);
-    text-align: right;
-    margin-top: 3px;
-  }
-
-  /* MINI STATS */
-  .mini-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-
-  .mini-stat {
-    background: var(--surface2);
-    border-radius: 12px;
-    padding: 10px 12px;
-  }
-
-  .mini-stat-label {
-    font-size: 11px;
-    color: var(--text3);
-    margin-bottom: 4px;
-  }
-
-  .mini-stat-value {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-  }
-
-  .mini-stat-value.positive { color: var(--green); }
-  .mini-stat-value.negative { color: var(--red); }
-
-  /* SECTION */
-  .section-title {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text3);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin: 1.25rem 0 0.5rem;
-  }
-
-  /* ROW */
-  .row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: var(--surface);
-    border-radius: 14px;
-    padding: 12px 14px;
-    margin-bottom: 6px;
-    border: 1px solid var(--border);
-    transition: border-color 0.15s;
-    cursor: default;
-  }
-
+  .row { display: flex; align-items: center; justify-content: space-between; background: var(--surface); border-radius: 14px; padding: 12px 14px; margin-bottom: 6px; border: 1px solid var(--border); transition: border-color 0.15s; }
   .row:hover { border-color: rgba(0,0,0,0.15); }
-
-  .row-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .icon {
-    width: 38px; height: 38px;
-    border-radius: 11px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-
+  .row-left { display: flex; align-items: center; gap: 12px; }
+  .icon { width: 38px; height: 38px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
   .row-title { font-size: 14px; font-weight: 600; color: var(--text); }
   .row-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
-
   .row-right { text-align: right; }
   .row-amount { font-size: 15px; font-weight: 600; }
-  .row-amount.positive { color: var(--green); }
-  .row-amount.negative { color: var(--red); }
-  .row-amount.negative-blue { color: var(--blue); }
+  .row-amount.pos { color: var(--green); } .row-amount.neg { color: var(--red); } .row-amount.neg-blue { color: var(--blue); }
   .row-detail { font-size: 11px; color: var(--text3); margin-top: 2px; }
-
-  /* SKELETON */
-  .skeleton {
-    background: linear-gradient(90deg, var(--surface2) 25%, var(--border) 50%, var(--surface2) 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.2s infinite;
-    border-radius: 8px;
-    height: 16px;
-  }
-  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
-
-  .skeleton-row {
-    height: 64px;
-    border-radius: 14px;
-    margin-bottom: 6px;
-    background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.2s infinite;
-    border: 1px solid var(--border);
-  }
-
-  /* AVERAGES BLOCK */
-  .averages {
-    background: var(--surface);
-    border-radius: 16px;
-    padding: 1rem 1.25rem;
-    border: 1px solid var(--border);
-    margin-top: 1rem;
-  }
-
-  .avg-title {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text3);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 10px;
-  }
-
-  .avg-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 0;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .avg-row:last-child { border-bottom: none; }
-
-  .avg-label { font-size: 13px; color: var(--text2); }
-  .avg-value { font-size: 13px; font-weight: 600; color: var(--text); }
-
-  /* ERROR */
-  .error-box {
-    background: var(--red-bg);
-    border: 1px solid rgba(163,45,45,0.2);
-    border-radius: 14px;
-    padding: 1rem 1.25rem;
-    text-align: center;
-    color: var(--red);
-    font-size: 13px;
-    line-height: 1.5;
-  }
-
-  .error-box a { color: var(--red); }
-
-  /* FOOTER */
-  .footer {
-    text-align: center;
-    font-size: 11px;
-    color: var(--text3);
-    padding-top: 1.5rem;
-  }
-
-  .refresh-btn {
-    background: var(--text);
-    color: var(--bg);
-    border: none;
-    border-radius: 10px;
-    padding: 8px 18px;
-    font-family: 'Golos Text', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    margin-top: 0.75rem;
-    transition: opacity 0.15s;
-    display: inline-block;
-  }
-  .refresh-btn:hover { opacity: 0.8; }
 </style>
 </head>
 <body>
@@ -341,314 +62,135 @@
   <div class="top-bar">
     <div class="top-bar-inner">
       <div class="logo">Нобед <span>Букинг</span></div>
-      <div class="sync-indicator">
-        <div class="dot loading" id="dot"></div>
-        <span id="sync-text">Загрузка...</span>
-      </div>
+      <div class="updated" id="updated"></div>
     </div>
     <div class="month-nav" id="month-nav"></div>
   </div>
-
-  <div class="content" id="content">
-    <div class="hero">
-      <div class="hero-top">
-        <div>
-          <div class="skeleton" style="width:100px;height:22px;margin-bottom:6px;"></div>
-          <div class="skeleton" style="width:60px;height:14px;"></div>
-        </div>
-        <div>
-          <div class="skeleton" style="width:150px;height:24px;margin-bottom:6px;"></div>
-          <div class="skeleton" style="width:80px;height:12px;margin-left:auto;"></div>
-        </div>
-      </div>
-      <div class="mini-stats">
-        <div class="skeleton" style="height:56px;border-radius:12px;"></div>
-        <div class="skeleton" style="height:56px;border-radius:12px;"></div>
-      </div>
-    </div>
-    <div class="skeleton-row"></div>
-    <div class="skeleton-row"></div>
-    <div class="skeleton-row"></div>
-  </div>
+  <div class="content" id="content"></div>
 </div>
-
 <script>
-const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQZwm8zj9kaBFZCw7Ite6Xz2ZcBCIp8dC_zwbXTCI65I9EOFGAQAZa8R_6SKRvfEOI6iYukZqfR34vb/pub?gid=70554802&single=true&output=csv';
+const DATA = [
+  {
+    name:'Январь', year:'2025', profit:-224305.91, incomeTotal:602338.85, expenseTotal:826644.75,
+    income:[
+      {icon:'🎭',name:'Концерты',sub:'Прибыль по мероприятиям',amount:344965.89,bg:'#EAF3DE'},
+      {icon:'🏛️',name:'Фин.Операции',sub:'Управление финансами',amount:184036.57,bg:'#E6F1FB'},
+      {icon:'🛒',name:'Магазины',sub:'Прибыль по мерчендайзингу',amount:73336.39,bg:'#FAEEDA'},
+    ],
+    expenses:[
+      {icon:'💼',name:'Расходы',sub:'Содержание бизнеса',amount:110044.03,bg:'#F1EFE8',detail:null},
+      {icon:'👔',name:'Зарплаты',sub:'Фонд оплаты труда',amount:335390.47,bg:'#F1EFE8',detail:null},
+      {icon:'📮',name:'Налоги',sub:'Вся налоговая нагрузка',amount:381210.25,bg:'#FCEBEB',detail:null},
+      {icon:'🧳',name:'Дивиденды',sub:'Див. зарплата + инвестиции',amount:880949.70,bg:'#E6F1FB',detail:'Див. зарплата: 880 949,70 ₽ · Долгие инвестиции: 0,00 ₽'},
+    ]
+  },
+  {
+    name:'Февраль', year:'2025', profit:-625864.49, incomeTotal:314903.63, expenseTotal:940768.12,
+    income:[
+      {icon:'🎭',name:'Концерты',sub:'Прибыль по мероприятиям',amount:60419.16,bg:'#EAF3DE'},
+      {icon:'🏛️',name:'Фин.Операции',sub:'Управление финансами',amount:206788.59,bg:'#E6F1FB'},
+      {icon:'🛒',name:'Магазины',sub:'Прибыль по мерчендайзингу',amount:47695.88,bg:'#FAEEDA'},
+    ],
+    expenses:[
+      {icon:'💼',name:'Расходы',sub:'Содержание бизнеса',amount:102319.80,bg:'#F1EFE8',detail:null},
+      {icon:'👔',name:'Зарплаты',sub:'Фонд оплаты труда',amount:277238.07,bg:'#F1EFE8',detail:null},
+      {icon:'📮',name:'Налоги',sub:'Вся налоговая нагрузка',amount:561210.25,bg:'#FCEBEB',detail:null},
+      {icon:'🧳',name:'Дивиденды',sub:'Див. зарплата + инвестиции',amount:1918340.10,bg:'#E6F1FB',detail:'Див. зарплата: 468 940,10 ₽ · Долгие инвестиции: 1 449 400,00 ₽'},
+    ]
+  },
+  {
+    name:'Март', year:'2025', profit:2098458.24, incomeTotal:3042456.73, expenseTotal:943998.49,
+    income:[
+      {icon:'🎭',name:'Концерты',sub:'Прибыль по мероприятиям',amount:2785420.16,bg:'#EAF3DE'},
+      {icon:'🏛️',name:'Фин.Операции',sub:'Управление финансами',amount:210744.91,bg:'#E6F1FB'},
+      {icon:'🛒',name:'Магазины',sub:'Прибыль по мерчендайзингу',amount:46291.66,bg:'#FAEEDA'},
+    ],
+    expenses:[
+      {icon:'💼',name:'Расходы',sub:'Содержание бизнеса',amount:74473.45,bg:'#F1EFE8',detail:null},
+      {icon:'👔',name:'Зарплаты',sub:'Фонд оплаты труда',amount:368314.79,bg:'#F1EFE8',detail:null},
+      {icon:'📮',name:'Налоги',sub:'Вся налоговая нагрузка',amount:501210.25,bg:'#FCEBEB',detail:null},
+      {icon:'🧳',name:'Дивиденды',sub:'Див. зарплата + инвестиции',amount:3726217.89,bg:'#E6F1FB',detail:'Див. зарплата: 562 500,00 ₽ · Долгие инвестиции: 3 163 717,89 ₽'},
+    ]
+  },
+  {
+    name:'Апрель', year:'2025', profit:2246203.41, incomeTotal:4536412.33, expenseTotal:2290208.91,
+    income:[
+      {icon:'🎭',name:'Концерты',sub:'Прибыль по мероприятиям',amount:4363721.10,bg:'#EAF3DE'},
+      {icon:'🏛️',name:'Фин.Операции',sub:'Управление финансами',amount:135797.33,bg:'#E6F1FB'},
+      {icon:'🛒',name:'Магазины',sub:'Прибыль по мерчендайзингу',amount:36893.90,bg:'#FAEEDA'},
+    ],
+    expenses:[
+      {icon:'💼',name:'Расходы',sub:'Содержание бизнеса',amount:118599.74,bg:'#F1EFE8',detail:null},
+      {icon:'👔',name:'Зарплаты',sub:'Фонд оплаты труда',amount:1370388.71,bg:'#F1EFE8',detail:null},
+      {icon:'📮',name:'Налоги',sub:'Вся налоговая нагрузка',amount:801220.46,bg:'#FCEBEB',detail:null},
+      {icon:'🧳',name:'Дивиденды',sub:'Див. зарплата + инвестиции',amount:669048.90,bg:'#E6F1FB',detail:'Див. зарплата: 513 044,90 ₽ · Долгие инвестиции: 156 004,00 ₽'},
+    ]
+  },
+  {
+    name:'Май', year:'2025', profit:692445.18, incomeTotal:2474048.20, expenseTotal:1781603.02,
+    income:[
+      {icon:'🎭',name:'Концерты',sub:'Прибыль по мероприятиям',amount:2331351.23,bg:'#EAF3DE'},
+      {icon:'🏛️',name:'Фин.Операции',sub:'Управление финансами',amount:113763.04,bg:'#E6F1FB'},
+      {icon:'🛒',name:'Магазины',sub:'Прибыль по мерчендайзингу',amount:28933.93,bg:'#FAEEDA'},
+    ],
+    expenses:[
+      {icon:'💼',name:'Расходы',sub:'Содержание бизнеса',amount:117136.61,bg:'#F1EFE8',detail:null},
+      {icon:'👔',name:'Зарплаты',sub:'Фонд оплаты труда',amount:0,bg:'#F1EFE8',detail:null},
+      {icon:'📮',name:'Налоги',sub:'Вся налоговая нагрузка',amount:0,bg:'#FCEBEB',detail:null},
+      {icon:'🧳',name:'Дивиденды',sub:'Див. зарплата + инвестиции',amount:0,bg:'#E6F1FB',detail:null},
+    ]
+  },
+];
 
-const MONTHS_RU = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
-const MONTHS_GEN = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
-
-let allData = [];
-let currentIdx = 0;
-
-function parseRub(str) {
-  if (!str) return 0;
-  return parseFloat(str.replace(/[^\d,.\-]/g,'').replace(',','.')) || 0;
+function fmt(n) {
+  return Math.abs(n).toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})+' ₽';
 }
 
-function fmtRub(n) {
-  const abs = Math.abs(n);
-  return abs.toLocaleString('ru-RU', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ₽';
-}
-
-function parseCSV(text) {
-  return text.split('\n').map(line => {
-    const cols = [];
-    let cur = '', inQ = false;
-    for (let i = 0; i < line.length; i++) {
-      const c = line[i];
-      if (c === '"') { inQ = !inQ; }
-      else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
-      else { cur += c; }
-    }
-    cols.push(cur.trim());
-    return cols;
-  });
-}
-
-function parseSheetData(rows) {
-  const months = [];
-  let i = 0;
-  while (i < rows.length) {
-    const r = rows[i];
-    // Detect month header: col B contains month name
-    const monthName = (r[1] || '').trim();
-    if (MONTHS_RU.includes(monthName)) {
-      const year = (rows[i+1] && rows[i+1][1]) ? rows[i+1][1].trim() : '2025';
-      const profit = parseRub(r[4]);
-
-      // income subtotal on next row
-      const incomeRow = rows[i+2];
-      const incomeTotal = parseRub(incomeRow ? incomeRow[1] : '');
-
-      // Parse category rows
-      const categories = [];
-      let j = i + 3;
-      while (j < rows.length) {
-        const cr = rows[j];
-        const icon = (cr[1] || '').trim();
-        const name = (cr[2] || '').trim();
-        const amount = parseRub(cr[6]);
-
-        if (MONTHS_RU.includes(icon) || icon === '') {
-          // could be expenses subtotal or next month
-          // check if it's subtotal
-          if (!icon && name.includes('подитог')) { j++; continue; }
-          if (MONTHS_RU.includes(icon)) break;
-          if (!icon && !name && !amount) { j++; continue; }
-          j++; continue;
-        }
-
-        if (name && amount !== 0) {
-          // check for dividend sub-items on next rows
-          let detail = null;
-          if (name === 'Дивиденды') {
-            const d1r = rows[j+1];
-            const d2r = rows[j+2];
-            if (d1r && d1r[2]) {
-              const d1label = (d1r[2]||'').trim();
-              const d1val = parseRub(d1r[3]);
-              const d2label = d2r ? (d2r[2]||'').trim() : '';
-              const d2val = d2r ? parseRub(d2r[3]) : 0;
-              if (d1label) detail = { items: [{label: d1label, val: d1val}, {label: d2label, val: d2val}] };
-            }
-          }
-          categories.push({ icon, name, amount, detail });
-        }
-        j++;
-      }
-
-      // separate income / expense
-      const expenseSubRow = rows.slice(i, j).find(rr => (rr[1]||'').includes('подитог расходной'));
-      const expenseTotal = expenseSubRow ? parseRub(expenseSubRow[1]) : 0;
-
-      months.push({ name: monthName, year, profit, incomeTotal, expenseTotal, categories });
-      i = j;
-    } else {
-      i++;
-    }
-  }
-  return months;
-}
-
-function iconBg(name) {
-  const map = {
-    'Концерты': '#EAF3DE',
-    'Фин.Операции': '#E6F1FB',
-    'Магазины': '#FAEEDA',
-    'Расходы': '#F1EFE8',
-    'Зарплаты': '#F1EFE8',
-    'Налоги': '#FCEBEB',
-    'Дивиденды': '#E6F1FB',
-  };
-  return map[name] || '#F1EFE8';
-}
-
-function amountClass(amount, name) {
-  if (name === 'Дивиденды') return 'negative-blue';
-  return amount >= 0 ? 'positive' : 'negative';
-}
-
-function renderMonth(idx) {
-  const m = allData[idx];
-  if (!m) return;
-
-  const income = m.categories.filter(c => c.amount > 0);
-  const expenses = m.categories.filter(c => c.amount < 0);
-
-  const profitClass = m.profit >= 0 ? 'positive' : 'negative';
-  const profitSign = m.profit >= 0 ? '+' : '';
-
-  let html = `
-    <div class="hero">
-      <div class="hero-top">
-        <div>
-          <div class="hero-month">${m.name}</div>
-          <div class="hero-year">${m.year}</div>
-        </div>
-        <div>
-          <div class="hero-amount ${profitClass}">${profitSign}${fmtRub(m.profit)}</div>
-          <div class="hero-amount-label">чистая прибыль</div>
-        </div>
-      </div>
-      <div class="mini-stats">
-        <div class="mini-stat">
-          <div class="mini-stat-label">Доходы</div>
-          <div class="mini-stat-value positive">+ ${fmtRub(m.incomeTotal)}</div>
-        </div>
-        <div class="mini-stat">
-          <div class="mini-stat-label">Расходы</div>
-          <div class="mini-stat-value negative">− ${fmtRub(m.expenseTotal)}</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section-title">Доходы</div>
-  `;
-
-  income.forEach(c => {
-    html += `
-      <div class="row">
-        <div class="row-left">
-          <div class="icon" style="background:${iconBg(c.name)}">${c.icon}</div>
-          <div>
-            <div class="row-title">${c.name}</div>
-            <div class="row-sub">${getCatSub(c.name)}</div>
-          </div>
-        </div>
-        <div class="row-right">
-          <div class="row-amount ${amountClass(c.amount, c.name)}">+ ${fmtRub(c.amount)}</div>
-        </div>
-      </div>
-    `;
-  });
-
-  html += `<div class="section-title">Расходы</div>`;
-
-  expenses.forEach(c => {
-    let detail = '';
-    if (c.detail) {
-      detail = c.detail.items
-        .filter(d => d.label && d.val)
-        .map(d => `${d.label}: ${fmtRub(d.val)}`)
-        .join(' · ');
-    }
-    html += `
-      <div class="row">
-        <div class="row-left">
-          <div class="icon" style="background:${iconBg(c.name)}">${c.icon}</div>
-          <div>
-            <div class="row-title">${c.name}</div>
-            <div class="row-sub">${getCatSub(c.name)}</div>
-          </div>
-        </div>
-        <div class="row-right">
-          <div class="row-amount ${amountClass(c.amount, c.name)}">− ${fmtRub(Math.abs(c.amount))}</div>
-          ${detail ? `<div class="row-detail">${detail}</div>` : ''}
-        </div>
-      </div>
-    `;
-  });
-
-  document.getElementById('content').innerHTML = html;
-}
-
-function getCatSub(name) {
-  const map = {
-    'Концерты': 'Прибыль по мероприятиям',
-    'Фин.Операции': 'Управление финансами',
-    'Магазины': 'Прибыль по мерчендайзингу',
-    'Расходы': 'Содержание бизнеса',
-    'Зарплаты': 'Фонд оплаты труда',
-    'Налоги': 'Вся налоговая нагрузка',
-    'Дивиденды': 'Див. зарплата + инвестиции',
-  };
-  return map[name] || '';
-}
+let cur = DATA.length - 1;
 
 function renderNav() {
-  const nav = document.getElementById('month-nav');
-  nav.innerHTML = allData.map((m, i) => `
-    <button class="month-tab ${i === currentIdx ? 'active' : ''}" onclick="selectMonth(${i})">${m.name}</button>
-  `).join('');
+  document.getElementById('month-nav').innerHTML = DATA.map((m,i) =>
+    `<button class="month-tab ${i===cur?'active':''}" onclick="sel(${i})">${m.name}</button>`
+  ).join('');
 }
 
-function selectMonth(idx) {
-  currentIdx = idx;
-  renderNav();
-  renderMonth(idx);
-}
+function sel(i) { cur=i; renderNav(); render(); }
 
-async function loadData() {
-  const dot = document.getElementById('dot');
-  const syncText = document.getElementById('sync-text');
-
-  dot.className = 'dot loading';
-  syncText.textContent = 'Загрузка...';
-
-  try {
-    // Try multiple CORS proxies in sequence (needed when opening as file://)
-    const proxies = [
-      `https://api.allorigins.win/raw?url=${encodeURIComponent(CSV_URL)}`,
-      `https://corsproxy.io/?${encodeURIComponent(CSV_URL)}`,
-      `https://thingproxy.freeboard.io/fetch/${CSV_URL}`,
-    ];
-    let resp, lastErr;
-    for (const url of proxies) {
-      try {
-        resp = await fetch(url);
-        if (resp.ok) break;
-      } catch(e) { lastErr = e; }
-    }
-    if (!resp || !resp.ok) throw lastErr || new Error('Все прокси недоступны');
-    if (!resp.ok) throw new Error('Ошибка загрузки');
-    const text = await resp.text();
-    const rows = parseCSV(text);
-    allData = parseSheetData(rows);
-
-    if (allData.length === 0) throw new Error('Нет данных');
-
-    currentIdx = allData.length - 1;
-    renderNav();
-    renderMonth(currentIdx);
-
-    dot.className = 'dot live';
-    const now = new Date();
-    syncText.textContent = `Обновлено в ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
-  } catch (e) {
-    dot.className = 'dot error';
-    syncText.textContent = 'Ошибка загрузки';
-    document.getElementById('content').innerHTML = `
-      <div class="error-box">
-        <p style="font-weight:600;margin-bottom:6px;">Не удалось загрузить данные</p>
-        <p>Убедитесь, что таблица опубликована:<br>Файл → Опубликовать в интернете → Лист → CSV</p>
-        <button class="refresh-btn" onclick="loadData()">Попробовать снова</button>
+function render() {
+  const m = DATA[cur];
+  document.getElementById('updated').textContent = m.name+' '+m.year;
+  const pc = m.profit>=0?'pos':'neg';
+  const ps = m.profit>=0?'+':'−';
+  let h = `<div class="hero">
+    <div class="hero-top">
+      <div><div class="hero-month">${m.name}</div><div class="hero-year">${m.year}</div></div>
+      <div>
+        <div class="hero-amount ${pc}">${ps} ${fmt(m.profit)}</div>
+        <div class="hero-amount-label">чистая прибыль</div>
       </div>
-    `;
-  }
+    </div>
+    <div class="mini-stats">
+      <div class="mini-stat"><div class="mini-stat-label">Доходы</div><div class="mini-stat-value pos">+ ${fmt(m.incomeTotal)}</div></div>
+      <div class="mini-stat"><div class="mini-stat-label">Расходы</div><div class="mini-stat-value neg">− ${fmt(m.expenseTotal)}</div></div>
+    </div>
+  </div><div class="section-title">Доходы</div>`;
+
+  m.income.forEach(c => {
+    h += `<div class="row"><div class="row-left"><div class="icon" style="background:${c.bg}">${c.icon}</div><div><div class="row-title">${c.name}</div><div class="row-sub">${c.sub}</div></div></div><div class="row-right"><div class="row-amount pos">+ ${fmt(c.amount)}</div></div></div>`;
+  });
+
+  h += `<div class="section-title">Расходы</div>`;
+  m.expenses.forEach(c => {
+    if(!c.amount) return;
+    const cl = c.name==='Дивиденды'?'neg-blue':'neg';
+    h += `<div class="row"><div class="row-left"><div class="icon" style="background:${c.bg}">${c.icon}</div><div><div class="row-title">${c.name}</div><div class="row-sub">${c.sub}</div></div></div><div class="row-right"><div class="row-amount ${cl}">− ${fmt(c.amount)}</div>${c.detail?`<div class="row-detail">${c.detail}</div>`:''}</div></div>`;
+  });
+
+  document.getElementById('content').innerHTML = h;
 }
 
-loadData();
+renderNav();
+render();
 </script>
 </body>
 </html>
