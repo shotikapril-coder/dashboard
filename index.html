@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ОПиУ — Нобед Букинг</title>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root{
   --bg:#F7F6F2;--surf:#fff;--surf2:#F0EFE9;
@@ -75,96 +74,73 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 .ra{font-size:14px;font-weight:600;white-space:nowrap;}
 .ra.pos{color:var(--green);}.ra.neg{color:var(--red);}.ra.blue{color:var(--blue);}
 
-/* ─── ФИНАНСОВЫЙ ОТЧЁТ (TradingView style) ─── */
-.rpt-page{padding:0;}
-.rpt-toolbar{display:flex;align-items:center;gap:10px;padding:.75rem 1rem;background:var(--surf);border-bottom:1px solid var(--brd);position:sticky;top:var(--tbh);z-index:50;flex-wrap:wrap;}
-.rpt-toolbar-title{font-size:13px;font-weight:600;color:var(--t1);margin-right:auto;}
-.period-tabs{display:flex;gap:2px;background:var(--surf2);border-radius:8px;padding:2px;}
-.ptab{font-family:'Golos Text',sans-serif;font-size:12px;font-weight:500;color:var(--t3);padding:5px 14px;border-radius:6px;cursor:pointer;border:none;background:none;transition:all .15s;}
+/* ─── REPORT ─── */
+/* sticky toolbar */
+.rpt-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.75rem 1rem;
+  background:var(--surf);
+  border-bottom:1px solid var(--brd);
+  position:sticky;top:var(--tbh);z-index:100;
+}
+.rpt-bar-title{font-size:13px;font-weight:600;color:var(--t1);}
+.ptabs{display:flex;gap:2px;background:var(--surf2);border-radius:8px;padding:2px;}
+.ptab{font-family:'Golos Text',sans-serif;font-size:12px;font-weight:500;color:var(--t3);padding:5px 14px;border-radius:6px;cursor:pointer;border:none;background:none;transition:all .15s;white-space:nowrap;}
 .ptab.on{background:var(--surf);color:var(--t1);box-shadow:0 1px 3px rgba(0,0,0,.08);}
 
-/* Chart bar */
-.rpt-chart-wrap{background:var(--surf);border-bottom:1px solid var(--brd);padding:1rem 1rem .5rem;}
-.rpt-chart-legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:.75rem;}
-.lgi{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--t2);}
-.lgd{width:10px;height:10px;border-radius:3px;}
-.rpt-chart-c{position:relative;height:160px;}
-
-/* Table */
-.fin-table{width:100%;border-collapse:collapse;}
-.fin-table th{
+/* The financial table — TradingView style */
+.fin-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;background:var(--surf);}
+table.fin{width:100%;border-collapse:collapse;}
+table.fin thead th{
   font-size:11px;font-weight:600;color:var(--t3);
-  text-align:right;padding:8px 12px;
-  border-bottom:2px solid var(--brd2);
+  text-align:right;padding:10px 16px 8px;
+  border-bottom:1px solid var(--brd2);
   white-space:nowrap;background:var(--surf);
   position:sticky;top:0;
 }
-.fin-table th:first-child{text-align:left;}
-.fin-table td{font-size:12px;padding:0;border-bottom:1px solid var(--brd);vertical-align:middle;}
-.fin-table tr:last-child td{border-bottom:none;}
-.fin-table tr:hover td{background:rgba(0,0,0,.015);}
+table.fin thead th.name-col{text-align:left;min-width:170px;}
 
-.td-name{
-  display:flex;align-items:center;gap:0;
-  padding:9px 12px;font-size:12px;font-weight:600;color:var(--t1);
-  white-space:nowrap;cursor:pointer;user-select:none;
-  position:relative;
-}
-.td-name.sub{font-weight:500;color:var(--t2);padding-left:28px;}
-.td-name.sub2{font-weight:400;color:var(--t3);padding-left:44px;font-size:11px;}
-.td-name .tog{font-size:10px;margin-right:5px;transition:transform .2s;display:inline-block;}
-.td-name.open .tog{transform:rotate(90deg);}
+/* body rows */
+table.fin tbody tr{border-bottom:1px solid var(--brd);}
+table.fin tbody tr:last-child{border-bottom:none;}
+table.fin tbody tr.section-head{background:var(--surf2);}
+table.fin tbody tr:not(.section-head):hover{background:rgba(0,0,0,.015);}
 
-.td-val{text-align:right;padding:9px 12px;white-space:nowrap;font-variant-numeric:tabular-nums;}
-.td-val .v{font-size:12px;font-weight:600;}
-.td-val .yoy{font-size:10px;margin-top:1px;}
-.td-val .bar-wrap{height:3px;background:var(--surf2);border-radius:2px;margin-top:4px;}
-.td-val .bar{height:3px;border-radius:2px;}
-.v.pos{color:var(--green);}.v.neg{color:var(--red);}.v.neu{color:var(--t1);}.v.mut{color:var(--t2);}
-.yoy.up{color:var(--green);}.yoy.dn{color:var(--red);}
+table.fin td{padding:0;vertical-align:top;}
 
-.row-hl td{background:rgba(0,0,0,.018);}
-.row-section td{background:var(--surf2);}
-.row-section .td-name{font-size:12px;font-weight:700;color:var(--t1);}
-.sub-rows{display:none;}
-.sub-rows.open{display:table-row-group;}
+/* name cell */
+.nc{padding:10px 16px;font-size:13px;font-weight:600;color:var(--t1);white-space:nowrap;}
+.nc.sub{font-weight:400;color:var(--t2);padding-left:30px;font-size:12px;}
+.nc.head{font-size:13px;font-weight:700;color:var(--t1);}
 
-/* table scroll wrapper */
-.tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+/* value cell */
+.vc{padding:8px 16px 6px;text-align:right;min-width:110px;}
+.vnum{font-size:13px;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums;}
+.vnum.pos{color:var(--green);}.vnum.neg{color:var(--red);}.vnum.neu{color:var(--t1);}.vnum.mut{color:var(--t2);}
+.vyoy{font-size:11px;margin-top:2px;white-space:nowrap;font-variant-numeric:tabular-nums;}
+.vyoy.up{color:var(--green);}.vyoy.dn{color:var(--red);}
 
 /* ─── ERRORS / SKEL ─── */
 .errbox{background:#FCEBEB;border:1px solid rgba(163,45,45,.2);border-radius:14px;padding:1.25rem;text-align:center;color:var(--red);font-size:13px;line-height:1.6;margin:1rem;}
 .retry{margin-top:.75rem;background:var(--t1);color:var(--bg);border:none;border-radius:10px;padding:8px 18px;font-family:'Golos Text',sans-serif;font-size:13px;cursor:pointer;}
-.sk{background:linear-gradient(90deg,var(--surf2) 25%,var(--brd) 50%,var(--surf2) 75%);background-size:200% 100%;animation:sh 1.2s infinite;border-radius:8px;}
 .skrow{height:64px;border-radius:14px;margin-bottom:6px;border:1px solid var(--brd);background:linear-gradient(90deg,var(--surf) 25%,var(--surf2) 50%,var(--surf) 75%);background-size:200% 100%;animation:sh 1.2s infinite;}
 @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-/* ─── MOBILE sections ─── */
+/* ─── LAYOUT ─── */
 .m-opiu{padding:.875rem .875rem 3rem;}
 .m-report{padding-bottom:3rem;}
 .m-opiu.hide,.m-report.hide{display:none;}
 .desk-opiu,.desk-report{display:none;}
 
-/* ─── DESKTOP ─── */
 @media(min-width:900px){
   .m-opiu,.m-report{display:none!important;}
   .desk-opiu,.desk-report{display:flex;}
 
-  .desk-opiu{
-    position:fixed;top:var(--tbh);left:0;right:0;bottom:0;overflow:hidden;
-  }
-  .d-left{
-    width:380px;flex-shrink:0;
-    padding:1.5rem;overflow-y:auto;height:100%;
-    border-right:1px solid var(--brd);
-  }
-  .d-right{
-    flex:1;padding:1.5rem 2rem;overflow-y:auto;height:100%;max-width:720px;
-  }
-  .desk-report{
-    position:fixed;top:var(--tbh);left:0;right:0;bottom:0;
-    overflow-y:auto;flex-direction:column;
-  }
+  .desk-opiu{position:fixed;top:var(--tbh);left:0;right:0;bottom:0;overflow:hidden;}
+  .d-left{width:400px;flex-shrink:0;padding:1.5rem;overflow-y:auto;height:100%;border-right:1px solid var(--brd);}
+  .d-right{flex:1;padding:1.5rem 2rem;overflow-y:auto;height:100%;max-width:700px;}
+
+  .desk-report{position:fixed;top:var(--tbh);left:0;right:0;bottom:0;overflow-y:auto;flex-direction:column;}
   .desk-report .rpt-inner{width:100%;}
 
   .h-month{font-size:24px;}.h-amt{font-size:21px;}
@@ -173,9 +149,9 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
   .rn{font-size:15px;}.ra{font-size:16px;}
   .ic{width:42px;height:42px;font-size:20px;border-radius:13px;}
   .stitle{font-size:12px;margin:1.5rem 0 .75rem;}
-  .rpt-chart-c{height:200px;}
-  .fin-table th,.td-name,.td-val .v{font-size:13px;}
-  .td-val .yoy{font-size:11px;}
+  .nc{font-size:14px;padding:11px 18px;}.nc.sub{font-size:13px;padding-left:36px;}
+  .vnum{font-size:13px;}.vc{min-width:120px;padding:9px 18px 7px;}
+  .vyoy{font-size:11px;}
 }
 .desk-opiu.hide,.desk-report.hide{display:none!important;}
 </style>
@@ -202,20 +178,15 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 </div>
 
 <div class="page">
-  <!-- MOBILE ОПиУ -->
   <div class="m-opiu" id="m-opiu">
     <div id="m-hero"></div>
     <div id="m-rows"><div class="skrow"></div><div class="skrow"></div><div class="skrow"></div></div>
   </div>
-  <!-- MOBILE Report -->
   <div class="m-report hide" id="m-report"><div id="m-rpt"></div></div>
-
-  <!-- DESKTOP ОПиУ -->
   <div class="desk-opiu" id="d-opiu">
     <div class="d-left" id="d-left"></div>
     <div class="d-right" id="d-right"></div>
   </div>
-  <!-- DESKTOP Report -->
   <div class="desk-report hide" id="d-report">
     <div class="rpt-inner" id="d-rpt"></div>
   </div>
@@ -225,8 +196,7 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 const CSV='https://docs.google.com/spreadsheets/d/e/2PACX-1vQZwm8zj9kaBFZCw7Ite6Xz2ZcBCIp8dC_zwbXTCI65I9EOFGAQAZa8R_6SKRvfEOI6iYukZqfR34vb/pub?gid=678223172&single=true&output=csv';
 const MO={'Январь':0,'Февраль':1,'Март':2,'Апрель':3,'Май':4,'Июнь':5,'Июль':6,'Август':7,'Сентябрь':8,'Октябрь':9,'Ноябрь':10,'Декабрь':11};
 const QQ={0:1,1:1,2:1,3:2,4:2,5:2,6:3,7:3,8:3,9:4,10:4,11:4};
-
-let DATA=[],cur=0,sec='opiu',period='annual',chartInst=null;
+let DATA=[],cur=0,sec='opiu',period='annual';
 const $=id=>document.getElementById(id);
 
 function fmt(n){return Math.abs(n).toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})+' ₽';}
@@ -236,9 +206,7 @@ function fmtM(n){
   if(a>=1e3)return(n/1e3).toLocaleString('ru-RU',{minimumFractionDigits:1,maximumFractionDigits:1})+' К';
   return n.toLocaleString('ru-RU',{minimumFractionDigits:0,maximumFractionDigits:0});
 }
-function pct(v){return(v>=0?'▲ ':'▼ ')+Math.abs(v).toFixed(1)+'%';}
 function pnum(s){if(!s)return 0;return parseFloat(s.replace(/\s/g,'').replace(/[^\d,.\-]/g,'').replace(',','.'))||0;}
-
 function parseCSV(txt){
   return txt.split('\n').map(l=>{
     const c=[];let cur='',q=false;
@@ -258,16 +226,15 @@ function parseData(rows){
       profit:net,rev,costs,
       shows:pnum(r[7]),fin:pnum(r[8]),merch:pnum(r[9]),
       sal:pnum(r[11]),off:pnum(r[12]),tax:pnum(r[13]),div:pnum(r[14]),
-      gross:pnum(r[5]),gm:pnum(r[15]),nm:pnum(r[16])
+      gross:pnum(r[5]),nm:pnum(r[16])
     });
   }
   return m;
 }
 
-/* ── section ── */
+/* section */
 function setSec(s){
   sec=s;
-  ['opiu','rpt'].forEach(t=>{$(`tab-${t==='rpt'?'rpt':'opiu'}`);});
   $('tab-opiu').classList.toggle('on',s==='opiu');
   $('tab-rpt').classList.toggle('on',s==='report');
   $('di-opiu').classList.toggle('on',s==='opiu');
@@ -280,11 +247,10 @@ function setSec(s){
   if(s==='report'&&DATA.length)renderReport();
   window.scrollTo({top:0});
 }
-
 function toggleDrawer(){const o=$('dr').classList.toggle('on');$('ov').classList.toggle('on',o);$('burger').classList.toggle('open',o);}
 function closeDrawer(){$('dr').classList.remove('on');$('ov').classList.remove('on');$('burger').classList.remove('open');}
 
-/* ── ОПиУ ── */
+/* ОПиУ */
 function heroH(m){
   const pc=m.profit>=0?'pos':'neg',ps=m.profit>=0?'+':'−';
   return`<div class="hero"><div class="hero-top">
@@ -298,26 +264,20 @@ function heroH(m){
 }
 function rowsH(m){
   const inc=[
-    m.shows&&{ic:'🎭',n:'Концерты',s:'Прибыль по мероприятиям',a:m.shows,bg:'#EAF3DE',blue:false},
-    m.fin&&{ic:'🏛️',n:'Фин.Операции',s:'Управление финансами',a:m.fin,bg:'#E6F1FB',blue:false},
-    m.merch&&{ic:'🛒',n:'Магазины',s:'Прибыль по мерчендайзингу',a:m.merch,bg:'#FAEEDA',blue:false},
+    m.shows&&{ic:'🎭',n:'Концерты',s:'Прибыль по мероприятиям',a:m.shows,bg:'#EAF3DE',cl:'pos'},
+    m.fin&&{ic:'🏛️',n:'Фин.Операции',s:'Управление финансами',a:m.fin,bg:'#E6F1FB',cl:'pos'},
+    m.merch&&{ic:'🛒',n:'Магазины',s:'Прибыль по мерчендайзингу',a:m.merch,bg:'#FAEEDA',cl:'pos'},
   ].filter(Boolean);
   const exp=[
-    m.sal&&{ic:'👔',n:'Зарплаты',s:'Фонд оплаты труда',a:m.sal,bg:'#F1EFE8',blue:false},
-    m.off&&{ic:'🏢',n:'Офис и сервисы',s:'Содержание бизнеса',a:m.off,bg:'#F1EFE8',blue:false},
-    m.tax&&{ic:'📮',n:'Налоги',s:'Вся налоговая нагрузка',a:m.tax,bg:'#FCEBEB',blue:false},
-    m.div&&{ic:'🧳',n:'Дивиденды',s:'Див. зарплата + инвестиции',a:m.div,bg:'#E6F1FB',blue:true},
+    m.sal&&{ic:'👔',n:'Зарплаты',s:'Фонд оплаты труда',a:m.sal,bg:'#F1EFE8',cl:'neg'},
+    m.off&&{ic:'🏢',n:'Офис и сервисы',s:'Содержание бизнеса',a:m.off,bg:'#F1EFE8',cl:'neg'},
+    m.tax&&{ic:'📮',n:'Налоги',s:'Вся налоговая нагрузка',a:m.tax,bg:'#FCEBEB',cl:'neg'},
+    m.div&&{ic:'🧳',n:'Дивиденды',s:'Див. зарплата + инвестиции',a:m.div,bg:'#E6F1FB',cl:'blue'},
   ].filter(Boolean);
   let h='<div class="stitle">Доходы</div>';
-  inc.forEach(c=>{
-    const sg=c.a>=0?'+':'−',cl=c.a>=0?'pos':'neg';
-    h+=`<div class="row"><div class="rl"><div class="ic" style="background:${c.bg}">${c.ic}</div><div><div class="rn">${c.n}</div><div class="rs">${c.s}</div></div></div><div class="rr"><div class="ra ${cl}">${sg} ${fmt(c.a)}</div></div></div>`;
-  });
+  inc.forEach(c=>h+=`<div class="row"><div class="rl"><div class="ic" style="background:${c.bg}">${c.ic}</div><div><div class="rn">${c.n}</div><div class="rs">${c.s}</div></div></div><div class="rr"><div class="ra ${c.cl}">+ ${fmt(c.a)}</div></div></div>`);
   h+='<div class="stitle">Расходы</div>';
-  exp.forEach(c=>{
-    const cl=c.blue?'blue':'neg';
-    h+=`<div class="row"><div class="rl"><div class="ic" style="background:${c.bg}">${c.ic}</div><div><div class="rn">${c.n}</div><div class="rs">${c.s}</div></div></div><div class="rr"><div class="ra ${cl}">− ${fmt(Math.abs(c.a))}</div></div></div>`;
-  });
+  exp.forEach(c=>h+=`<div class="row"><div class="rl"><div class="ic" style="background:${c.bg}">${c.ic}</div><div><div class="rn">${c.n}</div><div class="rs">${c.s}</div></div></div><div class="rr"><div class="ra ${c.cl}">− ${fmt(Math.abs(c.a))}</div></div></div>`);
   return h;
 }
 function renderNav(){
@@ -334,159 +294,96 @@ function renderOpiu(){
 /* ── ОТЧЁТНОСТЬ ── */
 function getPeriods(){
   if(period==='annual'){
-    const years=[...new Set(DATA.map(m=>m.yr))].sort();
-    return years.map(y=>({key:`${y}`,label:`${y}`,data:DATA.filter(m=>m.yr===y)}));
-  } else {
-    // quarters
-    const seen=new Set();const periods=[];
-    DATA.forEach(m=>{const k=`${m.yr}-Q${m.q}`;if(!seen.has(k)){seen.add(k);periods.push({key:k,label:`Q${m.q} ${m.yr}`,yr:m.yr,q:m.q});}});
-    periods.sort((a,b)=>a.yr!==b.yr?a.yr-b.yr:a.q-b.q);
-    return periods.map(p=>({...p,data:DATA.filter(m=>m.yr===p.yr&&m.q===p.q)}));
+    return[...new Set(DATA.map(m=>m.yr))].sort().map(y=>({
+      label:`${y}`,data:DATA.filter(m=>m.yr===y)
+    }));
   }
+  const seen=new Set(),ps=[];
+  DATA.forEach(m=>{
+    const k=`${m.yr}-${m.q}`;
+    if(!seen.has(k)){seen.add(k);ps.push({label:`Q${m.q} '${String(m.yr).slice(-2)}`,yr:m.yr,q:m.q,data:[]});}
+    ps.find(p=>p.yr===m.yr&&p.q===m.q).data.push(m);
+  });
+  return ps;
 }
-function sumP(data,k){return data.reduce((a,m)=>a+m[k],0);}
-function avgP(data,k){const nz=data.filter(m=>m[k]);return nz.length?nz.reduce((a,m)=>a+m[k],0)/nz.length:0;}
-function periodStats(p){
+function stats(data){
+  const s=k=>data.reduce((a,m)=>a+m[k],0);
+  const avg=k=>{const nz=data.filter(m=>m[k]);return nz.length?nz.reduce((a,m)=>a+m[k],0)/nz.length:0;};
   return{
-    rev:sumP(p.data,'rev'),
-    shows:Math.max(0,sumP(p.data,'shows')),
-    fin:Math.max(0,sumP(p.data,'fin')),
-    merch:Math.max(0,sumP(p.data,'merch')),
-    costs:sumP(p.data,'costs'),
-    sal:sumP(p.data,'sal'),
-    off:sumP(p.data,'off'),
-    tax:sumP(p.data,'tax'),
-    div:sumP(p.data,'div'),
-    gross:sumP(p.data,'gross'),
-    net:sumP(p.data,'profit'),
-    nm:avgP(p.data,'nm'),
-    gm:avgP(p.data,'gm'),
+    rev:s('rev'),shows:Math.max(0,s('shows')),fin:Math.max(0,s('fin')),merch:Math.max(0,s('merch')),
+    costs:s('costs'),sal:s('sal'),off:s('off'),tax:s('tax'),div:s('div'),
+    net:s('profit'),nm:avg('nm')
   };
 }
-
-function yoyH(curr,prev,inverse=false){
-  if(prev===null||prev===undefined||!prev)return'';
+function yoyStr(curr,prev,inverse=false){
+  if(!prev)return'';
   const d=((curr-prev)/Math.abs(prev))*100;
   const up=inverse?d<=0:d>=0;
-  return`<div class="yoy ${up?'up':'dn'}">${pct(d)}</div>`;
+  const sign=d>=0?'+':'';
+  return`<div class="vyoy ${up?'up':'dn'}">${sign}${d.toFixed(1)}%</div>`;
 }
 
-function miniBar(v,maxV,color){
-  if(!maxV)return'';
-  const w=Math.min(100,Math.abs(v/maxV)*100);
-  return`<div class="bar-wrap"><div class="bar" style="width:${w}%;background:${color}"></div></div>`;
-}
-
-function buildTable(periods,stats){
-  // max values for bars
-  const maxRev=Math.max(...stats.map(s=>s.rev));
-  const maxNet=Math.max(...stats.map(s=>Math.abs(s.net)));
-  const maxCost=Math.max(...stats.map(s=>s.costs));
-
-  const cols=periods.length;
+function buildTable(periods,allStats){
   const ths=periods.map(p=>`<th>${p.label}</th>`).join('');
 
-  function row(label,key,clFn,barColor,maxV,inverse=false,sub=false,indent=false){
-    const cls=sub?'sub':indent?'sub2':'';
-    const tds=stats.map((s,i)=>{
-      const v=s[key],pv=i>0?stats[i-1][key]:null;
-      const isMarg=key==='nm'||key==='gm';
-      const disp=isMarg?(v.toFixed(1)+'%'):fmtM(v);
-      const sign=(key==='net'||key==='gross')&&!isMarg?(v>=0?'':'-'):'';
-      return`<td class="td-val">
-        <div class="v ${clFn(v)}">${sign}${disp}</div>
-        ${pv!==null?yoyH(v,pv,inverse):''}
-        ${barColor&&maxV?miniBar(v,maxV,barColor):''}
-      </td>`;
+  function valCells(key,clFn,inverse=false,fmt2=fmtM){
+    return allStats.map((s,i)=>{
+      const v=s[key],pv=i>0?allStats[i-1][key]:null;
+      return`<td><div class="vc"><div class="vnum ${clFn(v)}">${fmt2(v)}</div>${yoyStr(v,pv,inverse)}</div></td>`;
     }).join('');
-    return`<tr class="${sub||indent?'':'row-hl'}"><td><div class="td-name ${cls}">${label}</div></td>${tds}</tr>`;
+  }
+  function pctFmt(v){return v.toFixed(1)+'%';}
+
+  function sHead(label){
+    return`<tr class="section-head"><td class="nc head">${label}</td>${periods.map(()=>'<td></td>').join('')}</tr>`;
+  }
+  function mRow(label,key,clFn,inverse=false,fmt2=fmtM,sub=false){
+    return`<tr><td><div class="nc${sub?' sub':''}">${label}</div></td>${valCells(key,clFn,inverse,fmt2)}</tr>`;
   }
 
-  function sectionRow(label){
-    return`<tr class="row-section"><td colspan="${cols+1}"><div class="td-name" style="padding:10px 12px 4px">${label}</div></td></tr>`;
-  }
-
-  return`<div class="tbl-scroll"><table class="fin-table">
-    <thead><tr><th style="min-width:160px">Показатель</th>${ths}</tr></thead>
+  return`<div class="fin-wrap"><table class="fin">
+    <thead><tr><th class="name-col">Показатель</th>${ths}</tr></thead>
     <tbody>
-      ${sectionRow('💰 Выручка')}
-      ${row('Всего',             'rev',  ()=>'neu',  '#378ADD', maxRev)}
-      ${row('• Мероприятия',     'shows',()=>'mut',  null,null,false,true)}
-      ${row('• Фин. операции',   'fin',  ()=>'mut',  null,null,false,true)}
-      ${row('• Мерчендайзинг',   'merch',()=>'mut',  null,null,false,true)}
-      ${sectionRow('📉 Расходы')}
-      ${row('Всего',             'costs',()=>'neg',  '#E24B4A', maxCost,true)}
-      ${row('• Зарплаты',        'sal',  ()=>'neg',  null,null,true,true)}
-      ${row('• Офис и сервисы',  'off',  ()=>'neg',  null,null,true,true)}
-      ${sectionRow('📊 Прочее')}
-      ${row('Налоги',            'tax',  ()=>'neg',  null,null,true)}
-      ${row('Дивиденды',         'div',  ()=>'neg',  null,null,true)}
-      ${sectionRow('📈 Результат')}
-      ${row('Чистая прибыль',    'net',  v=>v>=0?'pos':'neg', '#639922', maxNet)}
-      ${row('Чистая маржа %',    'nm',   v=>v>=0?'pos':'neg', null,null,false,true)}
+      ${sHead('Выручка / Revenue')}
+      ${mRow('Всего',         'rev',  ()=>'neu')}
+      ${mRow('• Мероприятия','shows',()=>'mut',false,fmtM,true)}
+      ${mRow('• Фин. операции','fin', ()=>'mut',false,fmtM,true)}
+      ${mRow('• Мерчендайзинг','merch',()=>'mut',false,fmtM,true)}
+      ${sHead('Расходы / Costs')}
+      ${mRow('Всего',          'costs',()=>'neg',true)}
+      ${mRow('• Зарплаты',    'sal',  ()=>'neg',true,fmtM,true)}
+      ${mRow('• Офис и сервисы','off',()=>'neg',true,fmtM,true)}
+      ${sHead('Прочее')}
+      ${mRow('Налоги',         'tax',  ()=>'neg',true)}
+      ${mRow('Дивиденды',      'div',  ()=>'neg',true)}
+      ${sHead('Результат')}
+      ${mRow('Чистая прибыль / NET','net',v=>v>=0?'pos':'neg')}
+      ${mRow('Чистая маржа %',      'nm', v=>v>=0?'pos':'neg',false,pctFmt,true)}
     </tbody>
   </table></div>`;
 }
 
-function renderChart(periods,stats){
-  if(chartInst){chartInst.destroy();chartInst=null;}
-  // use visible canvas
-  const canvas=document.querySelector('.rpt-chart-c canvas');
-  if(!canvas)return;
-  chartInst=new Chart(canvas.getContext('2d'),{
-    type:'bar',
-    data:{
-      labels:periods.map(p=>p.label),
-      datasets:[
-        {label:'Выручка',data:stats.map(s=>s.rev),backgroundColor:'#378ADD',borderRadius:3},
-        {label:'Расходы',data:stats.map(s=>-s.costs),backgroundColor:'rgba(226,75,74,.7)',borderRadius:3},
-        {label:'Прибыль',data:stats.map(s=>s.net),backgroundColor:'#639922',borderRadius:3},
-      ]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${fmtM(c.raw)}`}}},
-      scales:{
-        x:{grid:{display:false},ticks:{font:{size:10},color:'#9E9D97',maxRotation:45}},
-        y:{grid:{color:'rgba(0,0,0,.04)'},ticks:{font:{size:10},color:'#9E9D97',callback:v=>fmtM(v)}}
-      }
-    }
-  });
-}
-
 function rptHTML(){
   const periods=getPeriods();
-  const stats=periods.map(p=>periodStats(p));
-  const tbl=buildTable(periods,stats);
+  const allStats=periods.map(p=>stats(p.data));
   return`
-    <div class="rpt-toolbar">
-      <span class="rpt-toolbar-title">Отчёт о прибылях и убытках</span>
-      <div class="period-tabs">
-        <button class="ptab ${period==='annual'?'on':''}" onclick="setPeriod('annual')">Годовой</button>
-        <button class="ptab ${period==='quarterly'?'on':''}" onclick="setPeriod('quarterly')">Квартальный</button>
+    <div class="rpt-bar">
+      <span class="rpt-bar-title">Отчёт о прибылях и убытках</span>
+      <div class="ptabs">
+        <button class="ptab ${period==='annual'?'on':''}" onclick="setPeriod('annual')">Год</button>
+        <button class="ptab ${period==='quarterly'?'on':''}" onclick="setPeriod('quarterly')">Квартал</button>
       </div>
     </div>
-    <div class="rpt-chart-wrap">
-      <div class="rpt-chart-legend">
-        <div class="lgi"><div class="lgd" style="background:#378ADD"></div>Выручка</div>
-        <div class="lgi"><div class="lgd" style="background:rgba(226,75,74,.7)"></div>Расходы</div>
-        <div class="lgi"><div class="lgd" style="background:#639922"></div>Прибыль</div>
-      </div>
-      <div class="rpt-chart-c"><canvas></canvas></div>
-    </div>
-    ${tbl}`;
+    ${buildTable(periods,allStats)}`;
 }
-
 function renderReport(){
   const html=rptHTML();
   $('m-rpt').innerHTML=html;
   $('d-rpt').innerHTML=html;
-  setTimeout(()=>renderChart(getPeriods(),getPeriods().map(p=>periodStats(p))),60);
 }
-
 function setPeriod(p){period=p;renderReport();}
 
-/* ── LOAD ── */
+/* load */
 async function load(){
   const dot=$('dot'),st=$('stime');
   dot.className='dot spin';st.textContent='...';
@@ -499,8 +396,7 @@ async function load(){
     renderNav();renderOpiu();
     if(sec==='report')renderReport();
     dot.className='dot live';
-    const n=new Date();
-    st.textContent=`${n.getHours()}:${String(n.getMinutes()).padStart(2,'0')}`;
+    const n=new Date();st.textContent=`${n.getHours()}:${String(n.getMinutes()).padStart(2,'0')}`;
   }catch(e){
     dot.className='dot err';st.textContent='Ошибка';
     const eb=`<div class="errbox"><div style="font-weight:600;margin-bottom:6px">Ошибка загрузки</div><div>${e.message}</div><button class="retry" onclick="load()">Повторить</button></div>`;
