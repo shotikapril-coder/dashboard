@@ -105,31 +105,31 @@
 </div>
 
 <script>
-const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQZwm8zj9kaBFZCw7Ite6Xz2ZcBCIp8dC_zwbXTCI65I9EOFGAQAZa8R_6SKRvfEOI6iYukZqfR34vb/pub?gid=70554802&single=true&output=csv';
+// Сводная DBMY — структурированный лист
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQZwm8zj9kaBFZCw7Ite6Xz2ZcBCIp8dC_zwbXTCI65I9EOFGAQAZa8R_6SKRvfEOI6iYukZqfR34vb/pub?gid=678223172&single=true&output=csv';
 
-const MONTHS_RU = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+// Колонки (0-based index):
+// 0=Year, 1=Month, 2=Revenue(All), 3=Revenue(Shows), 4=Revenue(Merch),
+// 5=GROSS Profit, 6=NET Profit,
+// 7=Shows Profit, 8=FIN.OP.Profit, 9=Merch Profit,
+// 10=Costs(All), 11=Costs/Employers, 12=Costs/Office&Ser, 13=Taxes, 14=Dividends,
+// 15=Marge GROSS, 16=Marge NET
 
-const ICON_BG = {
-  'Концерты':'#EAF3DE','Фин.Операции':'#E6F1FB','Магазины':'#FAEEDA',
-  'Расходы':'#F1EFE8','Зарплаты':'#F1EFE8','Налоги':'#FCEBEB','Дивиденды':'#E6F1FB'
-};
-const CAT_SUB = {
-  'Концерты':'Прибыль по мероприятиям','Фин.Операции':'Управление финансами',
-  'Магазины':'Прибыль по мерчендайзингу','Расходы':'Содержание бизнеса',
-  'Зарплаты':'Фонд оплаты труда','Налоги':'Вся налоговая нагрузка',
-  'Дивиденды':'Див. зарплата + инвестиции'
+const MONTHS_MAP = {
+  'Январь':0,'Февраль':1,'Март':2,'Апрель':3,'Май':4,'Июнь':5,
+  'Июль':6,'Август':7,'Сентябрь':8,'Октябрь':9,'Ноябрь':10,'Декабрь':11
 };
 
 let allData = [], cur = 0;
 
 function fmt(n) {
-  return Math.abs(n).toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})+' ₽';
+  return Math.abs(n).toLocaleString('ru-RU', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ₽';
 }
 
-function parseRub(s) {
+function parseNum(s) {
   if (!s) return 0;
-  // Remove all non-numeric except comma, dot, minus
-  const clean = s.replace(/[^\d,.\-]/g,'').replace(',','.');
+  // Handle Russian number format: spaces as thousands sep, comma as decimal
+  const clean = s.replace(/\s/g,'').replace(/[^\d,.\-]/g,'').replace(',','.');
   return parseFloat(clean) || 0;
 }
 
@@ -137,9 +137,9 @@ function parseCSV(text) {
   return text.split('\n').map(line => {
     const cols = []; let cur = '', inQ = false;
     for (const c of line) {
-      if (c==='"') inQ=!inQ;
-      else if (c===',' && !inQ) { cols.push(cur.trim()); cur=''; }
-      else cur+=c;
+      if (c === '"') inQ = !inQ;
+      else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else cur += c;
     }
     cols.push(cur.trim());
     return cols;
@@ -148,78 +148,68 @@ function parseCSV(text) {
 
 function parseSheetData(rows) {
   const months = [];
-  let i = 0;
-  while (i < rows.length) {
-    const r = rows[i];
-    const monthName = (r[1]||'').trim();
-    if (!MONTHS_RU.includes(monthName)) { i++; continue; }
+  for (const r of rows) {
+    const year = (r[0]||'').trim();
+    const month = (r[1]||'').trim();
 
-    const year = (rows[i+1]&&rows[i+1][1]) ? rows[i+1][1].trim() : '2025';
-    const profit = parseRub(r[4]);
-    const incomeTotal = parseRub(rows[i+2] ? rows[i+2][1] : '');
+    // Skip header rows and empty rows
+    if (!year || !month || !(month in MONTHS_MAP) || isNaN(parseInt(year))) continue;
 
-    const income = [], expenses = [];
-    let expenseTotal = 0;
-    let j = i + 3;
+    const netProfit   = parseNum(r[6]);
+    const revenueAll  = parseNum(r[2]);
+    const costsAll    = parseNum(r[10]);
 
-    while (j < rows.length) {
-      const cr = rows[j];
-      const col1 = (cr[1]||'').trim();
-      const col2 = (cr[2]||'').trim();
-      const amount = parseRub(cr[6]);
+    const showsProfit = parseNum(r[7]);
+    const finProfit   = parseNum(r[8]);
+    const merchProfit = parseNum(r[9]);
 
-      // Next month detected
-      if (MONTHS_RU.includes(col1)) break;
+    const salaries    = parseNum(r[11]);
+    const office      = parseNum(r[12]);
+    const taxes       = parseNum(r[13]);
+    const dividends   = parseNum(r[14]);
 
-      // Expense subtotal row
-      if (!col1 && col2 && col2.includes('подитог расходной')) {
-        expenseTotal = parseRub(cr[1]);
-        // fallback: use first column
-        if (!expenseTotal) expenseTotal = parseRub(rows[j][0]);
-        j++; continue;
-      }
+    // Skip months with no data at all
+    if (!revenueAll && !netProfit && !costsAll) continue;
 
-      // Skip empty or subtotal rows
-      if (!col1 || col2.includes('подитог')) { j++; continue; }
-
-      if (col2 && amount !== 0) {
-        let detail = null;
-        if (col2 === 'Дивиденды') {
-          const d1 = rows[j+1], d2 = rows[j+2];
-          if (d1 && d1[2]) {
-            const parts = [];
-            if (d1[2].trim()) parts.push(d1[2].trim()+': '+fmt(parseRub(d1[3])));
-            if (d2 && d2[2] && d2[2].trim()) parts.push(d2[2].trim()+': '+fmt(parseRub(d2[3])));
-            detail = parts.join(' · ');
-          }
-        }
-        const entry = { icon: col1, name: col2, amount, bg: ICON_BG[col2]||'#F1EFE8', sub: CAT_SUB[col2]||'', detail };
-        if (amount > 0) income.push(entry);
-        else expenses.push(entry);
-      }
-      j++;
-    }
-
-    // Calculate expenseTotal from expenses if not found
-    if (!expenseTotal) expenseTotal = expenses.reduce((s,e) => s + Math.abs(e.amount), 0);
-
-    months.push({ name: monthName, year, profit, incomeTotal, expenseTotal, income, expenses });
-    i = j;
+    months.push({
+      name: month,
+      year,
+      profit: netProfit,
+      incomeTotal: revenueAll,
+      expenseTotal: costsAll,
+      income: [
+        { icon:'🎭', name:'Концерты',      sub:'Прибыль по мероприятиям',   amount: showsProfit, bg:'#EAF3DE' },
+        { icon:'🏛️', name:'Фин.Операции', sub:'Управление финансами',       amount: finProfit,   bg:'#E6F1FB' },
+        { icon:'🛒', name:'Магазины',      sub:'Прибыль по мерчендайзингу', amount: merchProfit, bg:'#FAEEDA' },
+      ].filter(c => c.amount !== 0),
+      expenses: [
+        { icon:'👔', name:'Зарплаты',   sub:'Фонд оплаты труда',        amount: salaries,  bg:'#F1EFE8', detail: null },
+        { icon:'🏢', name:'Офис и сервисы', sub:'Содержание бизнеса',   amount: office,    bg:'#F1EFE8', detail: null },
+        { icon:'📮', name:'Налоги',     sub:'Вся налоговая нагрузка',   amount: taxes,     bg:'#FCEBEB', detail: null },
+        { icon:'🧳', name:'Дивиденды', sub:'Див. зарплата + инвестиции', amount: dividends, bg:'#E6F1FB', detail: null },
+      ].filter(c => c.amount !== 0),
+    });
   }
   return months;
 }
 
 function renderNav() {
   document.getElementById('month-nav').innerHTML = allData.map((m,i) =>
-    `<button class="month-tab ${i===cur?'active':''}" onclick="sel(${i})">${m.name}</button>`
+    `<button class="month-tab ${i===cur?'active':''}" onclick="sel(${i})">${m.name} ${m.year.slice(-2)}</button>`
   ).join('');
+  // Scroll active tab into view
+  setTimeout(() => {
+    const active = document.querySelector('.month-tab.active');
+    if (active) active.scrollIntoView({inline:'center', behavior:'smooth'});
+  }, 50);
 }
 
-function sel(i) { cur=i; renderNav(); render(); }
+function sel(i) { cur = i; renderNav(); render(); }
 
 function render() {
   const m = allData[cur];
-  const pc = m.profit>=0?'pos':'neg', ps = m.profit>=0?'+':'−';
+  const pc = m.profit >= 0 ? 'pos' : 'neg';
+  const ps = m.profit >= 0 ? '+' : '−';
 
   let h = `<div class="hero">
     <div class="hero-top">
@@ -236,12 +226,14 @@ function render() {
   </div><div class="section-title">Доходы</div>`;
 
   m.income.forEach(c => {
-    h += `<div class="row"><div class="row-left"><div class="icon" style="background:${c.bg}">${c.icon}</div><div><div class="row-title">${c.name}</div><div class="row-sub">${c.sub}</div></div></div><div class="row-right"><div class="row-amount pos">+ ${fmt(c.amount)}</div></div></div>`;
+    const sign = c.amount >= 0 ? '+' : '−';
+    const cl = c.amount >= 0 ? 'pos' : 'neg';
+    h += `<div class="row"><div class="row-left"><div class="icon" style="background:${c.bg}">${c.icon}</div><div><div class="row-title">${c.name}</div><div class="row-sub">${c.sub}</div></div></div><div class="row-right"><div class="row-amount ${cl}">${sign} ${fmt(c.amount)}</div></div></div>`;
   });
 
   h += `<div class="section-title">Расходы</div>`;
   m.expenses.forEach(c => {
-    const cl = c.name==='Дивиденды'?'neg-blue':'neg';
+    const cl = c.name === 'Дивиденды' ? 'neg-blue' : 'neg';
     h += `<div class="row"><div class="row-left"><div class="icon" style="background:${c.bg}">${c.icon}</div><div><div class="row-title">${c.name}</div><div class="row-sub">${c.sub}</div></div></div><div class="row-right"><div class="row-amount ${cl}">− ${fmt(Math.abs(c.amount))}</div>${c.detail?`<div class="row-detail">${c.detail}</div>`:''}</div></div>`;
   });
 
@@ -256,7 +248,7 @@ async function loadData() {
 
   try {
     const resp = await fetch(CSV_URL);
-    if (!resp.ok) throw new Error('HTTP '+resp.status);
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
     const text = await resp.text();
     const rows = parseCSV(text);
     allData = parseSheetData(rows);
@@ -282,7 +274,6 @@ async function loadData() {
 }
 
 loadData();
-// Автообновление каждые 5 минут
 setInterval(loadData, 5 * 60 * 1000);
 </script>
 </body>
