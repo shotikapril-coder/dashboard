@@ -19,7 +19,12 @@
   .top-bar-inner { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
   .logo { font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 600; }
   .logo span { color: var(--accent); }
-  .updated { font-size: 11px; color: var(--text3); }
+  .sync-indicator { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text3); }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: #ccc; transition: background 0.3s; flex-shrink: 0; }
+  .dot.live { background: #639922; }
+  .dot.loading { background: var(--amber); animation: pulse 1s infinite; }
+  .dot.error { background: var(--red); }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
   .month-nav { display: flex; overflow-x: auto; gap: 2px; padding-bottom: 0.75rem; scrollbar-width: none; }
   .month-nav::-webkit-scrollbar { display: none; }
@@ -55,6 +60,13 @@
   .row-amount { font-size: 15px; font-weight: 600; }
   .row-amount.pos { color: var(--green); } .row-amount.neg { color: var(--red); } .row-amount.neg-blue { color: var(--blue); }
   .row-detail { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  .error-box { background: #FCEBEB; border: 1px solid rgba(163,45,45,0.2); border-radius: 14px; padding: 1.25rem; text-align: center; color: var(--red); font-size: 13px; line-height: 1.6; }
+  .retry-btn { margin-top: 0.75rem; background: var(--text); color: var(--bg); border: none; border-radius: 10px; padding: 8px 18px; font-family: 'Golos Text', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; }
+
+  .skeleton { background: linear-gradient(90deg, var(--surface2) 25%, var(--border) 50%, var(--surface2) 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite; border-radius: 8px; }
+  .skeleton-row { height: 64px; border-radius: 14px; margin-bottom: 6px; border: 1px solid var(--border); background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite; }
+  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 </style>
 </head>
 <body>
@@ -62,94 +74,143 @@
   <div class="top-bar">
     <div class="top-bar-inner">
       <div class="logo">Нобед <span>Букинг</span></div>
-      <div class="updated" id="updated"></div>
+      <div class="sync-indicator">
+        <div class="dot loading" id="dot"></div>
+        <span id="sync-text">Загрузка...</span>
+      </div>
     </div>
     <div class="month-nav" id="month-nav"></div>
   </div>
-  <div class="content" id="content"></div>
+  <div class="content" id="content">
+    <div class="hero" style="padding:1.5rem">
+      <div style="display:flex;justify-content:space-between;margin-bottom:1.25rem">
+        <div>
+          <div class="skeleton" style="width:100px;height:22px;margin-bottom:6px"></div>
+          <div class="skeleton" style="width:60px;height:14px"></div>
+        </div>
+        <div>
+          <div class="skeleton" style="width:160px;height:24px;margin-bottom:6px"></div>
+          <div class="skeleton" style="width:90px;height:12px;margin-left:auto"></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="skeleton" style="height:56px;border-radius:12px"></div>
+        <div class="skeleton" style="height:56px;border-radius:12px"></div>
+      </div>
+    </div>
+    <div class="skeleton-row"></div>
+    <div class="skeleton-row"></div>
+    <div class="skeleton-row"></div>
+  </div>
 </div>
+
 <script>
-const DATA = [
-  {
-    name:'Январь', year:'2025', profit:-224305.91, incomeTotal:602338.85, expenseTotal:826644.75,
-    income:[
-      {icon:'🎭',name:'Концерты',sub:'Прибыль по мероприятиям',amount:344965.89,bg:'#EAF3DE'},
-      {icon:'🏛️',name:'Фин.Операции',sub:'Управление финансами',amount:184036.57,bg:'#E6F1FB'},
-      {icon:'🛒',name:'Магазины',sub:'Прибыль по мерчендайзингу',amount:73336.39,bg:'#FAEEDA'},
-    ],
-    expenses:[
-      {icon:'💼',name:'Расходы',sub:'Содержание бизнеса',amount:110044.03,bg:'#F1EFE8',detail:null},
-      {icon:'👔',name:'Зарплаты',sub:'Фонд оплаты труда',amount:335390.47,bg:'#F1EFE8',detail:null},
-      {icon:'📮',name:'Налоги',sub:'Вся налоговая нагрузка',amount:381210.25,bg:'#FCEBEB',detail:null},
-      {icon:'🧳',name:'Дивиденды',sub:'Див. зарплата + инвестиции',amount:880949.70,bg:'#E6F1FB',detail:'Див. зарплата: 880 949,70 ₽ · Долгие инвестиции: 0,00 ₽'},
-    ]
-  },
-  {
-    name:'Февраль', year:'2025', profit:-625864.49, incomeTotal:314903.63, expenseTotal:940768.12,
-    income:[
-      {icon:'🎭',name:'Концерты',sub:'Прибыль по мероприятиям',amount:60419.16,bg:'#EAF3DE'},
-      {icon:'🏛️',name:'Фин.Операции',sub:'Управление финансами',amount:206788.59,bg:'#E6F1FB'},
-      {icon:'🛒',name:'Магазины',sub:'Прибыль по мерчендайзингу',amount:47695.88,bg:'#FAEEDA'},
-    ],
-    expenses:[
-      {icon:'💼',name:'Расходы',sub:'Содержание бизнеса',amount:102319.80,bg:'#F1EFE8',detail:null},
-      {icon:'👔',name:'Зарплаты',sub:'Фонд оплаты труда',amount:277238.07,bg:'#F1EFE8',detail:null},
-      {icon:'📮',name:'Налоги',sub:'Вся налоговая нагрузка',amount:561210.25,bg:'#FCEBEB',detail:null},
-      {icon:'🧳',name:'Дивиденды',sub:'Див. зарплата + инвестиции',amount:1918340.10,bg:'#E6F1FB',detail:'Див. зарплата: 468 940,10 ₽ · Долгие инвестиции: 1 449 400,00 ₽'},
-    ]
-  },
-  {
-    name:'Март', year:'2025', profit:2098458.24, incomeTotal:3042456.73, expenseTotal:943998.49,
-    income:[
-      {icon:'🎭',name:'Концерты',sub:'Прибыль по мероприятиям',amount:2785420.16,bg:'#EAF3DE'},
-      {icon:'🏛️',name:'Фин.Операции',sub:'Управление финансами',amount:210744.91,bg:'#E6F1FB'},
-      {icon:'🛒',name:'Магазины',sub:'Прибыль по мерчендайзингу',amount:46291.66,bg:'#FAEEDA'},
-    ],
-    expenses:[
-      {icon:'💼',name:'Расходы',sub:'Содержание бизнеса',amount:74473.45,bg:'#F1EFE8',detail:null},
-      {icon:'👔',name:'Зарплаты',sub:'Фонд оплаты труда',amount:368314.79,bg:'#F1EFE8',detail:null},
-      {icon:'📮',name:'Налоги',sub:'Вся налоговая нагрузка',amount:501210.25,bg:'#FCEBEB',detail:null},
-      {icon:'🧳',name:'Дивиденды',sub:'Див. зарплата + инвестиции',amount:3726217.89,bg:'#E6F1FB',detail:'Див. зарплата: 562 500,00 ₽ · Долгие инвестиции: 3 163 717,89 ₽'},
-    ]
-  },
-  {
-    name:'Апрель', year:'2025', profit:2246203.41, incomeTotal:4536412.33, expenseTotal:2290208.91,
-    income:[
-      {icon:'🎭',name:'Концерты',sub:'Прибыль по мероприятиям',amount:4363721.10,bg:'#EAF3DE'},
-      {icon:'🏛️',name:'Фин.Операции',sub:'Управление финансами',amount:135797.33,bg:'#E6F1FB'},
-      {icon:'🛒',name:'Магазины',sub:'Прибыль по мерчендайзингу',amount:36893.90,bg:'#FAEEDA'},
-    ],
-    expenses:[
-      {icon:'💼',name:'Расходы',sub:'Содержание бизнеса',amount:118599.74,bg:'#F1EFE8',detail:null},
-      {icon:'👔',name:'Зарплаты',sub:'Фонд оплаты труда',amount:1370388.71,bg:'#F1EFE8',detail:null},
-      {icon:'📮',name:'Налоги',sub:'Вся налоговая нагрузка',amount:801220.46,bg:'#FCEBEB',detail:null},
-      {icon:'🧳',name:'Дивиденды',sub:'Див. зарплата + инвестиции',amount:669048.90,bg:'#E6F1FB',detail:'Див. зарплата: 513 044,90 ₽ · Долгие инвестиции: 156 004,00 ₽'},
-    ]
-  },
-  {
-    name:'Май', year:'2025', profit:692445.18, incomeTotal:2474048.20, expenseTotal:1781603.02,
-    income:[
-      {icon:'🎭',name:'Концерты',sub:'Прибыль по мероприятиям',amount:2331351.23,bg:'#EAF3DE'},
-      {icon:'🏛️',name:'Фин.Операции',sub:'Управление финансами',amount:113763.04,bg:'#E6F1FB'},
-      {icon:'🛒',name:'Магазины',sub:'Прибыль по мерчендайзингу',amount:28933.93,bg:'#FAEEDA'},
-    ],
-    expenses:[
-      {icon:'💼',name:'Расходы',sub:'Содержание бизнеса',amount:117136.61,bg:'#F1EFE8',detail:null},
-      {icon:'👔',name:'Зарплаты',sub:'Фонд оплаты труда',amount:0,bg:'#F1EFE8',detail:null},
-      {icon:'📮',name:'Налоги',sub:'Вся налоговая нагрузка',amount:0,bg:'#FCEBEB',detail:null},
-      {icon:'🧳',name:'Дивиденды',sub:'Див. зарплата + инвестиции',amount:0,bg:'#E6F1FB',detail:null},
-    ]
-  },
-];
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQZwm8zj9kaBFZCw7Ite6Xz2ZcBCIp8dC_zwbXTCI65I9EOFGAQAZa8R_6SKRvfEOI6iYukZqfR34vb/pub?gid=70554802&single=true&output=csv';
+
+const MONTHS_RU = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+
+const ICON_BG = {
+  'Концерты':'#EAF3DE','Фин.Операции':'#E6F1FB','Магазины':'#FAEEDA',
+  'Расходы':'#F1EFE8','Зарплаты':'#F1EFE8','Налоги':'#FCEBEB','Дивиденды':'#E6F1FB'
+};
+const CAT_SUB = {
+  'Концерты':'Прибыль по мероприятиям','Фин.Операции':'Управление финансами',
+  'Магазины':'Прибыль по мерчендайзингу','Расходы':'Содержание бизнеса',
+  'Зарплаты':'Фонд оплаты труда','Налоги':'Вся налоговая нагрузка',
+  'Дивиденды':'Див. зарплата + инвестиции'
+};
+
+let allData = [], cur = 0;
 
 function fmt(n) {
   return Math.abs(n).toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})+' ₽';
 }
 
-let cur = DATA.length - 1;
+function parseRub(s) {
+  if (!s) return 0;
+  // Remove all non-numeric except comma, dot, minus
+  const clean = s.replace(/[^\d,.\-]/g,'').replace(',','.');
+  return parseFloat(clean) || 0;
+}
+
+function parseCSV(text) {
+  return text.split('\n').map(line => {
+    const cols = []; let cur = '', inQ = false;
+    for (const c of line) {
+      if (c==='"') inQ=!inQ;
+      else if (c===',' && !inQ) { cols.push(cur.trim()); cur=''; }
+      else cur+=c;
+    }
+    cols.push(cur.trim());
+    return cols;
+  });
+}
+
+function parseSheetData(rows) {
+  const months = [];
+  let i = 0;
+  while (i < rows.length) {
+    const r = rows[i];
+    const monthName = (r[1]||'').trim();
+    if (!MONTHS_RU.includes(monthName)) { i++; continue; }
+
+    const year = (rows[i+1]&&rows[i+1][1]) ? rows[i+1][1].trim() : '2025';
+    const profit = parseRub(r[4]);
+    const incomeTotal = parseRub(rows[i+2] ? rows[i+2][1] : '');
+
+    const income = [], expenses = [];
+    let expenseTotal = 0;
+    let j = i + 3;
+
+    while (j < rows.length) {
+      const cr = rows[j];
+      const col1 = (cr[1]||'').trim();
+      const col2 = (cr[2]||'').trim();
+      const amount = parseRub(cr[6]);
+
+      // Next month detected
+      if (MONTHS_RU.includes(col1)) break;
+
+      // Expense subtotal row
+      if (!col1 && col2 && col2.includes('подитог расходной')) {
+        expenseTotal = parseRub(cr[1]);
+        // fallback: use first column
+        if (!expenseTotal) expenseTotal = parseRub(rows[j][0]);
+        j++; continue;
+      }
+
+      // Skip empty or subtotal rows
+      if (!col1 || col2.includes('подитог')) { j++; continue; }
+
+      if (col2 && amount !== 0) {
+        let detail = null;
+        if (col2 === 'Дивиденды') {
+          const d1 = rows[j+1], d2 = rows[j+2];
+          if (d1 && d1[2]) {
+            const parts = [];
+            if (d1[2].trim()) parts.push(d1[2].trim()+': '+fmt(parseRub(d1[3])));
+            if (d2 && d2[2] && d2[2].trim()) parts.push(d2[2].trim()+': '+fmt(parseRub(d2[3])));
+            detail = parts.join(' · ');
+          }
+        }
+        const entry = { icon: col1, name: col2, amount, bg: ICON_BG[col2]||'#F1EFE8', sub: CAT_SUB[col2]||'', detail };
+        if (amount > 0) income.push(entry);
+        else expenses.push(entry);
+      }
+      j++;
+    }
+
+    // Calculate expenseTotal from expenses if not found
+    if (!expenseTotal) expenseTotal = expenses.reduce((s,e) => s + Math.abs(e.amount), 0);
+
+    months.push({ name: monthName, year, profit, incomeTotal, expenseTotal, income, expenses });
+    i = j;
+  }
+  return months;
+}
 
 function renderNav() {
-  document.getElementById('month-nav').innerHTML = DATA.map((m,i) =>
+  document.getElementById('month-nav').innerHTML = allData.map((m,i) =>
     `<button class="month-tab ${i===cur?'active':''}" onclick="sel(${i})">${m.name}</button>`
   ).join('');
 }
@@ -157,10 +218,9 @@ function renderNav() {
 function sel(i) { cur=i; renderNav(); render(); }
 
 function render() {
-  const m = DATA[cur];
-  document.getElementById('updated').textContent = m.name+' '+m.year;
-  const pc = m.profit>=0?'pos':'neg';
-  const ps = m.profit>=0?'+':'−';
+  const m = allData[cur];
+  const pc = m.profit>=0?'pos':'neg', ps = m.profit>=0?'+':'−';
+
   let h = `<div class="hero">
     <div class="hero-top">
       <div><div class="hero-month">${m.name}</div><div class="hero-year">${m.year}</div></div>
@@ -181,16 +241,49 @@ function render() {
 
   h += `<div class="section-title">Расходы</div>`;
   m.expenses.forEach(c => {
-    if(!c.amount) return;
     const cl = c.name==='Дивиденды'?'neg-blue':'neg';
-    h += `<div class="row"><div class="row-left"><div class="icon" style="background:${c.bg}">${c.icon}</div><div><div class="row-title">${c.name}</div><div class="row-sub">${c.sub}</div></div></div><div class="row-right"><div class="row-amount ${cl}">− ${fmt(c.amount)}</div>${c.detail?`<div class="row-detail">${c.detail}</div>`:''}</div></div>`;
+    h += `<div class="row"><div class="row-left"><div class="icon" style="background:${c.bg}">${c.icon}</div><div><div class="row-title">${c.name}</div><div class="row-sub">${c.sub}</div></div></div><div class="row-right"><div class="row-amount ${cl}">− ${fmt(Math.abs(c.amount))}</div>${c.detail?`<div class="row-detail">${c.detail}</div>`:''}</div></div>`;
   });
 
   document.getElementById('content').innerHTML = h;
 }
 
-renderNav();
-render();
+async function loadData() {
+  const dot = document.getElementById('dot');
+  const syncText = document.getElementById('sync-text');
+  dot.className = 'dot loading';
+  syncText.textContent = 'Загрузка...';
+
+  try {
+    const resp = await fetch(CSV_URL);
+    if (!resp.ok) throw new Error('HTTP '+resp.status);
+    const text = await resp.text();
+    const rows = parseCSV(text);
+    allData = parseSheetData(rows);
+    if (!allData.length) throw new Error('Нет данных');
+
+    cur = allData.length - 1;
+    renderNav();
+    render();
+
+    dot.className = 'dot live';
+    const now = new Date();
+    syncText.textContent = `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+  } catch(e) {
+    dot.className = 'dot error';
+    syncText.textContent = 'Ошибка';
+    document.getElementById('content').innerHTML = `
+      <div class="error-box">
+        <div style="font-weight:600;margin-bottom:6px">Не удалось загрузить данные</div>
+        <div>${e.message}</div>
+        <button class="retry-btn" onclick="loadData()">Попробовать снова</button>
+      </div>`;
+  }
+}
+
+loadData();
+// Автообновление каждые 5 минут
+setInterval(loadData, 5 * 60 * 1000);
 </script>
 </body>
 </html>
