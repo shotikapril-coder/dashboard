@@ -13,64 +13,101 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Golos Text', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-  .app { max-width: 520px; margin: 0 auto; padding: 0 0 4rem; }
 
+  /* ── TOP BAR ── */
   .top-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 1.25rem 0; position: sticky; top: 0; z-index: 10; }
   .top-bar-inner { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
   .logo { font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 600; }
   .logo span { color: var(--accent); }
-  .sync-indicator { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text3); }
+  .sync-indicator { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text3); white-space: nowrap; }
   .dot { width: 7px; height: 7px; border-radius: 50%; background: #ccc; transition: background 0.3s; flex-shrink: 0; }
   .dot.live { background: #639922; }
   .dot.loading { background: var(--amber); animation: pulse 1s infinite; }
   .dot.error { background: var(--red); }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
+  /* ── MONTH NAV ── */
   .month-nav { display: flex; overflow-x: auto; gap: 2px; padding-bottom: 0.75rem; scrollbar-width: none; }
   .month-nav::-webkit-scrollbar { display: none; }
-  .month-tab { flex-shrink: 0; font-family: 'Golos Text', sans-serif; font-size: 13px; font-weight: 500; color: var(--text3); padding: 6px 14px; border-radius: 20px; cursor: pointer; border: none; background: none; transition: all 0.15s; }
+  .month-tab { flex-shrink: 0; font-family: 'Golos Text', sans-serif; font-size: 13px; font-weight: 500; color: var(--text3); padding: 6px 14px; border-radius: 20px; cursor: pointer; border: none; background: none; transition: all 0.15s; white-space: nowrap; }
   .month-tab:hover { color: var(--text2); background: var(--surface2); }
   .month-tab.active { background: var(--text); color: var(--bg); }
 
+  /* ── MOBILE LAYOUT (default) ── */
+  .layout { max-width: 560px; margin: 0 auto; padding: 0 0 4rem; }
   .content { padding: 1.25rem; }
 
-  .hero { background: var(--surface); border-radius: 20px; padding: 1.5rem; margin-bottom: 1rem; border: 1px solid var(--border); }
-  .hero-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; }
-  .hero-month { font-family: 'Unbounded', sans-serif; font-size: 20px; font-weight: 700; line-height: 1.2; }
-  .hero-year { font-family: 'Unbounded', sans-serif; font-size: 13px; color: var(--amber); margin-top: 2px; }
-  .hero-amount { font-family: 'Unbounded', sans-serif; font-size: 22px; font-weight: 700; text-align: right; line-height: 1.2; }
+  /* HERO — fixed so amount never wraps */
+  .hero { background: var(--surface); border-radius: 20px; padding: 1.25rem; margin-bottom: 1rem; border: 1px solid var(--border); }
+  .hero-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 1.25rem; }
+  .hero-left { flex: 0 0 auto; }
+  .hero-right { flex: 0 0 auto; text-align: right; }
+  .hero-month { font-family: 'Unbounded', sans-serif; font-size: 17px; font-weight: 700; line-height: 1.2; white-space: nowrap; }
+  .hero-year { font-family: 'Unbounded', sans-serif; font-size: 12px; color: var(--amber); margin-top: 3px; }
+  .hero-amount { font-family: 'Unbounded', sans-serif; font-size: 17px; font-weight: 700; line-height: 1.2; white-space: nowrap; }
   .hero-amount.pos { color: var(--green); } .hero-amount.neg { color: var(--red); }
-  .hero-amount-label { font-size: 11px; color: var(--text3); text-align: right; margin-top: 3px; }
+  .hero-amount-label { font-size: 11px; color: var(--text3); margin-top: 3px; }
 
   .mini-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .mini-stat { background: var(--surface2); border-radius: 12px; padding: 10px 12px; }
   .mini-stat-label { font-size: 11px; color: var(--text3); margin-bottom: 4px; }
-  .mini-stat-value { font-size: 14px; font-weight: 600; }
+  .mini-stat-value { font-size: 13px; font-weight: 600; white-space: nowrap; }
   .mini-stat-value.pos { color: var(--green); } .mini-stat-value.neg { color: var(--red); }
 
+  /* ROWS */
   .section-title { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin: 1.25rem 0 0.5rem; }
-
-  .row { display: flex; align-items: center; justify-content: space-between; background: var(--surface); border-radius: 14px; padding: 12px 14px; margin-bottom: 6px; border: 1px solid var(--border); transition: border-color 0.15s; }
+  .row { display: flex; align-items: center; justify-content: space-between; background: var(--surface); border-radius: 14px; padding: 12px 14px; margin-bottom: 6px; border: 1px solid var(--border); transition: border-color 0.15s; gap: 8px; }
   .row:hover { border-color: rgba(0,0,0,0.15); }
-  .row-left { display: flex; align-items: center; gap: 12px; }
+  .row-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
   .icon { width: 38px; height: 38px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-  .row-title { font-size: 14px; font-weight: 600; color: var(--text); }
+  .row-title { font-size: 14px; font-weight: 600; color: var(--text); white-space: nowrap; }
   .row-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
-  .row-right { text-align: right; }
-  .row-amount { font-size: 15px; font-weight: 600; }
+  .row-right { text-align: right; flex-shrink: 0; }
+  .row-amount { font-size: 14px; font-weight: 600; white-space: nowrap; }
   .row-amount.pos { color: var(--green); } .row-amount.neg { color: var(--red); } .row-amount.neg-blue { color: var(--blue); }
   .row-detail { font-size: 11px; color: var(--text3); margin-top: 2px; }
 
+  /* ERROR / SKELETON */
   .error-box { background: #FCEBEB; border: 1px solid rgba(163,45,45,0.2); border-radius: 14px; padding: 1.25rem; text-align: center; color: var(--red); font-size: 13px; line-height: 1.6; }
   .retry-btn { margin-top: 0.75rem; background: var(--text); color: var(--bg); border: none; border-radius: 10px; padding: 8px 18px; font-family: 'Golos Text', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; }
-
   .skeleton { background: linear-gradient(90deg, var(--surface2) 25%, var(--border) 50%, var(--surface2) 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite; border-radius: 8px; }
   .skeleton-row { height: 64px; border-radius: 14px; margin-bottom: 6px; border: 1px solid var(--border); background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite; }
   @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+  /* ── DESKTOP LAYOUT ── */
+  @media (min-width: 900px) {
+    .layout { max-width: 1100px; display: grid; grid-template-columns: 300px 1fr; grid-template-rows: auto 1fr; align-items: start; }
+
+    /* Top bar spans full width */
+    .top-bar { grid-column: 1 / -1; position: sticky; top: 0; }
+
+    /* Left sidebar: hero + mini stats */
+    .sidebar {
+      grid-column: 1;
+      padding: 1.5rem 1rem 1.5rem 1.5rem;
+      position: sticky;
+      top: 72px; /* height of top-bar */
+      max-height: calc(100vh - 72px);
+      overflow-y: auto;
+    }
+
+    /* Main content: rows */
+    .content { grid-column: 2; padding: 1.5rem 1.5rem 1.5rem 1rem; }
+
+    /* Hero bigger on desktop */
+    .hero { margin-bottom: 1rem; }
+    .hero-month { font-size: 24px; }
+    .hero-amount { font-size: 22px; }
+    .mini-stat-value { font-size: 15px; }
+
+    /* Rows slightly larger */
+    .row-title { font-size: 15px; }
+    .row-amount { font-size: 15px; }
+  }
 </style>
 </head>
 <body>
-<div class="app">
+<div class="layout">
   <div class="top-bar">
     <div class="top-bar-inner">
       <div class="logo">Нобед <span>Букинг</span></div>
@@ -81,23 +118,29 @@
     </div>
     <div class="month-nav" id="month-nav"></div>
   </div>
-  <div class="content" id="content">
-    <div class="hero" style="padding:1.5rem">
-      <div style="display:flex;justify-content:space-between;margin-bottom:1.25rem">
+
+  <!-- Sidebar (desktop) / stacked (mobile) -->
+  <div class="sidebar" id="sidebar">
+    <div class="hero" style="padding:1.25rem">
+      <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:1.25rem">
         <div>
-          <div class="skeleton" style="width:100px;height:22px;margin-bottom:6px"></div>
-          <div class="skeleton" style="width:60px;height:14px"></div>
+          <div class="skeleton" style="width:90px;height:20px;margin-bottom:6px"></div>
+          <div class="skeleton" style="width:55px;height:13px"></div>
         </div>
         <div>
-          <div class="skeleton" style="width:160px;height:24px;margin-bottom:6px"></div>
-          <div class="skeleton" style="width:90px;height:12px;margin-left:auto"></div>
+          <div class="skeleton" style="width:140px;height:20px;margin-bottom:6px"></div>
+          <div class="skeleton" style="width:80px;height:11px;margin-left:auto"></div>
         </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div class="skeleton" style="height:56px;border-radius:12px"></div>
-        <div class="skeleton" style="height:56px;border-radius:12px"></div>
+        <div class="skeleton" style="height:52px;border-radius:12px"></div>
+        <div class="skeleton" style="height:52px;border-radius:12px"></div>
       </div>
     </div>
+  </div>
+
+  <div class="content" id="content">
+    <div class="skeleton-row"></div>
     <div class="skeleton-row"></div>
     <div class="skeleton-row"></div>
     <div class="skeleton-row"></div>
@@ -105,15 +148,7 @@
 </div>
 
 <script>
-// Сводная DBMY — структурированный лист
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQZwm8zj9kaBFZCw7Ite6Xz2ZcBCIp8dC_zwbXTCI65I9EOFGAQAZa8R_6SKRvfEOI6iYukZqfR34vb/pub?gid=678223172&single=true&output=csv';
-
-// Колонки (0-based index):
-// 0=Year, 1=Month, 2=Revenue(All), 3=Revenue(Shows), 4=Revenue(Merch),
-// 5=GROSS Profit, 6=NET Profit,
-// 7=Shows Profit, 8=FIN.OP.Profit, 9=Merch Profit,
-// 10=Costs(All), 11=Costs/Employers, 12=Costs/Office&Ser, 13=Taxes, 14=Dividends,
-// 15=Marge GROSS, 16=Marge NET
 
 const MONTHS_MAP = {
   'Январь':0,'Февраль':1,'Март':2,'Апрель':3,'Май':4,'Июнь':5,
@@ -128,7 +163,6 @@ function fmt(n) {
 
 function parseNum(s) {
   if (!s) return 0;
-  // Handle Russian number format: spaces as thousands sep, comma as decimal
   const clean = s.replace(/\s/g,'').replace(/[^\d,.\-]/g,'').replace(',','.');
   return parseFloat(clean) || 0;
 }
@@ -151,42 +185,34 @@ function parseSheetData(rows) {
   for (const r of rows) {
     const year = (r[0]||'').trim();
     const month = (r[1]||'').trim();
-
-    // Skip header rows and empty rows
     if (!year || !month || !(month in MONTHS_MAP) || isNaN(parseInt(year))) continue;
 
     const netProfit   = parseNum(r[6]);
     const revenueAll  = parseNum(r[2]);
     const costsAll    = parseNum(r[10]);
-
     const showsProfit = parseNum(r[7]);
     const finProfit   = parseNum(r[8]);
     const merchProfit = parseNum(r[9]);
-
     const salaries    = parseNum(r[11]);
     const office      = parseNum(r[12]);
     const taxes       = parseNum(r[13]);
     const dividends   = parseNum(r[14]);
 
-    // Skip months with no data at all
     if (!revenueAll && !netProfit && !costsAll) continue;
 
     months.push({
-      name: month,
-      year,
-      profit: netProfit,
-      incomeTotal: revenueAll,
-      expenseTotal: costsAll,
+      name: month, year,
+      profit: netProfit, incomeTotal: revenueAll, expenseTotal: costsAll,
       income: [
-        { icon:'🎭', name:'Концерты',      sub:'Прибыль по мероприятиям',   amount: showsProfit, bg:'#EAF3DE' },
-        { icon:'🏛️', name:'Фин.Операции', sub:'Управление финансами',       amount: finProfit,   bg:'#E6F1FB' },
-        { icon:'🛒', name:'Магазины',      sub:'Прибыль по мерчендайзингу', amount: merchProfit, bg:'#FAEEDA' },
+        { icon:'🎭', name:'Концерты',      sub:'Прибыль по мероприятиям',    amount: showsProfit, bg:'#EAF3DE' },
+        { icon:'🏛️', name:'Фин.Операции', sub:'Управление финансами',        amount: finProfit,   bg:'#E6F1FB' },
+        { icon:'🛒', name:'Магазины',      sub:'Прибыль по мерчендайзингу',  amount: merchProfit, bg:'#FAEEDA' },
       ].filter(c => c.amount !== 0),
       expenses: [
-        { icon:'👔', name:'Зарплаты',   sub:'Фонд оплаты труда',        amount: salaries,  bg:'#F1EFE8', detail: null },
-        { icon:'🏢', name:'Офис и сервисы', sub:'Содержание бизнеса',   amount: office,    bg:'#F1EFE8', detail: null },
-        { icon:'📮', name:'Налоги',     sub:'Вся налоговая нагрузка',   amount: taxes,     bg:'#FCEBEB', detail: null },
-        { icon:'🧳', name:'Дивиденды', sub:'Див. зарплата + инвестиции', amount: dividends, bg:'#E6F1FB', detail: null },
+        { icon:'👔', name:'Зарплаты',        sub:'Фонд оплаты труда',          amount: salaries,  bg:'#F1EFE8' },
+        { icon:'🏢', name:'Офис и сервисы',  sub:'Содержание бизнеса',         amount: office,    bg:'#F1EFE8' },
+        { icon:'📮', name:'Налоги',          sub:'Вся налоговая нагрузка',     amount: taxes,     bg:'#FCEBEB' },
+        { icon:'🧳', name:'Дивиденды',       sub:'Див. зарплата + инвестиции', amount: dividends, bg:'#E6F1FB' },
       ].filter(c => c.amount !== 0),
     });
   }
@@ -197,7 +223,6 @@ function renderNav() {
   document.getElementById('month-nav').innerHTML = allData.map((m,i) =>
     `<button class="month-tab ${i===cur?'active':''}" onclick="sel(${i})">${m.name} ${m.year.slice(-2)}</button>`
   ).join('');
-  // Scroll active tab into view
   setTimeout(() => {
     const active = document.querySelector('.month-tab.active');
     if (active) active.scrollIntoView({inline:'center', behavior:'smooth'});
@@ -206,38 +231,53 @@ function renderNav() {
 
 function sel(i) { cur = i; renderNav(); render(); }
 
-function render() {
-  const m = allData[cur];
+function renderSidebar(m) {
   const pc = m.profit >= 0 ? 'pos' : 'neg';
   const ps = m.profit >= 0 ? '+' : '−';
-
-  let h = `<div class="hero">
-    <div class="hero-top">
-      <div><div class="hero-month">${m.name}</div><div class="hero-year">${m.year}</div></div>
-      <div>
-        <div class="hero-amount ${pc}">${ps} ${fmt(m.profit)}</div>
-        <div class="hero-amount-label">чистая прибыль</div>
+  document.getElementById('sidebar').innerHTML = `
+    <div class="hero">
+      <div class="hero-top">
+        <div class="hero-left">
+          <div class="hero-month">${m.name}</div>
+          <div class="hero-year">${m.year}</div>
+        </div>
+        <div class="hero-right">
+          <div class="hero-amount ${pc}">${ps} ${fmt(m.profit)}</div>
+          <div class="hero-amount-label">чистая прибыль</div>
+        </div>
       </div>
-    </div>
-    <div class="mini-stats">
-      <div class="mini-stat"><div class="mini-stat-label">Доходы</div><div class="mini-stat-value pos">+ ${fmt(m.incomeTotal)}</div></div>
-      <div class="mini-stat"><div class="mini-stat-label">Расходы</div><div class="mini-stat-value neg">− ${fmt(m.expenseTotal)}</div></div>
-    </div>
-  </div><div class="section-title">Доходы</div>`;
+      <div class="mini-stats">
+        <div class="mini-stat">
+          <div class="mini-stat-label">Доходы</div>
+          <div class="mini-stat-value pos">+ ${fmt(m.incomeTotal)}</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-label">Расходы</div>
+          <div class="mini-stat-value neg">− ${fmt(m.expenseTotal)}</div>
+        </div>
+      </div>
+    </div>`;
+}
 
+function renderRows(m) {
+  let h = `<div class="section-title">Доходы</div>`;
   m.income.forEach(c => {
     const sign = c.amount >= 0 ? '+' : '−';
     const cl = c.amount >= 0 ? 'pos' : 'neg';
     h += `<div class="row"><div class="row-left"><div class="icon" style="background:${c.bg}">${c.icon}</div><div><div class="row-title">${c.name}</div><div class="row-sub">${c.sub}</div></div></div><div class="row-right"><div class="row-amount ${cl}">${sign} ${fmt(c.amount)}</div></div></div>`;
   });
-
   h += `<div class="section-title">Расходы</div>`;
   m.expenses.forEach(c => {
     const cl = c.name === 'Дивиденды' ? 'neg-blue' : 'neg';
-    h += `<div class="row"><div class="row-left"><div class="icon" style="background:${c.bg}">${c.icon}</div><div><div class="row-title">${c.name}</div><div class="row-sub">${c.sub}</div></div></div><div class="row-right"><div class="row-amount ${cl}">− ${fmt(Math.abs(c.amount))}</div>${c.detail?`<div class="row-detail">${c.detail}</div>`:''}</div></div>`;
+    h += `<div class="row"><div class="row-left"><div class="icon" style="background:${c.bg}">${c.icon}</div><div><div class="row-title">${c.name}</div><div class="row-sub">${c.sub}</div></div></div><div class="row-right"><div class="row-amount ${cl}">− ${fmt(Math.abs(c.amount))}</div></div></div>`;
   });
-
   document.getElementById('content').innerHTML = h;
+}
+
+function render() {
+  const m = allData[cur];
+  renderSidebar(m);
+  renderRows(m);
 }
 
 async function loadData() {
@@ -245,13 +285,11 @@ async function loadData() {
   const syncText = document.getElementById('sync-text');
   dot.className = 'dot loading';
   syncText.textContent = 'Загрузка...';
-
   try {
     const resp = await fetch(CSV_URL);
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
     const text = await resp.text();
-    const rows = parseCSV(text);
-    allData = parseSheetData(rows);
+    allData = parseSheetData(parseCSV(text));
     if (!allData.length) throw new Error('Нет данных');
 
     cur = allData.length - 1;
