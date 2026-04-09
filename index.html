@@ -97,13 +97,16 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 .rpt-bar{
   display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
   padding:.75rem 1rem;background:var(--surf);border-bottom:1px solid var(--brd);
-  position:sticky;top:var(--tbh);z-index:50;
+  position:sticky;top:0;z-index:50;margin-top:0;
 }
+/* mobile rpt-bar needs topbar offset since it's inside non-scroll .page */
+.m-report .rpt-bar{top:var(--tbh);}
 .ptabs{display:flex;gap:2px;background:var(--surf2);border-radius:8px;padding:2px;}
 .ptab{font-family:'Golos Text',sans-serif;font-size:12px;font-weight:500;color:var(--t3);padding:5px 14px;border-radius:6px;cursor:pointer;border:none;background:none;transition:all .15s;white-space:nowrap;}
 .ptab.on{background:var(--surf);color:var(--t1);box-shadow:0 1px 3px rgba(0,0,0,.08);}
 
-.chart-section{padding:.875rem 1rem .75rem;background:var(--surf);border-bottom:1px solid var(--brd);}
+.chart-section{padding:.875rem 1rem .75rem;background:var(--surf);border-bottom:none;
+  margin:1rem 1rem 0;border-radius:16px;border:1px solid var(--brd);}
 .chart-toggles{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.75rem;}
 .ctog{font-family:'Golos Text',sans-serif;font-size:11px;font-weight:500;padding:4px 10px;border-radius:12px;cursor:pointer;border:1.5px solid var(--brd);background:var(--surf);color:var(--t3);transition:all .15s;display:flex;align-items:center;gap:5px;}
 .ctog .cdot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
@@ -146,7 +149,8 @@ table.fin tr.r-sec td{
 table.fin tr.r-main td{border-bottom:1px solid var(--brd);}
 table.fin tr.r-main:last-child td{border-bottom:none;}
 /* Sub rows */
-table.fin tr.r-sub td{border-bottom:1px solid var(--brd);}
+table.fin tr.r-sub td{border-bottom:1px solid var(--brd);background:#fff!important;}
+table.fin tr.r-sub td.sticky{background:#fff!important;}
 
 .vn{font-size:12px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums;}
 .vs{font-size:11px;font-weight:500;white-space:nowrap;font-variant-numeric:tabular-nums;}
@@ -179,7 +183,7 @@ table.fin tr.r-top:hover td{filter:brightness(.97);}
 
 /* FIX 3: left sidebar text — flush left like headers, no extra indent */
 .cn{padding:8px 14px 6px;font-size:12px;font-weight:700;color:var(--t1);white-space:nowrap;min-height:44px;display:flex;flex-direction:column;justify-content:center;}
-.csn{padding:6px 14px 5px 14px;font-size:11px;font-weight:400;color:var(--t2);white-space:nowrap;min-height:34px;display:flex;flex-direction:column;justify-content:center;}
+.csn{padding:6px 14px 5px 14px;font-size:11px;font-weight:400;color:#444;white-space:nowrap;min-height:34px;display:flex;flex-direction:column;justify-content:center;}
 
 /* Row bands — explicit bg on sticky for correct scroll */
 .band-rev{background:#EDF5FF;}
@@ -188,6 +192,9 @@ table.fin tr.r-top:hover td{filter:brightness(.97);}
 .band-div{background:#F0F4FF;}
 .band-gross{background:#F0FFF4;}
 .band-net{background:#F5FFF5;}
+/* Sub rows always white bg */
+tr.r-sub .band-rev,tr.r-sub .band-costs,tr.r-sub .band-tax,
+tr.r-sub .band-div,tr.r-sub .band-gross,tr.r-sub .band-net{background:#fff!important;}
 
 /* Section header darker shade */
 .sec-rev{background:#D8EDFF;color:#1A4A8A;font-weight:700;}
@@ -354,25 +361,30 @@ function closeDrawer(){$('dr').classList.remove('on');$('ov').classList.remove('
 /* OPIU */
 function heroMobileH(m){
   const pc=m.profit>=0?'pos':'neg',ps=m.profit>=0?'+':'−';
+  // FIX 1: income = shows+fin+merch, expenses = sal+off+tax (div excluded from expenses block)
+  const incSum=m.shows+m.fin+m.merch;
+  const expSum=m.sal+m.off+m.tax;
   return`<div class="hero"><div class="hm-top">
-    <div><div class="hm-month">${m.name}</div><div class="hm-year">${m.year}</div></div>
+    <div><div class="hm-month">${m.name}</div><div class="hm-year" style="font-weight:700">${m.year}</div></div>
     <div style="text-align:right"><div class="hm-amt ${pc}">${ps} ${fmt(m.profit)}</div><div class="hm-lbl">чистая прибыль</div></div>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-    <div class="ms"><div class="ms-l">Доходы</div><div class="ms-v pos">+ ${fmt(m.rev)}</div></div>
-    <div class="ms"><div class="ms-l">Расходы</div><div class="ms-v neg">− ${fmt(m.costs)}</div></div>
+    <div class="ms"><div class="ms-l">Доходы</div><div class="ms-v pos">+ ${fmt(incSum)}</div></div>
+    <div class="ms"><div class="ms-l">Расходы</div><div class="ms-v neg">− ${fmt(expSum)}</div></div>
   </div></div>`;
 }
 function heroDeskH(m){
   const pc=m.profit>=0?'pos':'neg',ps=m.profit>=0?'+':'−';
+  const incSum=m.shows+m.fin+m.merch;
+  const expSum=m.sal+m.off+m.tax;
   return`<div class="hero">
     <div class="hd-top"><div class="hd-month">${m.name}</div><div class="hd-year">${m.year}</div></div>
     <div class="hd-profit-lbl">Чистая прибыль</div>
     <div class="hd-amt ${pc}">${ps} ${fmt(m.profit)}</div>
     <div class="hd-hr"></div>
     <div class="hd-sub">
-      <div class="ms"><div class="ms-l">Доходы</div><div class="ms-v pos">+ ${fmt(m.rev)}</div></div>
-      <div class="ms"><div class="ms-l">Расходы</div><div class="ms-v neg">− ${fmt(m.costs)}</div></div>
+      <div class="ms"><div class="ms-l">Доходы</div><div class="ms-v pos">+ ${fmt(incSum)}</div></div>
+      <div class="ms"><div class="ms-l">Расходы</div><div class="ms-v neg">− ${fmt(expSum)}</div></div>
     </div>
   </div>`;
 }
@@ -461,7 +473,12 @@ function buildChart(periods,allStats){
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${fmtM(c.raw)}`}}},
       scales:{x:{grid:{display:false},ticks:{font:{size:10},color:'#9E9D97',maxRotation:45}},
-        y:{grid:{color:'rgba(0,0,0,.04)'},ticks:{font:{size:10},color:'#9E9D97',callback:v=>fmtM(v)}}}}
+        y:{grid:{color:'rgba(0,0,0,.04)'},ticks:{font:{size:10},color:'#9E9D97',callback:v=>{
+              const a=Math.abs(v);
+              if(a>=1e6)return(v/1e6).toLocaleString('ru-RU',{maximumFractionDigits:0})+' М';
+              if(a>=1e3)return(v/1e3).toLocaleString('ru-RU',{maximumFractionDigits:0})+' К';
+              return v.toLocaleString('ru-RU',{maximumFractionDigits:0});
+            }}}}}
   });
 }
 function toggleChart(key){
