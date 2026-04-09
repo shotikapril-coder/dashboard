@@ -134,7 +134,8 @@ table.fin thead th{
   padding:9px 14px;text-align:right;white-space:nowrap;
   background:#fff;border-bottom:2px solid var(--brd2);
 }
-table.fin thead th.sticky{text-align:left;min-width:155px;background:#fff;}
+table.fin thead th.sticky{text-align:left;min-width:155px;width:155px;background:#fff;}
+table.fin td.sticky{min-width:155px;width:155px;}
 
 /* Section header rows — colored label, NO value cells */
 table.fin tr.r-sec td{
@@ -476,25 +477,33 @@ function buildTable(periods,allStats){
     rows.push(`<tr class="r-sub"><td class="sticky ${band}"><div class="csn">${label}</div></td>${periods.map((_,i)=>vs_(i,key,cls,inv,fn,band)).join('')}</tr>`);
   }
 
+  // Выручка — main row = rev (C), subs = shows(D), merch(E), fin(H)
   secRow('Выручка','sec-rev','band-rev');
-  mainRow('Мероприятия','shows',ncl,false,fmtM,'band-rev');
+  mainRow('Выручка (всего)','rev',ncl,false,fmtM,'band-rev');
+  subRow('• Мероприятия','shows',mcl,false,fmtM,'band-rev');
   subRow('• Мерчендайзинг','merch',mcl,false,fmtM,'band-rev');
   subRow('• Фин. операции','fin',mcl,false,fmtM,'band-rev');
+  // Расходы — main row = costs (K), subs = sal(L), off(M)
   secRow('Расходы','sec-costs','band-costs');
-  mainRow('Сотрудники','sal',ngcl,true,fmtM,'band-costs');
+  mainRow('Расходы (всего)','costs',ngcl,true,fmtM,'band-costs');
+  subRow('• Сотрудники','sal',ngcl,true,fmtM,'band-costs');
   subRow('• Офис и сервисы','off',ngcl,true,fmtM,'band-costs');
+  // Налоги — секция = данные (N), без дублирования
   secRow('Налоги','sec-tax','band-tax');
-  mainRow('Налоги','tax',ngcl,true,fmtM,'band-tax');
+  mainRow('Налоги (всего)','tax',ngcl,true,fmtM,'band-tax');
+  // Дивиденды — секция = данные (O), без дублирования
   secRow('Дивиденды','sec-div','band-div');
-  mainRow('Дивиденды','div',ngcl,true,fmtM,'band-div');
+  mainRow('Дивиденды (всего)','div',ngcl,true,fmtM,'band-div');
+  // Общ. прибыль — main row = gross (F), маржа и разбивка
   secRow('Общ. прибыль','sec-gross','band-gross');
-  mainRow('Общ. прибыль','gross',gcl,false,fmtM,'band-gross');
+  mainRow('Общ. прибыль (всего)','gross',gcl,false,fmtM,'band-gross');
   subRow('• Общ. маржа %','gm',gcl,false,pf,'band-gross');
   subRow('• Мероприятия','shows',mcl,false,fmtM,'band-gross');
   subRow('• Мерчендайзинг','merch',mcl,false,fmtM,'band-gross');
   subRow('• Фин. операции','fin',mcl,false,fmtM,'band-gross');
+  // Чистая прибыль — main row = profit (G), маржа
   secRow('Чистая прибыль','sec-net','band-net');
-  mainRow('Чистая прибыль','profit',gcl,false,fmtM,'band-net');
+  mainRow('Чистая прибыль (всего)','profit',gcl,false,fmtM,'band-net');
   subRow('• Чист. маржа %','nm',gcl,false,pf,'band-net');
 
   return`<div class="fin-outer"><div class="fin-scroll"><table class="fin">
