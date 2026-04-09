@@ -38,8 +38,6 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 .mnav.hide{display:none;}
 .mtab{flex-shrink:0;font-family:'Golos Text',sans-serif;font-size:13px;font-weight:500;color:var(--t3);padding:5px 13px;border-radius:20px;cursor:pointer;border:none;background:none;white-space:nowrap;transition:all .15s;}
 .mtab:hover{color:var(--t2);background:var(--surf2);}.mtab.on{background:var(--t1);color:var(--bg);}
-
-/* ─── BURGER ─── */
 .burger{background:none;border:none;cursor:pointer;padding:4px;display:flex;flex-direction:column;gap:5px;flex-shrink:0;}
 .burger i{display:block;width:20px;height:2px;background:var(--t1);border-radius:2px;transition:all .2s;}
 .burger.open i:nth-child(1){transform:translateY(7px) rotate(45deg);}
@@ -55,17 +53,14 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 .dr-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;cursor:pointer;border:none;background:none;width:100%;text-align:left;font-family:'Golos Text',sans-serif;font-size:14px;color:var(--t2);transition:all .15s;}
 .dr-item:hover{background:var(--surf2);color:var(--t1);}
 .dr-item.on{background:var(--surf2);color:var(--t1);font-weight:600;}
-/* SVG icons in drawer */
 .dr-icon{width:20px;height:20px;flex-shrink:0;opacity:.6;}
 .dr-item.on .dr-icon{opacity:1;}
 
-/* ─── PAGE ─── */
+/* ─── OPIU ─── */
 .page{padding-top:var(--tbh);}
-
-/* ─── HERO (mobile & desktop left) ─── */
 .hero{background:var(--surf);border-radius:20px;padding:1.25rem;border:1px solid var(--brd);}
 
-/* Mobile hero layout */
+/* Mobile hero */
 .hero-mobile .h-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:1.25rem;}
 .hero-mobile .h-month{font-family:'Unbounded',sans-serif;font-size:18px;font-weight:700;line-height:1.2;white-space:nowrap;}
 .hero-mobile .h-year{font-family:'Unbounded',sans-serif;font-size:12px;color:var(--amber);margin-top:3px;}
@@ -73,22 +68,21 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 .hero-mobile .h-amt.pos{color:var(--green);}.hero-mobile .h-amt.neg{color:var(--red);}
 .hero-mobile .h-lbl{font-size:11px;color:var(--t3);margin-top:3px;text-align:right;}
 
-/* Desktop hero layout — stacked */
+/* Desktop hero — stacked */
 .hero-desk .h-period{display:flex;align-items:baseline;gap:8px;margin-bottom:.25rem;}
 .hero-desk .h-month{font-family:'Unbounded',sans-serif;font-size:22px;font-weight:700;line-height:1.2;}
 .hero-desk .h-year{font-family:'Unbounded',sans-serif;font-size:14px;color:var(--amber);font-weight:400;}
 .hero-desk .h-profit-label{font-size:11px;color:var(--t3);margin-bottom:.25rem;margin-top:1rem;}
 .hero-desk .h-amt{font-family:'Unbounded',sans-serif;font-size:26px;font-weight:700;line-height:1.1;white-space:nowrap;}
 .hero-desk .h-amt.pos{color:var(--green);}.hero-desk .h-amt.neg{color:var(--red);}
-.hero-desk .h-divider{border:none;border-top:1px solid var(--brd);margin:1rem 0;}
+.hero-desk hr{border:none;border-top:1px solid var(--brd);margin:1rem 0;}
 .hero-desk .h-sub{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-
 .ms{background:var(--surf2);border-radius:12px;padding:10px 12px;}
 .ms-l{font-size:11px;color:var(--t3);margin-bottom:4px;}
 .ms-v{font-size:13px;font-weight:600;white-space:nowrap;}
 .ms-v.pos{color:var(--green);}.ms-v.neg{color:var(--red);}
 
-/* ─── ROWS ─── */
+/* Rows */
 .stitle{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin:1.25rem 0 .5rem;}
 .row{display:flex;align-items:center;justify-content:space-between;background:var(--surf);border-radius:14px;padding:12px 14px;margin-bottom:6px;border:1px solid var(--brd);gap:8px;transition:border-color .15s;}
 .row:hover{border-color:var(--brd2);}
@@ -101,6 +95,7 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 .ra.pos{color:var(--green);}.ra.neg{color:var(--red);}.ra.blue{color:var(--blue);}
 
 /* ─── REPORT ─── */
+/* Sticky top bar */
 .rpt-bar{
   display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
   padding:.75rem 1rem;background:var(--surf);border-bottom:1px solid var(--brd);
@@ -111,77 +106,134 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 .ptab{font-family:'Golos Text',sans-serif;font-size:12px;font-weight:500;color:var(--t3);padding:5px 14px;border-radius:6px;cursor:pointer;border:none;background:none;transition:all .15s;white-space:nowrap;}
 .ptab.on{background:var(--surf);color:var(--t1);box-shadow:0 1px 3px rgba(0,0,0,.08);}
 
-/* Chart section */
-.chart-section{padding:1rem;background:var(--surf);border-bottom:1px solid var(--brd);}
+/* Chart */
+.chart-section{padding:1rem 1rem .75rem;background:var(--surf);border-bottom:1px solid var(--brd);}
 .chart-toggles{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.75rem;}
-.ctog{font-family:'Golos Text',sans-serif;font-size:11px;font-weight:500;padding:4px 10px;border-radius:12px;cursor:pointer;border:1.5px solid transparent;background:var(--surf2);color:var(--t3);transition:all .15s;display:flex;align-items:center;gap:5px;}
+.ctog{font-family:'Golos Text',sans-serif;font-size:11px;font-weight:500;padding:4px 10px;border-radius:12px;cursor:pointer;border:1.5px solid var(--brd);background:var(--surf);color:var(--t3);transition:all .15s;display:flex;align-items:center;gap:5px;}
 .ctog .cdot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
-.ctog.on{border-color:currentColor;background:var(--surf);}
-.ctog.on.c-blue{color:#185FA5;background:var(--blue-bg);}
-.ctog.on.c-green{color:#3B6D11;background:var(--green-bg);}
-.ctog.on.c-red{color:#A32D2D;background:var(--red-bg);}
-.ctog.on.c-amber{color:#BA7517;background:var(--amber-bg);}
-.ctog.on.c-purple{color:#534AB7;background:#EEEDFE;}
-.chart-wrap{position:relative;height:180px;}
+.ctog.on{color:var(--t1);border-color:var(--brd2);background:var(--surf2);}
+.chart-c{position:relative;height:180px;}
 
-/* Table */
-.fin-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-table.fin{width:100%;border-collapse:collapse;background:var(--surf);}
-table.fin thead th{
-  font-size:11px;font-weight:600;color:var(--t3);text-align:right;
-  padding:8px 14px 7px;border-bottom:1px solid var(--brd2);
-  white-space:nowrap;background:var(--surf);
+/* ─── THE FINANCIAL TABLE ─── */
+/* 
+  Layout: fixed left column (metric names) + scrollable right columns (periods)
+  We use a two-div approach: left sticky sidebar + right scrollable area, 
+  both sharing the same row heights via JS sync.
+*/
+.fin-outer{
+  border-radius:16px;border:1px solid var(--brd);
+  overflow:hidden;margin:1rem;background:var(--surf);
 }
-table.fin thead th.nc-h{text-align:left;min-width:160px;}
-table.fin tbody tr{border-bottom:1px solid var(--brd);}
-table.fin tbody tr:last-child{border-bottom:none;}
-table.fin tbody tr.sec-h{background:var(--surf2);}
-table.fin tbody tr:not(.sec-h):hover{background:rgba(0,0,0,.013);}
-table.fin td{padding:0;vertical-align:top;}
-.nc{padding:9px 14px;font-size:12px;font-weight:600;color:var(--t1);white-space:nowrap;}
-.nc.sub{font-weight:400;color:var(--t2);padding-left:26px;font-size:12px;}
-.nc.hd{font-size:12px;font-weight:700;}
-.vc{padding:7px 14px 6px;text-align:right;min-width:100px;}
-.vnum{font-size:12px;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums;}
-.vnum.pos{color:var(--green);}.vnum.neg{color:var(--red);}.vnum.neu{color:var(--t1);}.vnum.mut{color:var(--t2);}
-.vyoy{font-size:10px;margin-top:2px;white-space:nowrap;font-style:italic;}
-.vyoy.up{color:var(--green);}.vyoy.dn{color:var(--red);}
+.fin-layout{
+  display:flex;
+  overflow:hidden;
+}
+.fin-left{
+  flex-shrink:0;
+  width:160px;
+  overflow:hidden;
+  z-index:2;
+  border-right:2px solid var(--brd2);
+  background:var(--surf);
+}
+.fin-right{
+  flex:1;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.fin-right::-webkit-scrollbar{height:4px;}
+.fin-right::-webkit-scrollbar-track{background:transparent;}
+.fin-right::-webkit-scrollbar-thumb{background:var(--brd2);border-radius:2px;}
 
-/* wrap table in card */
-.fin-card{border-radius:16px;overflow:hidden;border:1px solid var(--brd);margin:1rem;}
+/* Tables — left and right must have matching row heights */
+table.ftbl{border-collapse:collapse;width:100%;}
+table.ftbl td,table.ftbl th{padding:0;margin:0;}
 
-/* ─── SKELETON ─── */
+/* Header row */
+.fth{height:36px;background:var(--surf);border-bottom:1px solid var(--brd2);}
+.fth-name{padding:0 12px;font-size:11px;font-weight:600;color:var(--t3);text-align:left;white-space:nowrap;}
+.fth-yr{padding:0 14px;font-size:11px;font-weight:600;color:var(--t3);text-align:right;white-space:nowrap;min-width:90px;}
+
+/* Section header rows */
+.ftr-sec{background:var(--surf2);}
+.ftd-sec-name{
+  padding:8px 12px 6px;
+  font-size:12px;font-weight:700;color:var(--t1);
+  white-space:nowrap;
+}
+.ftd-sec-val{background:var(--surf2);padding:8px 14px 6px;text-align:right;}
+
+/* Main metric rows (bold, colored) */
+.ftr-main{}
+.ftr-main:hover td,.ftr-main:hover th{background:rgba(0,0,0,.015);}
+.ftd-name{
+  padding:9px 12px 4px;
+  font-size:12px;font-weight:700;color:var(--t1);
+  white-space:nowrap;border-bottom:1px solid var(--brd);
+}
+.ftd-val{
+  padding:7px 14px 3px;
+  text-align:right;
+  border-bottom:1px solid var(--brd);
+  min-width:90px;
+}
+.ftd-val .v{font-size:12px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums;}
+.ftd-val .yoy{font-size:10px;margin-top:1px;white-space:nowrap;font-style:italic;}
+.v.pos{color:var(--green);}.v.neg{color:var(--red);}.v.neu{color:var(--t1);}.v.mut{color:var(--t2);}
+.yoy.up{color:var(--green);}.yoy.dn{color:var(--red);}
+
+/* Sub rows */
+.ftr-sub{}
+.ftr-sub:hover td,.ftr-sub:hover th{background:rgba(0,0,0,.012);}
+.ftd-sub-name{
+  padding:7px 12px 4px 22px;
+  font-size:11px;font-weight:400;color:var(--t2);
+  white-space:nowrap;border-bottom:1px solid var(--brd);
+}
+.ftd-sub-val{
+  padding:6px 14px 3px;
+  text-align:right;
+  border-bottom:1px solid var(--brd);
+  min-width:90px;
+}
+.ftd-sub-val .v{font-size:11px;font-weight:500;white-space:nowrap;font-variant-numeric:tabular-nums;}
+.ftd-sub-val .yoy{font-size:10px;margin-top:1px;white-space:nowrap;font-style:italic;}
+
+/* Row color coding matching reference */
+.rev-main  .ftd-name,.rev-main  .ftd-val{background:#EDF5FF;}
+.costs-main .ftd-name,.costs-main .ftd-val{background:#FFF3F3;}
+.tax-main  .ftd-name,.ftd-tax  {background:#FFFAF0;}
+.div-main  .ftd-name,.ftd-div  {background:#F0F4FF;}
+.gross-main .ftd-name,.gross-main .ftd-val{background:#F0FFF4;}
+.net-main  .ftd-name,.net-main  .ftd-val{background:#F5FFF5;}
+
+/* ─── SKELETON / ERROR ─── */
 .skrow{height:64px;border-radius:14px;margin-bottom:6px;border:1px solid var(--brd);background:linear-gradient(90deg,var(--surf) 25%,var(--surf2) 50%,var(--surf) 75%);background-size:200% 100%;animation:sh 1.2s infinite;}
 @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .errbox{background:var(--red-bg);border:1px solid rgba(163,45,45,.2);border-radius:14px;padding:1.25rem;text-align:center;color:var(--red);font-size:13px;line-height:1.6;margin:1rem;}
 .retry{margin-top:.75rem;background:var(--t1);color:var(--bg);border:none;border-radius:10px;padding:8px 18px;font-family:'Golos Text',sans-serif;font-size:13px;cursor:pointer;}
 
-/* ─── MOBILE LAYOUT ─── */
+/* ─── LAYOUT ─── */
 .m-opiu{padding:.875rem .875rem 3rem;}
 .m-report{padding-bottom:3rem;}
 .m-opiu.hide,.m-report.hide{display:none;}
 .desk-opiu,.desk-report{display:none;}
 
-/* ─── DESKTOP LAYOUT ─── */
 @media(min-width:900px){
   .m-opiu,.m-report{display:none!important;}
   .desk-opiu,.desk-report{display:flex;}
-
   .desk-opiu{position:fixed;top:var(--tbh);left:0;right:0;bottom:0;overflow:hidden;}
   .d-left{width:380px;flex-shrink:0;padding:1.5rem 1.25rem;overflow-y:auto;height:100%;border-right:1px solid var(--brd);}
   .d-right{flex:1;padding:1.5rem 1.5rem 1.5rem 2rem;overflow-y:auto;height:100%;max-width:680px;}
-
   .desk-report{position:fixed;top:var(--tbh);left:0;right:0;bottom:0;overflow-y:auto;flex-direction:column;}
   .desk-report .rpt-inner{width:100%;}
-
-  /* bigger desktop rows */
   .rn{font-size:15px;}.ra{font-size:16px;}
   .ic{width:42px;height:42px;font-size:20px;border-radius:13px;}
   .row{padding:14px 18px;border-radius:16px;}
   .stitle{font-size:12px;margin:1.5rem 0 .75rem;}
-  .chart-wrap{height:200px;}
-  .nc,.nc.sub{font-size:13px;}
-  .vnum{font-size:13px;}.vc{min-width:110px;padding:8px 16px 7px;}
+  .chart-c{height:200px;}
+  .fin-left{width:180px;}
+  .fth-yr,.ftd-val,.ftd-sub-val{min-width:110px;}
 }
 .desk-opiu.hide,.desk-report.hide{display:none!important;}
 </style>
@@ -202,46 +254,32 @@ table.fin td{padding:0;vertical-align:top;}
 
 <div class="ov" id="ov" onclick="closeDrawer()"></div>
 <div class="dr" id="dr">
-  <div style="font-family:'Unbounded',sans-serif;font-size:12px;font-weight:600;color:var(--t1);">Нобед <span style="color:var(--accent)">Букинг</span></div>
+  <div style="font-family:'Unbounded',sans-serif;font-size:12px;font-weight:600;">Нобед <span style="color:var(--accent)">Букинг</span></div>
   <div class="dr-ttl">Меню</div>
-
-  <!-- ОПиУ icon: bar chart minimal -->
   <button class="dr-item on" id="di-opiu" onclick="setSec('opiu');closeDrawer()">
     <svg class="dr-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="2" y="10" width="3" height="8" rx="1"/>
-      <rect x="8.5" y="5" width="3" height="13" rx="1"/>
-      <rect x="15" y="2" width="3" height="16" rx="1"/>
+      <rect x="2" y="10" width="3" height="8" rx="1"/><rect x="8.5" y="5" width="3" height="13" rx="1"/><rect x="15" y="2" width="3" height="16" rx="1"/>
     </svg>
     ОПиУ
   </button>
-
-  <!-- Отчётность icon: document with lines -->
   <button class="dr-item" id="di-rpt" onclick="setSec('report');closeDrawer()">
     <svg class="dr-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="3" y="2" width="14" height="16" rx="2"/>
-      <line x1="6.5" y1="6.5" x2="13.5" y2="6.5"/>
-      <line x1="6.5" y1="10" x2="13.5" y2="10"/>
-      <line x1="6.5" y1="13.5" x2="10.5" y2="13.5"/>
+      <rect x="3" y="2" width="14" height="16" rx="2"/><line x1="6.5" y1="6.5" x2="13.5" y2="6.5"/><line x1="6.5" y1="10" x2="13.5" y2="10"/><line x1="6.5" y1="13.5" x2="10.5" y2="13.5"/>
     </svg>
     Отчётность
   </button>
 </div>
 
 <div class="page">
-  <!-- MOBILE ОПиУ -->
   <div class="m-opiu" id="m-opiu">
     <div id="m-hero"></div>
     <div id="m-rows"><div class="skrow"></div><div class="skrow"></div><div class="skrow"></div></div>
   </div>
-  <!-- MOBILE Report -->
   <div class="m-report hide" id="m-report"><div id="m-rpt"></div></div>
-
-  <!-- DESKTOP ОПиУ -->
   <div class="desk-opiu" id="d-opiu">
     <div class="d-left" id="d-left"></div>
     <div class="d-right" id="d-right"></div>
   </div>
-  <!-- DESKTOP Report -->
   <div class="desk-report hide" id="d-report">
     <div class="rpt-inner" id="d-rpt"></div>
   </div>
@@ -251,11 +289,8 @@ table.fin td{padding:0;vertical-align:top;}
 const CSV='https://docs.google.com/spreadsheets/d/e/2PACX-1vQZwm8zj9kaBFZCw7Ite6Xz2ZcBCIp8dC_zwbXTCI65I9EOFGAQAZa8R_6SKRvfEOI6iYukZqfR34vb/pub?gid=678223172&single=true&output=csv';
 const MO={'Январь':0,'Февраль':1,'Март':2,'Апрель':3,'Май':4,'Июнь':5,'Июль':6,'Август':7,'Сентябрь':8,'Октябрь':9,'Ноябрь':10,'Декабрь':11};
 const QQ={0:1,1:1,2:1,3:2,4:2,5:2,6:3,7:3,8:3,9:4,10:4,11:4};
-
 let DATA=[],cur=0,sec='opiu',period='annual',chartInst=null;
-// Default chart series: Выручка + Общ. прибыль
 let activeCharts=new Set(['rev','gross']);
-
 const $=id=>document.getElementById(id);
 
 function fmt(n){return Math.abs(n).toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})+' ₽';}
@@ -291,13 +326,12 @@ function parseData(rows){
   return m;
 }
 
-/* ── Section ── */
 function setSec(s){
   sec=s;
-  $('tab-opiu').classList.toggle('on',s==='opiu');
-  $('tab-rpt').classList.toggle('on',s==='report');
-  $('di-opiu').classList.toggle('on',s==='opiu');
-  $('di-rpt').classList.toggle('on',s==='report');
+  ['opiu','rpt'].forEach(t=>{
+    $(`tab-${t}`).classList.toggle('on',s===(t==='rpt'?'report':'opiu'));
+    $(`di-${t}`).classList.toggle('on',s===(t==='rpt'?'report':'opiu'));
+  });
   $('mnav').classList.toggle('hide',s==='report');
   $('m-opiu').classList.toggle('hide',s!=='opiu');
   $('m-report').classList.toggle('hide',s!=='report');
@@ -321,32 +355,28 @@ function heroMobileH(m){
     <div class="ms"><div class="ms-l">Расходы</div><div class="ms-v neg">− ${fmt(m.costs)}</div></div>
   </div></div>`;
 }
-
 function heroDeskH(m){
   const pc=m.profit>=0?'pos':'neg',ps=m.profit>=0?'+':'−';
   return`<div class="hero hero-desk">
     <div class="h-period"><div class="h-month">${m.name}</div><div class="h-year">${m.year}</div></div>
     <div class="h-profit-label">Чистая прибыль</div>
     <div class="h-amt ${pc}">${ps} ${fmt(m.profit)}</div>
-    <hr class="h-divider">
-    <div class="h-sub">
+    <hr><div class="h-sub">
       <div class="ms"><div class="ms-l">Доходы</div><div class="ms-v pos">+ ${fmt(m.rev)}</div></div>
       <div class="ms"><div class="ms-l">Расходы</div><div class="ms-v neg">− ${fmt(m.costs)}</div></div>
-    </div>
-  </div>`;
+    </div></div>`;
 }
-
 function rowsH(m){
   const inc=[
-    m.shows&&{ic:'🎭',n:'Концерты',s:'Прибыль по мероприятиям',a:m.shows,bg:var_('--green-bg'),cl:'pos'},
-    m.fin&&{ic:'🏛️',n:'Фин.Операции',s:'Управление финансами',a:m.fin,bg:var_('--blue-bg'),cl:'pos'},
-    m.merch&&{ic:'🛒',n:'Магазины',s:'Прибыль по мерчендайзингу',a:m.merch,bg:var_('--amber-bg'),cl:'pos'},
+    m.shows&&{ic:'🎭',n:'Концерты',s:'Прибыль по мероприятиям',a:m.shows,bg:'#EAF3DE',cl:'pos'},
+    m.fin&&{ic:'🏛️',n:'Фин.Операции',s:'Управление финансами',a:m.fin,bg:'#E6F1FB',cl:'pos'},
+    m.merch&&{ic:'🛒',n:'Магазины',s:'Прибыль по мерчендайзингу',a:m.merch,bg:'#FAEEDA',cl:'pos'},
   ].filter(Boolean);
   const exp=[
     m.sal&&{ic:'👔',n:'Зарплаты',s:'Фонд оплаты труда',a:m.sal,bg:'#F1EFE8',cl:'neg'},
     m.off&&{ic:'🏢',n:'Офис и сервисы',s:'Содержание бизнеса',a:m.off,bg:'#F1EFE8',cl:'neg'},
-    m.tax&&{ic:'📮',n:'Налоги',s:'Вся налоговая нагрузка',a:m.tax,bg:var_('--red-bg'),cl:'neg'},
-    m.div&&{ic:'🧳',n:'Дивиденды',s:'Див. зарплата + инвестиции',a:m.div,bg:var_('--blue-bg'),cl:'blue'},
+    m.tax&&{ic:'📮',n:'Налоги',s:'Вся налоговая нагрузка',a:m.tax,bg:'#FCEBEB',cl:'neg'},
+    m.div&&{ic:'🧳',n:'Дивиденды',s:'Див. зарплата + инвестиции',a:m.div,bg:'#E6F1FB',cl:'blue'},
   ].filter(Boolean);
   let h='<div class="stitle">Доходы</div>';
   inc.forEach(c=>h+=`<div class="row"><div class="rl"><div class="ic" style="background:${c.bg}">${c.ic}</div><div><div class="rn">${c.n}</div><div class="rs">${c.s}</div></div></div><div class="rr"><div class="ra ${c.cl}">+ ${fmt(c.a)}</div></div></div>`);
@@ -354,11 +384,6 @@ function rowsH(m){
   exp.forEach(c=>h+=`<div class="row"><div class="rl"><div class="ic" style="background:${c.bg}">${c.ic}</div><div><div class="rn">${c.n}</div><div class="rs">${c.s}</div></div></div><div class="rr"><div class="ra ${c.cl}">− ${fmt(Math.abs(c.a))}</div></div></div>`);
   return h;
 }
-
-function var_(name){
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim()||'#F0EFE9';
-}
-
 function renderNav(){
   $('mnav').innerHTML=DATA.map((m,i)=>`<button class="mtab ${i===cur?'on':''}" onclick="sel(${i})">${m.name} ${m.year.slice(-2)}</button>`).join('');
   requestAnimationFrame(()=>{const a=document.querySelector('.mtab.on');if(a)a.scrollIntoView({inline:'center',block:'nearest'});});
@@ -366,20 +391,18 @@ function renderNav(){
 function sel(i){cur=i;renderNav();renderOpiu();window.scrollTo({top:0,behavior:'smooth'});}
 function renderOpiu(){
   const m=DATA[cur];
-  $('m-hero').innerHTML=heroMobileH(m);
-  $('m-rows').innerHTML=rowsH(m);
-  $('d-left').innerHTML=heroDeskH(m);
-  $('d-right').innerHTML=rowsH(m);
+  $('m-hero').innerHTML=heroMobileH(m);$('m-rows').innerHTML=rowsH(m);
+  $('d-left').innerHTML=heroDeskH(m);$('d-right').innerHTML=rowsH(m);
 }
 
 /* ── Отчётность ── */
-const CHART_SERIES=[
-  {key:'rev',   label:'Выручка',       color:'#378ADD',clr:'c-blue'},
-  {key:'gross', label:'Общ. прибыль',  color:'#639922',clr:'c-green'},
-  {key:'profit',label:'Чист. прибыль', color:'#9FE1CB',clr:'c-green'},
-  {key:'costs', label:'Расходы',       color:'#E24B4A',clr:'c-red'},
-  {key:'tax',   label:'Налоги',        color:'#EF9F27',clr:'c-amber'},
-  {key:'div',   label:'Дивиденды',     color:'#7F77DD',clr:'c-purple'},
+const SERIES=[
+  {key:'rev',   label:'Выручка',      color:'#378ADD'},
+  {key:'gross', label:'Общ. прибыль', color:'#639922'},
+  {key:'profit',label:'Чист. прибыль',color:'#9FE1CB'},
+  {key:'costs', label:'Расходы',      color:'#E24B4A'},
+  {key:'tax',   label:'Налоги',       color:'#EF9F27'},
+  {key:'div',   label:'Дивиденды',    color:'#7F77DD'},
 ];
 
 function getPeriods(){
@@ -403,24 +426,26 @@ function pStats(data){
     gross:s('gross'),profit:s('profit'),nm:avg('nm'),gm:avg('gm')
   };
 }
+
 function yoyStr(curr,prev,inv=false){
-  if(!prev)return'';
+  if(prev===null||prev===undefined||prev===0)return'';
   const d=((curr-prev)/Math.abs(prev))*100;
   const up=inv?d<=0:d>=0;
-  return`<div class="vyoy ${up?'up':'dn'}">${d>=0?'+':''}${d.toFixed(1)}%</div>`;
+  return`<div class="yoy ${up?'up':'dn'}">${d>=0?'+':''}${d.toFixed(1)}%</div>`;
 }
 
 function buildChart(periods,allStats){
   if(chartInst){chartInst.destroy();chartInst=null;}
-  const canvas=document.querySelector('.chart-wrap canvas');
+  // find visible canvas in whichever section is rendered
+  const canvases=document.querySelectorAll('.chart-c canvas');
+  const canvas=canvases[canvases.length-1];
   if(!canvas)return;
-  const datasets=CHART_SERIES
+  const datasets=SERIES
     .filter(s=>activeCharts.has(s.key))
     .map(s=>({
       label:s.label,
       data:allStats.map(st=>s.key==='costs'?-st[s.key]:st[s.key]),
-      backgroundColor:s.color+'CC',
-      borderRadius:3,
+      backgroundColor:s.color+'CC',borderRadius:3,
     }));
   chartInst=new Chart(canvas.getContext('2d'),{
     type:'bar',
@@ -439,60 +464,115 @@ function buildChart(periods,allStats){
 function toggleChart(key){
   if(activeCharts.has(key))activeCharts.delete(key);
   else activeCharts.add(key);
-  const periods=getPeriods();
-  const allStats=periods.map(p=>pStats(p.data));
-  // update toggle buttons
   document.querySelectorAll('.ctog').forEach(el=>{
-    const k=el.dataset.key;
-    el.classList.toggle('on',activeCharts.has(k));
+    el.classList.toggle('on',activeCharts.has(el.dataset.key));
   });
+  const periods=getPeriods(),allStats=periods.map(p=>pStats(p.data));
   buildChart(periods,allStats);
 }
 
+/* Build split table: fixed left + scrollable right */
 function buildTable(periods,allStats){
-  const ths=periods.map(p=>`<th>${p.label}</th>`).join('');
-  function vc(key,clFn,inv=false,fmtFn=fmtM){
-    return allStats.map((s,i)=>{
-      const v=s[key],pv=i>0?allStats[i-1][key]:null;
-      return`<td><div class="vc"><div class="vnum ${clFn(v)}">${fmtFn(v)}</div>${yoyStr(v,pv,inv)}</div></td>`;
-    }).join('');
+  function yoy(i,key,inv=false){
+    if(i===0)return'';
+    return yoyStr(allStats[i][key],allStats[i-1][key],inv);
   }
-  function pf(v){return v.toFixed(1)+'%';}
-  function sh(label){
-    return`<tr class="sec-h"><td><div class="nc hd">${label}</div></td>${periods.map(()=>'<td></td>').join('')}</tr>`;
+  function valCell(i,key,cls,inv=false,fmtFn=fmtM,cellCls='ftd-val'){
+    const v=allStats[i][key];
+    return`<td class="${cellCls}"><div class="v ${cls(v)}">${fmtFn(v)}</div>${yoy(i,key,inv)}</td>`;
   }
-  function mr(label,key,clFn,inv=false,fmtFn=fmtM,sub=false){
-    return`<tr><td><div class="nc${sub?' sub':''}">${label}</div></td>${vc(key,clFn,inv,fmtFn)}</tr>`;
+  function subValCell(i,key,cls,inv=false){
+    const v=allStats[i][key];
+    return`<td class="ftd-sub-val"><div class="v ${cls(v)}">${fmtM(v)}</div>${yoy(i,key,inv)}</td>`;
   }
-  return`<div class="fin-card"><div class="fin-wrap"><table class="fin">
-    <thead><tr><th class="nc-h">Показатель</th>${ths}</tr></thead>
-    <tbody>
-      ${sh('Выручка')}
-      ${mr('Всего',             'rev',    ()=>'neu')}
-      ${mr('• Мероприятия',    'shows',  ()=>'mut',false,fmtM,true)}
-      ${mr('• Фин. операции',  'fin',    ()=>'mut',false,fmtM,true)}
-      ${mr('• Мерчендайзинг',  'merch',  ()=>'mut',false,fmtM,true)}
-      ${sh('Расходы')}
-      ${mr('Всего',             'costs',  ()=>'neg',true)}
-      ${mr('• Зарплаты',       'sal',    ()=>'neg',true,fmtM,true)}
-      ${mr('• Офис и сервисы', 'off',    ()=>'neg',true,fmtM,true)}
-      ${sh('Прочее')}
-      ${mr('Налоги',            'tax',    ()=>'neg',true)}
-      ${mr('Дивиденды',         'div',    ()=>'neg',true)}
-      ${sh('Результат')}
-      ${mr('Общ. прибыль',     'gross',  v=>v>=0?'pos':'neg')}
-      ${mr('• Общ. маржа %',   'gm',     v=>v>=0?'pos':'neg',false,pf,true)}
-      ${mr('Чистая прибыль',   'profit', v=>v>=0?'pos':'neg')}
-      ${mr('• Чист. маржа %',  'nm',     v=>v>=0?'pos':'neg',false,pf,true)}
-    </tbody>
-  </table></div></div>`;
+
+  // Build left column rows HTML
+  function leftRows(){
+    return`
+      <tr class="ftr-sec"><td class="ftd-sec-name" style="background:#EDF5FF;color:#185FA5;font-weight:700">Выручка</td></tr>
+      <tr class="rev-main ftr-main"><td class="ftd-name" style="background:#EDF5FF">Мероприятия</td></tr>
+      <tr class="ftr-sub"><td class="ftd-sub-name">• Мерчендайзинг</td></tr>
+      <tr class="ftr-sub"><td class="ftd-sub-name">• Фин. операции</td></tr>
+      <tr class="ftr-sec"><td class="ftd-sec-name" style="background:#FFF3F3;color:#A32D2D;font-weight:700">Расходы</td></tr>
+      <tr class="costs-main ftr-main"><td class="ftd-name" style="background:#FFF3F3">Сотрудники</td></tr>
+      <tr class="ftr-sub"><td class="ftd-sub-name">• Офис и сервисы</td></tr>
+      <tr class="ftr-sec"><td class="ftd-sec-name" style="background:#FFFAF0;color:#BA7517;font-weight:700">Налоги</td></tr>
+      <tr class="ftr-sec"><td class="ftd-sec-name" style="background:#F0F4FF;color:#534AB7;font-weight:700">Дивиденды</td></tr>
+      <tr class="ftr-sec"><td class="ftd-sec-name" style="background:#F0FFF4;color:#3B6D11;font-weight:700">Общ. прибыль</td></tr>
+      <tr class="ftr-sub"><td class="ftd-sub-name">• Общ. маржа %</td></tr>
+      <tr class="ftr-sub"><td class="ftd-sub-name">• Мероприятия</td></tr>
+      <tr class="ftr-sub"><td class="ftd-sub-name">• Мерчендайзинг</td></tr>
+      <tr class="ftr-sub"><td class="ftd-sub-name">• Фин. операции</td></tr>
+      <tr class="ftr-sec"><td class="ftd-sec-name" style="background:#F5FFF5;color:#3B6D11;font-weight:700">Чистая прибыль</td></tr>
+      <tr class="ftr-sub"><td class="ftd-sub-name">• Чист. маржа %</td></tr>
+    `;
+  }
+
+  // Build right value columns
+  function rightCols(){
+    const cols=periods.map((_,i)=>`
+      <tr class="ftr-sec"><td class="ftd-sec-val" style="background:#EDF5FF"></td></tr>
+      <tr class="rev-main ftr-main">${valCell(i,'rev',()=>'neu',false,fmtM,'ftd-val')}</tr>
+      <tr class="ftr-sub">${subValCell(i,'merch',()=>'mut')}</tr>
+      <tr class="ftr-sub">${subValCell(i,'fin',()=>'mut')}</tr>
+      <tr class="ftr-sec"><td class="ftd-sec-val" style="background:#FFF3F3"></td></tr>
+      <tr class="costs-main ftr-main">${valCell(i,'sal',()=>'neg',true,fmtM,'ftd-val')}</tr>
+      <tr class="ftr-sub">${subValCell(i,'off',()=>'neg',true)}</tr>
+      <tr class="ftr-sec"><td class="ftd-sec-val" style="background:#FFFAF0"><div class="v neg">${fmtM(allStats[i].tax)}</div>${yoy(i,'tax',true)}</td></tr>
+      <tr class="ftr-sec"><td class="ftd-sec-val" style="background:#F0F4FF"><div class="v" style="color:#534AB7">${fmtM(allStats[i].div)}</div>${yoy(i,'div',true)}</td></tr>
+      <tr class="ftr-sec"><td class="ftd-sec-val" style="background:#F0FFF4"><div class="v ${allStats[i].gross>=0?'pos':'neg'}">${fmtM(allStats[i].gross)}</div>${yoy(i,'gross')}</td></tr>
+      <tr class="ftr-sub">${subValCell(i,'gm',v=>v>=0?'pos':'neg')}</tr>
+      <tr class="ftr-sub">${subValCell(i,'shows',()=>'mut')}</tr>
+      <tr class="ftr-sub">${subValCell(i,'merch',()=>'mut')}</tr>
+      <tr class="ftr-sub">${subValCell(i,'fin',()=>'mut')}</tr>
+      <tr class="ftr-sec"><td class="ftd-sec-val" style="background:#F5FFF5"><div class="v ${allStats[i].profit>=0?'pos':'neg'}">${fmtM(allStats[i].profit)}</div>${yoy(i,'profit')}</td></tr>
+      <tr class="ftr-sub">${subValCell(i,'nm',v=>v>=0?'pos':'neg')}</tr>
+    `).join('');
+    return cols;
+  }
+
+  // Each period is a separate table column — we interleave by building per-column tables
+  const perColTables=periods.map((p,i)=>`
+    <table class="ftbl" style="width:100%">
+      <thead><tr><th class="fth"><div class="fth-yr">${p.label}</div></th></tr></thead>
+      <tbody>
+        <tr class="ftr-sec"><td class="ftd-sec-val" style="background:#EDF5FF"></td></tr>
+        <tr class="ftr-main"><td class="ftd-val" style="background:#EDF5FF"><div class="v neu">${fmtM(allStats[i].rev)}</div>${yoy(i,'rev')}</td></tr>
+        <tr class="ftr-sub"><td class="ftd-sub-val"><div class="v mut">${fmtM(allStats[i].merch)}</div>${yoy(i,'merch')}</td></tr>
+        <tr class="ftr-sub"><td class="ftd-sub-val"><div class="v mut">${fmtM(allStats[i].fin)}</div>${yoy(i,'fin')}</td></tr>
+        <tr class="ftr-sec"><td class="ftd-sec-val" style="background:#FFF3F3"></td></tr>
+        <tr class="ftr-main"><td class="ftd-val" style="background:#FFF3F3"><div class="v neg">${fmtM(allStats[i].sal)}</div>${yoy(i,'sal',true)}</td></tr>
+        <tr class="ftr-sub"><td class="ftd-sub-val"><div class="v neg">${fmtM(allStats[i].off)}</div>${yoy(i,'off',true)}</td></tr>
+        <tr class="ftr-sec"><td class="ftd-sec-val" style="background:#FFFAF0"><div class="v neg">${fmtM(allStats[i].tax)}</div>${yoy(i,'tax',true)}</td></tr>
+        <tr class="ftr-sec"><td class="ftd-sec-val" style="background:#F0F4FF"><div class="v" style="color:#534AB7">${fmtM(allStats[i].div)}</div>${yoy(i,'div',true)}</td></tr>
+        <tr class="ftr-sec"><td class="ftd-sec-val" style="background:#F0FFF4"><div class="v ${allStats[i].gross>=0?'pos':'neg'}">${fmtM(allStats[i].gross)}</div>${yoy(i,'gross')}</td></tr>
+        <tr class="ftr-sub"><td class="ftd-sub-val"><div class="v ${allStats[i].gm>=0?'pos':'neg'}">${allStats[i].gm.toFixed(1)}%</div>${yoy(i,'gm')}</td></tr>
+        <tr class="ftr-sub"><td class="ftd-sub-val"><div class="v mut">${fmtM(allStats[i].shows)}</div>${yoy(i,'shows')}</td></tr>
+        <tr class="ftr-sub"><td class="ftd-sub-val"><div class="v mut">${fmtM(allStats[i].merch)}</div></td></tr>
+        <tr class="ftr-sub"><td class="ftd-sub-val"><div class="v mut">${fmtM(allStats[i].fin)}</div></td></tr>
+        <tr class="ftr-sec"><td class="ftd-sec-val" style="background:#F5FFF5"><div class="v ${allStats[i].profit>=0?'pos':'neg'}">${fmtM(allStats[i].profit)}</div>${yoy(i,'profit')}</td></tr>
+        <tr class="ftr-sub"><td class="ftd-sub-val"><div class="v ${allStats[i].nm>=0?'pos':'neg'}">${allStats[i].nm.toFixed(1)}%</div>${yoy(i,'nm')}</td></tr>
+      </tbody>
+    </table>`).join('');
+
+  // Left table
+  const leftTable=`<table class="ftbl">
+    <thead><tr><th class="fth"><div class="fth-name" style="padding:0 12px;font-size:11px;font-weight:600;color:var(--t3)">Показатель</div></th></tr></thead>
+    <tbody>${leftRows()}</tbody>
+  </table>`;
+
+  return`<div class="fin-outer">
+    <div class="fin-layout">
+      <div class="fin-left">${leftTable}</div>
+      <div class="fin-right" style="display:flex">${perColTables}</div>
+    </div>
+  </div>`;
 }
 
 function rptHTML(){
-  const periods=getPeriods();
-  const allStats=periods.map(p=>pStats(p.data));
-  const togglesHTML=CHART_SERIES.map(s=>`
-    <button class="ctog ${activeCharts.has(s.key)?'on':''} ${s.clr}" data-key="${s.key}" onclick="toggleChart('${s.key}')">
+  const periods=getPeriods(),allStats=periods.map(p=>pStats(p.data));
+  const togsH=SERIES.map(s=>`
+    <button class="ctog ${activeCharts.has(s.key)?'on':''}" data-key="${s.key}" onclick="toggleChart('${s.key}')">
       <span class="cdot" style="background:${s.color}"></span>${s.label}
     </button>`).join('');
   return`
@@ -504,8 +584,8 @@ function rptHTML(){
       </div>
     </div>
     <div class="chart-section">
-      <div class="chart-toggles">${togglesHTML}</div>
-      <div class="chart-wrap"><canvas></canvas></div>
+      <div class="chart-toggles">${togsH}</div>
+      <div class="chart-c"><canvas></canvas></div>
     </div>
     ${buildTable(periods,allStats)}`;
 }
@@ -514,13 +594,11 @@ function renderReport(){
   const html=rptHTML();
   $('m-rpt').innerHTML=html;
   $('d-rpt').innerHTML=html;
-  const periods=getPeriods();
-  const allStats=periods.map(p=>pStats(p.data));
-  setTimeout(()=>buildChart(periods,allStats),60);
+  const periods=getPeriods(),allStats=periods.map(p=>pStats(p.data));
+  setTimeout(()=>buildChart(periods,allStats),80);
 }
 function setPeriod(p){period=p;renderReport();}
 
-/* ── Load ── */
 async function load(){
   const dot=$('dot'),st=$('stime');
   dot.className='dot spin';st.textContent='...';
