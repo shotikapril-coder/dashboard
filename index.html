@@ -641,40 +641,65 @@ async function loadOpiuDetail(){
   return rows;
 }
 
-// cols (0-based): B=1,C=2,D=3,E=4,F=5,G=6,H=7,I=8,J=9,K=10,L=11,M=12
-// F(5)=category, H(7)=project/name, I(8)=city(concert), J(9)=fin result
-// K(10)=costs, L(11)=taxes, M(12)=dividends
-// C(2)=month number, D(3)=year
+// Real CSV structure (0-based):
+// col 1 = дата ("31 мар. 2026")
+// col 4 = год ("2026 г.")
+// col 5 = категория ("Прибыль","Расходы","Зарплаты","Налоги","Вывод / Диви.")
+// col 7 = артист/проект/статья
+// col 8 = город (если концерт)
+// col 9 = фин. результат (доходы)
+// col 10 = расходы/издержки
+// col 11 = налоги
+// col 12 = дивиденды/выводы
+
+// Month short names in dates like "31 мар. 2026" or "1 мар. 2026"
+const MO_SHORT={
+  'янв':1,'фев':2,'мар':3,'апр':4,'май':5,'июн':6,
+  'июл':7,'авг':8,'сен':9,'окт':10,'ноя':11,'дек':12
+};
+
+function parseRowDate(r){
+  // col 1: "31 мар. 2026" or "1 мар. 2026"
+  const dateStr=(r[1]||'').trim().toLowerCase();
+  // col 4: "2026 г." or "2025 г."
+  const yearStr=(r[4]||'').trim();
+  const yr=parseInt(yearStr);
+
+  // Extract month from date string
+  let mo=0;
+  for(const [abbr,num] of Object.entries(MO_SHORT)){
+    if(dateStr.includes(abbr)){mo=num;break;}
+  }
+  return{mo,yr};
+}
 
 function getDetailItems(rows, monthName, year, section){
   const MO_NUM={'Январь':1,'Февраль':2,'Март':3,'Апрель':4,'Май':5,'Июнь':6,
     'Июль':7,'Август':8,'Сентябрь':9,'Октябрь':10,'Ноябрь':11,'Декабрь':12};
-  const mo=MO_NUM[monthName];
-  const yr=parseInt(year);
+  const targetMo=MO_NUM[monthName];
+  const targetYr=parseInt(year);
 
   return rows.filter(r=>{
-    const rowMo=parseInt((r[2]||'').trim());
-    const rowYr=parseInt((r[3]||'').trim());
-    if(rowMo!==mo||rowYr!==yr)return false;
+    const {mo,yr}=parseRowDate(r);
+    if(mo!==targetMo||yr!==targetYr)return false;
+
     const cat=(r[5]||'').trim();
     const city=(r[8]||'').trim();
     const name=(r[7]||'').trim();
     if(!name||name==='Не указан')return false;
 
-    if(section==='shows')  return city!==''; // концерты — есть город
-    if(section==='merch')  return cat==='Магазины'; // магазины — своя категория
-    if(section==='fin')    return cat==='Прибыль'&&city===''; // фин.операции — Прибыль без города
-    if(section==='sal')    return cat==='Зарплаты';
-    if(section==='off')    return cat==='Расходы';
-    if(section==='tax')    return cat==='Налоги';
-    if(section==='div')    return cat.includes('Вывод')||cat.includes('Диви');
+    if(section==='shows') return city!=='';
+    if(section==='merch') return cat==='Магазины';
+    if(section==='fin')   return cat==='Прибыль'&&city==='';
+    if(section==='sal')   return cat==='Зарплаты';
+    if(section==='off')   return cat==='Расходы';
+    if(section==='tax')   return cat==='Налоги';
+    if(section==='div')   return cat.includes('Вывод')||cat.includes('Диви');
     return false;
   }).map(r=>{
-    const cat=(r[5]||'').trim();
     const name=(r[7]||'').trim();
     const city=(r[8]||'').trim();
     const label=city?`${name} — ${city}`:name;
-    // pick right amount column
     let amount=0;
     if(section==='sal'||section==='off') amount=pnum(r[10]);
     else if(section==='tax')             amount=pnum(r[11]);
