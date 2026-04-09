@@ -145,12 +145,8 @@ table.fin tr.r-sec td{
 /* Main data rows */
 table.fin tr.r-main td{border-bottom:1px solid var(--brd);}
 table.fin tr.r-main:last-child td{border-bottom:none;}
-.cn{padding:8px 14px 6px;font-size:12px;font-weight:700;color:var(--t1);white-space:nowrap;min-height:40px;display:flex;flex-direction:column;justify-content:center;}
-.cv{padding:7px 14px 5px;text-align:right;min-height:40px;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;}
 /* Sub rows */
 table.fin tr.r-sub td{border-bottom:1px solid var(--brd);}
-.csn{padding:6px 14px 5px 24px;font-size:11px;font-weight:400;color:var(--t2);white-space:nowrap;min-height:34px;display:flex;flex-direction:column;justify-content:center;}
-.csv{padding:5px 14px 4px;text-align:right;min-height:34px;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;}
 
 .vn{font-size:12px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums;}
 .vs{font-size:11px;font-weight:500;white-space:nowrap;font-variant-numeric:tabular-nums;}
@@ -158,6 +154,32 @@ table.fin tr.r-sub td{border-bottom:1px solid var(--brd);}
 .vn.pos,.vs.pos{color:var(--green);}.vn.neg,.vs.neg{color:var(--red);}
 .vn.neu,.vs.neu{color:var(--t1);}.vn.mut,.vs.mut{color:var(--t2);}
 .yy.up{color:var(--green);}.yy.dn{color:var(--red);}
+
+/* FIX 2: value cells — number top, yoy bottom, consistent height */
+.cv{padding:7px 14px 5px;min-height:44px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;}
+.csv{padding:5px 14px 4px;min-height:34px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;}
+/* topRow value cell — slightly taller to fit label */
+.cv.cv-top{min-height:52px;padding-top:20px;}
+
+/* FIX 1: topRow — merged sec+data row */
+table.fin tr.r-top td{border-bottom:1px solid var(--brd);}
+table.fin tr.r-top:hover td{filter:brightness(.97);}
+/* colored label sitting above the metric name inside the sticky cell */
+.ctop{
+  font-size:11px;font-weight:700;
+  padding:5px 0 2px 0;
+  display:block;
+}
+/* sticky cell in top row: label on top, metric name below */
+.cn-top{
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:0 14px 6px;min-height:52px;font-size:12px;font-weight:700;color:var(--t1);
+  white-space:nowrap;
+}
+
+/* FIX 3: left sidebar text — flush left like headers, no extra indent */
+.cn{padding:8px 14px 6px;font-size:12px;font-weight:700;color:var(--t1);white-space:nowrap;min-height:44px;display:flex;flex-direction:column;justify-content:center;}
+.csn{padding:6px 14px 5px 14px;font-size:11px;font-weight:400;color:var(--t2);white-space:nowrap;min-height:34px;display:flex;flex-direction:column;justify-content:center;}
 
 /* Row bands — explicit bg on sticky for correct scroll */
 .band-rev{background:#EDF5FF;}
@@ -188,6 +210,8 @@ table.fin tr.r-main:hover td,table.fin tr.r-sub:hover td{filter:brightness(.97);
 .m-report{padding-bottom:3rem;}
 .m-opiu.hide,.m-report.hide{display:none;}
 .desk-opiu,.desk-report{display:none;}
+/* FIX 4: no top gap on report page — .page padding is for opiu only */
+.page.report-mode{padding-top:0;}
 
 @media(min-width:900px){
   .m-opiu,.m-report{display:none!important;}
@@ -321,7 +345,8 @@ function setSec(s){
   $('d-report').classList.toggle('hide',s!=='report');
   if(s==='report'&&DATA.length)renderReport();
   // FIX: scroll the report container, not window
-  if(s==='report'){$('d-report').scrollTop=0;}else{window.scrollTo({top:0});}
+  if(s==='report'){$('d-report').scrollTop=0;document.getElementById('page').classList.add('report-mode');}
+  else{window.scrollTo({top:0});document.getElementById('page').classList.remove('report-mode');}
 }
 function toggleDrawer(){const o=$('dr').classList.toggle('on');$('ov').classList.toggle('on',o);$('burger').classList.toggle('open',o);}
 function closeDrawer(){$('dr').classList.remove('on');$('ov').classList.remove('on');$('burger').classList.remove('open');}
@@ -452,6 +477,10 @@ function buildTable(periods,allStats){
     const v=allStats[i][key];
     return`<td class="${band}"><div class="cv"><div class="vn ${cls(v)}">${fn(v)}</div>${yoy(allStats,i,key,inv)}</div></td>`;
   }
+  function vtop(i,key,cls,inv=false,fn=fmtM,band=''){
+    const v=allStats[i][key];
+    return`<td class="${band}"><div class="cv cv-top"><div class="vn ${cls(v)}">${fn(v)}</div>${yoy(allStats,i,key,inv)}</div></td>`;
+  }
   function vs_(i,key,cls,inv=false,fn=fmtM,band=''){
     const v=allStats[i][key];
     return`<td class="${band}"><div class="csv"><div class="vs ${cls(v)}">${fn(v)}</div>${yoy(allStats,i,key,inv)}</div></td>`;
@@ -476,34 +505,29 @@ function buildTable(periods,allStats){
   function subRow(label,key,cls,inv,fn=fmtM,band){
     rows.push(`<tr class="r-sub"><td class="sticky ${band}"><div class="csn">${label}</div></td>${periods.map((_,i)=>vs_(i,key,cls,inv,fn,band)).join('')}</tr>`);
   }
+  // topRow: colored section label above metric name — no empty row, everything in one tr
+  function topRow(label,key,cls,inv,fn=fmtM,band,secCls){
+    const colorMap={'sec-rev':'#1A4A8A','sec-costs':'#8B1A1A','sec-tax':'#7A4500','sec-div':'#3D2F9E','sec-gross':'#1A5C2A','sec-net':'#1A5C2A'};
+    const col=colorMap[secCls]||'#333';
+    rows.push(`<tr class="r-top"><td class="sticky ${band}"><div class="cn-top"><span style="color:${col};font-size:11px;font-weight:700">${label}</span><span style="color:var(--t1);font-size:12px;font-weight:700">${label} (всего)</span></div></td>${periods.map((_,i)=>vtop(i,key,cls,inv,fn,band)).join('')}</tr>`);
+  }
 
-  // Выручка — main row = rev (C), subs = shows(D), merch(E), fin(H)
-  secRow('Выручка','sec-rev','band-rev');
-  mainRow('Выручка (всего)','rev',ncl,false,fmtM,'band-rev');
+  // No separate secRow — label is a top-line inside the mainRow sticky cell
+  topRow('Выручка','rev',ncl,false,fmtM,'band-rev','sec-rev');
   subRow('• Мероприятия','shows',mcl,false,fmtM,'band-rev');
   subRow('• Мерчендайзинг','merch',mcl,false,fmtM,'band-rev');
   subRow('• Фин. операции','fin',mcl,false,fmtM,'band-rev');
-  // Расходы — main row = costs (K), subs = sal(L), off(M)
-  secRow('Расходы','sec-costs','band-costs');
-  mainRow('Расходы (всего)','costs',ngcl,true,fmtM,'band-costs');
+  topRow('Расходы','costs',ngcl,true,fmtM,'band-costs','sec-costs');
   subRow('• Сотрудники','sal',ngcl,true,fmtM,'band-costs');
   subRow('• Офис и сервисы','off',ngcl,true,fmtM,'band-costs');
-  // Налоги — секция = данные (N), без дублирования
-  secRow('Налоги','sec-tax','band-tax');
-  mainRow('Налоги (всего)','tax',ngcl,true,fmtM,'band-tax');
-  // Дивиденды — секция = данные (O), без дублирования
-  secRow('Дивиденды','sec-div','band-div');
-  mainRow('Дивиденды (всего)','div',ngcl,true,fmtM,'band-div');
-  // Общ. прибыль — main row = gross (F), маржа и разбивка
-  secRow('Общ. прибыль','sec-gross','band-gross');
-  mainRow('Общ. прибыль (всего)','gross',gcl,false,fmtM,'band-gross');
+  topRow('Налоги','tax',ngcl,true,fmtM,'band-tax','sec-tax');
+  topRow('Дивиденды','div',ngcl,true,fmtM,'band-div','sec-div');
+  topRow('Общ. прибыль','gross',gcl,false,fmtM,'band-gross','sec-gross');
   subRow('• Общ. маржа %','gm',gcl,false,pf,'band-gross');
   subRow('• Мероприятия','shows',mcl,false,fmtM,'band-gross');
   subRow('• Мерчендайзинг','merch',mcl,false,fmtM,'band-gross');
   subRow('• Фин. операции','fin',mcl,false,fmtM,'band-gross');
-  // Чистая прибыль — main row = profit (G), маржа
-  secRow('Чистая прибыль','sec-net','band-net');
-  mainRow('Чистая прибыль (всего)','profit',gcl,false,fmtM,'band-net');
+  topRow('Чистая прибыль','profit',gcl,false,fmtM,'band-net','sec-net');
   subRow('• Чист. маржа %','nm',gcl,false,pf,'band-net');
 
   return`<div class="fin-outer"><div class="fin-scroll"><table class="fin">
