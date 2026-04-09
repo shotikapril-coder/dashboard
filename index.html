@@ -91,6 +91,36 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 .ra{font-size:14px;font-weight:600;white-space:nowrap;}
 .ra.pos{color:var(--green);}.ra.neg{color:var(--red);}.ra.blue{color:var(--blue);}
 
+/* Expandable rows */
+.row-expandable{cursor:pointer;user-select:none;}
+.row-expandable:hover{border-color:var(--brd2);}
+.row-arrow{color:var(--t3);transition:transform .2s;flex-shrink:0;}
+.row-arrow.open{transform:rotate(180deg);}
+.detail-list{
+  max-height:0;opacity:0;overflow:hidden;
+  transition:max-height .25s ease,opacity .2s ease;
+  background:var(--surf);border-radius:0 0 14px 14px;
+  margin-top:-8px;margin-bottom:6px;
+  border:1px solid var(--brd);border-top:none;
+}
+.detail-items{padding:.5rem 0;}
+.detail-item{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:7px 14px;font-size:13px;color:var(--t2);
+  border-bottom:1px solid var(--brd);
+}
+.detail-item:last-of-type{border-bottom:none;}
+.detail-name{flex:1;min-width:0;margin-right:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.detail-amt{font-weight:600;white-space:nowrap;flex-shrink:0;}
+.detail-amt.pos{color:var(--green);}.detail-amt.neg{color:var(--red);}
+.detail-total{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 14px;font-size:13px;color:var(--t1);
+  border-top:2px solid var(--brd2);margin-top:2px;
+  background:var(--surf2);border-radius:0 0 13px 13px;
+}
+.detail-loading,.detail-empty{padding:12px 14px;font-size:12px;color:var(--t3);text-align:center;}
+
 /* REPORT BAR — sticky relative to its scroll container */
 /* On mobile: inside .page (no scroll) → needs topbar offset */
 /* On desktop: inside .desk-report (scroll container) → top:0 */
@@ -300,6 +330,8 @@ table.fin tr.r-main:hover td,table.fin tr.r-sub:hover td{filter:brightness(.97);
 
 <script>
 const CSV='https://docs.google.com/spreadsheets/d/e/2PACX-1vQZwm8zj9kaBFZCw7Ite6Xz2ZcBCIp8dC_zwbXTCI65I9EOFGAQAZa8R_6SKRvfEOI6iYukZqfR34vb/pub?gid=678223172&single=true&output=csv';
+const CSV_OPIU='https://docs.google.com/spreadsheets/d/e/2PACX-1vQZwm8zj9kaBFZCw7Ite6Xz2ZcBCIp8dC_zwbXTCI65I9EOFGAQAZa8R_6SKRvfEOI6iYukZqfR34vb/pub?gid=70554802&single=true&output=csv';
+let OPIU_RAW=null; // cache
 const MO={'Январь':0,'Февраль':1,'Март':2,'Апрель':3,'Май':4,'Июнь':5,'Июль':6,'Август':7,'Сентябрь':8,'Октябрь':9,'Ноябрь':10,'Декабрь':11};
 const QQ={0:1,1:1,2:1,3:2,4:2,5:2,6:3,7:3,8:3,9:4,10:4,11:4};
 let DATA=[],cur=0,sec='opiu',period='annual',chartInst=null;
@@ -390,20 +422,37 @@ function heroDeskH(m){
 }
 function rowsH(m){
   const inc=[
-    m.shows&&{ic:'🎭',n:'Концерты',s:'Прибыль по мероприятиям',a:m.shows,bg:'#EAF3DE',cl:'pos'},
-    m.fin&&{ic:'🏛️',n:'Фин.Операции',s:'Управление финансами',a:m.fin,bg:'#E6F1FB',cl:'pos'},
-    m.merch&&{ic:'🛒',n:'Магазины',s:'Прибыль по мерчендайзингу',a:m.merch,bg:'#FAEEDA',cl:'pos'},
+    m.shows&&{ic:'🎭',n:'Концерты',s:'Прибыль по мероприятиям',a:m.shows,bg:'#EAF3DE',cl:'pos',sec:'shows'},
+    m.fin&&{ic:'🏛️',n:'Фин.Операции',s:'Управление финансами',a:m.fin,bg:'#E6F1FB',cl:'pos',sec:'fin'},
+    m.merch&&{ic:'🛒',n:'Магазины',s:'Прибыль по мерчендайзингу',a:m.merch,bg:'#FAEEDA',cl:'pos',sec:'merch'},
   ].filter(Boolean);
   const exp=[
-    m.sal&&{ic:'👔',n:'Зарплаты',s:'Фонд оплаты труда',a:m.sal,bg:'#F1EFE8',cl:'neg'},
-    m.off&&{ic:'🏢',n:'Офис и сервисы',s:'Содержание бизнеса',a:m.off,bg:'#F1EFE8',cl:'neg'},
-    m.tax&&{ic:'📮',n:'Налоги',s:'Вся налоговая нагрузка',a:m.tax,bg:'#FCEBEB',cl:'neg'},
-    m.div&&{ic:'🧳',n:'Дивиденды',s:'Див. зарплата + инвестиции',a:m.div,bg:'#E6F1FB',cl:'blue'},
+    m.sal&&{ic:'👔',n:'Зарплаты',s:'Фонд оплаты труда',a:m.sal,bg:'#F1EFE8',cl:'neg',sec:'sal'},
+    m.off&&{ic:'🏢',n:'Офис и сервисы',s:'Содержание бизнеса',a:m.off,bg:'#F1EFE8',cl:'neg',sec:'off'},
+    m.tax&&{ic:'📮',n:'Налоги',s:'Вся налоговая нагрузка',a:m.tax,bg:'#FCEBEB',cl:'neg',sec:'tax'},
+    m.div&&{ic:'🧳',n:'Дивиденды',s:'Див. зарплата + инвестиции',a:m.div,bg:'#E6F1FB',cl:'blue',sec:'div'},
   ].filter(Boolean);
+
+  function makeRow(c,sign,amtStr){
+    return`<div class="row row-expandable" onclick="toggleDetail(this,'${c.sec}')">
+      <div class="rl">
+        <div class="ic" style="background:${c.bg}">${c.ic}</div>
+        <div><div class="rn">${c.n}</div><div class="rs">${c.s}</div></div>
+      </div>
+      <div class="rr" style="display:flex;align-items:center;gap:8px">
+        <div class="ra ${c.cl}">${sign} ${fmt(c.a)}</div>
+        <svg class="row-arrow" viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <polyline points="2,4 6,8 10,4"/>
+        </svg>
+      </div>
+    </div>
+    <div class="detail-list"></div>`;
+  }
+
   let h='<div class="stitle">Доходы</div>';
-  inc.forEach(c=>h+=`<div class="row"><div class="rl"><div class="ic" style="background:${c.bg}">${c.ic}</div><div><div class="rn">${c.n}</div><div class="rs">${c.s}</div></div></div><div class="rr"><div class="ra ${c.cl}">+ ${fmt(c.a)}</div></div></div>`);
+  inc.forEach(c=>h+=makeRow(c,'+',''));
   h+='<div class="stitle">Расходы</div>';
-  exp.forEach(c=>h+=`<div class="row"><div class="rl"><div class="ic" style="background:${c.bg}">${c.ic}</div><div><div class="rn">${c.n}</div><div class="rs">${c.s}</div></div></div><div class="rr"><div class="ra ${c.cl}">− ${fmt(Math.abs(c.a))}</div></div></div>`);
+  exp.forEach(c=>h+=makeRow(c,'−',''));
   return h;
 }
 function renderNav(){
@@ -581,6 +630,114 @@ function renderReport(){
   requestAnimationFrame(()=>setTimeout(()=>buildChart(periods,allStats),50));
 }
 function setPeriod(p){period=p;renderReport();}
+
+// ── OPIU DETAIL ──
+async function loadOpiuDetail(){
+  if(OPIU_RAW)return OPIU_RAW;
+  const r=await fetch(CSV_OPIU);
+  if(!r.ok)throw new Error('HTTP '+r.status);
+  const rows=parseCSV(await r.text());
+  OPIU_RAW=rows;
+  return rows;
+}
+
+// cols (0-based): B=1,C=2,D=3,E=4,F=5,G=6,H=7,I=8,J=9,K=10,L=11,M=12
+// F(5)=category, H(7)=project/name, I(8)=city(concert), J(9)=fin result
+// K(10)=costs, L(11)=taxes, M(12)=dividends
+// C(2)=month number, D(3)=year
+
+function getDetailItems(rows, monthName, year, section){
+  const MO_NUM={'Январь':1,'Февраль':2,'Март':3,'Апрель':4,'Май':5,'Июнь':6,
+    'Июль':7,'Август':8,'Сентябрь':9,'Октябрь':10,'Ноябрь':11,'Декабрь':12};
+  const mo=MO_NUM[monthName];
+  const yr=parseInt(year);
+
+  return rows.filter(r=>{
+    const rowMo=parseInt((r[2]||'').trim());
+    const rowYr=parseInt((r[3]||'').trim());
+    if(rowMo!==mo||rowYr!==yr)return false;
+    const cat=(r[5]||'').trim();
+    const city=(r[8]||'').trim();
+    const name=(r[7]||'').trim();
+    if(!name||name==='Не указан')return false;
+
+    if(section==='shows')  return city!==''; // концерты — есть город
+    if(section==='merch')  return cat==='Магазины'; // магазины — своя категория
+    if(section==='fin')    return cat==='Прибыль'&&city===''; // фин.операции — Прибыль без города
+    if(section==='sal')    return cat==='Зарплаты';
+    if(section==='off')    return cat==='Расходы';
+    if(section==='tax')    return cat==='Налоги';
+    if(section==='div')    return cat.includes('Вывод')||cat.includes('Диви');
+    return false;
+  }).map(r=>{
+    const cat=(r[5]||'').trim();
+    const name=(r[7]||'').trim();
+    const city=(r[8]||'').trim();
+    const label=city?`${name} — ${city}`:name;
+    // pick right amount column
+    let amount=0;
+    if(section==='sal'||section==='off') amount=pnum(r[10]);
+    else if(section==='tax')             amount=pnum(r[11]);
+    else if(section==='div')             amount=pnum(r[12]);
+    else                                 amount=pnum(r[9]);
+    return{label,amount};
+  }).filter(x=>x.amount!==0);
+}
+
+let expandedRow=null; // track which row is open
+
+async function toggleDetail(el, section){
+  const container=el.nextElementSibling;
+  if(!container||!container.classList.contains('detail-list')){return;}
+
+  // close if already open
+  if(expandedRow===el){
+    container.style.maxHeight='0';
+    container.style.opacity='0';
+    setTimeout(()=>{container.innerHTML='';},250);
+    expandedRow=null;
+    el.querySelector('.row-arrow')?.classList.remove('open');
+    return;
+  }
+  // close previous
+  if(expandedRow){
+    const prev=expandedRow.nextElementSibling;
+    if(prev){prev.style.maxHeight='0';prev.style.opacity='0';setTimeout(()=>{prev.innerHTML='';},250);}
+    expandedRow.querySelector('.row-arrow')?.classList.remove('open');
+  }
+  expandedRow=el;
+  el.querySelector('.row-arrow')?.classList.add('open');
+
+  container.innerHTML='<div class="detail-loading">Загрузка...</div>';
+  container.style.maxHeight='400px';
+  container.style.opacity='1';
+
+  try{
+    const m=DATA[cur];
+    const rows=await loadOpiuDetail();
+    const items=getDetailItems(rows,m.name,m.year,section);
+    if(!items.length){
+      container.innerHTML='<div class="detail-empty">Нет данных за этот период</div>';
+      return;
+    }
+    const total=items.reduce((s,x)=>s+x.amount,0);
+    const isNeg=section==='sal'||section==='off'||section==='tax'||section==='div';
+    container.innerHTML=`
+      <div class="detail-items">
+        ${items.map(x=>`
+          <div class="detail-item">
+            <span class="detail-name">${x.label}</span>
+            <span class="detail-amt ${isNeg?'neg':'pos'}">${isNeg?'− ':'+ '}${fmt(Math.abs(x.amount))}</span>
+          </div>`).join('')}
+        <div class="detail-total">
+          <span>Итого</span>
+          <span class="${isNeg?'neg':'pos'}" style="font-weight:700">${isNeg?'− ':'+ '}${fmt(Math.abs(total))}</span>
+        </div>
+      </div>`;
+  }catch(e){
+    container.innerHTML=`<div class="detail-empty">Ошибка: ${e.message}</div>`;
+  }
+}
 
 async function load(){
   const dot=$('dot'),st=$('stime');
