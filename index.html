@@ -11,19 +11,14 @@
   --bg:#F7F6F2;--surf:#fff;--surf2:#F0EFE9;
   --brd:rgba(0,0,0,.07);--brd2:rgba(0,0,0,.18);
   --t1:#1A1A18;--t2:#6B6A65;--t3:#9E9D97;
-  --green:#3B6D11;--green-bg:#EAF3DE;
-  --red:#A32D2D;--red-bg:#FCEBEB;
-  --blue:#185FA5;--blue-bg:#E6F1FB;
-  --amber:#BA7517;--amber-bg:#FAEEDA;
-  --accent:#D85A30;
+  --green:#3B6D11;--red:#A32D2D;--blue:#185FA5;
+  --amber:#BA7517;--accent:#D85A30;
   --tbh:84px;
-  --row-h:42px;
-  --sub-h:36px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;}
 
-/* ─── TOPBAR ─── */
+/* TOPBAR */
 .tb{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--surf);border-bottom:1px solid var(--brd);padding:.875rem 1rem 0;}
 .tb1{display:flex;align-items:center;gap:10px;margin-bottom:.5rem;}
 .logo{font-family:'Unbounded',sans-serif;font-size:13px;font-weight:600;flex-shrink:0;}
@@ -46,7 +41,7 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 .burger.open i:nth-child(2){opacity:0;}
 .burger.open i:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
 
-/* ─── DRAWER ─── */
+/* DRAWER */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:300;opacity:0;pointer-events:none;transition:opacity .2s;}
 .ov.on{opacity:1;pointer-events:all;}
 .dr{position:fixed;top:0;left:-280px;bottom:0;width:260px;background:var(--surf);z-index:301;transition:left .25s cubic-bezier(.4,0,.2,1);padding:2rem 1.25rem 1.5rem;display:flex;flex-direction:column;gap:4px;border-right:1px solid var(--brd);}
@@ -58,10 +53,10 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 .dr-icon{width:20px;height:20px;flex-shrink:0;opacity:.55;}
 .dr-item.on .dr-icon{opacity:1;}
 
-/* ─── PAGE ─── */
+/* PAGE */
 .page{padding-top:var(--tbh);}
 
-/* ─── HERO MOBILE ─── */
+/* HERO MOBILE */
 .hero{background:var(--surf);border-radius:20px;padding:1.25rem;border:1px solid var(--brd);}
 .hm-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:1.25rem;}
 .hm-month{font-family:'Unbounded',sans-serif;font-size:18px;font-weight:700;line-height:1.2;white-space:nowrap;}
@@ -70,8 +65,7 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 .hm-amt.pos{color:var(--green);}.hm-amt.neg{color:var(--red);}
 .hm-lbl{font-size:11px;color:var(--t3);margin-top:3px;text-align:right;}
 
-/* ─── HERO DESKTOP ─── */
-/* Month + Year on same line, same weight/size */
+/* HERO DESKTOP — month + year same size, bold */
 .hd-top{display:flex;align-items:baseline;gap:10px;margin-bottom:.5rem;}
 .hd-month{font-family:'Unbounded',sans-serif;font-size:22px;font-weight:700;color:var(--t1);line-height:1.2;}
 .hd-year{font-family:'Unbounded',sans-serif;font-size:22px;font-weight:700;color:var(--amber);line-height:1.2;}
@@ -85,7 +79,7 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 .ms-v{font-size:13px;font-weight:600;white-space:nowrap;}
 .ms-v.pos{color:var(--green);}.ms-v.neg{color:var(--red);}
 
-/* ─── OPIU ROWS ─── */
+/* OPIU ROWS */
 .stitle{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin:1.25rem 0 .5rem;}
 .row{display:flex;align-items:center;justify-content:space-between;background:var(--surf);border-radius:14px;padding:12px 14px;margin-bottom:6px;border:1px solid var(--brd);gap:8px;transition:border-color .15s;}
 .row:hover{border-color:var(--brd2);}
@@ -97,9 +91,14 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 .ra{font-size:14px;font-weight:600;white-space:nowrap;}
 .ra.pos{color:var(--green);}.ra.neg{color:var(--red);}.ra.blue{color:var(--blue);}
 
-/* ─── REPORT ─── */
-.rpt-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:.75rem 1rem;background:var(--surf);border-bottom:1px solid var(--brd);position:sticky;top:var(--tbh);z-index:100;}
-.rpt-bar-title{font-size:13px;font-weight:600;color:var(--t1);}
+/* REPORT BAR — sticky relative to its scroll container */
+/* On mobile: inside .page (no scroll) → needs topbar offset */
+/* On desktop: inside .desk-report (scroll container) → top:0 */
+.rpt-bar{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  padding:.75rem 1rem;background:var(--surf);border-bottom:1px solid var(--brd);
+  position:sticky;top:var(--tbh);z-index:50;
+}
 .ptabs{display:flex;gap:2px;background:var(--surf2);border-radius:8px;padding:2px;}
 .ptab{font-family:'Golos Text',sans-serif;font-size:12px;font-weight:500;color:var(--t3);padding:5px 14px;border-radius:6px;cursor:pointer;border:none;background:none;transition:all .15s;white-space:nowrap;}
 .ptab.on{background:var(--surf);color:var(--t1);box-shadow:0 1px 3px rgba(0,0,0,.08);}
@@ -111,96 +110,46 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 .ctog.on{color:var(--t1);border-color:var(--brd2);background:var(--surf2);}
 .chart-c{position:relative;height:180px;}
 
-/* ─── FINANCIAL TABLE ─── */
-/*
-  Single <table> with position:sticky on the first column.
-  This guarantees row heights are always in sync.
+/* FINANCIAL TABLE
+   Key fixes:
+   1. Single <table> — row heights always sync
+   2. Explicit background colors on sticky cells (not 'inherit' which fails through overflow)
+   3. No empty sec rows — sec header merged with first data row via rowspan or labels
+   4. Removed duplicate empty sec rows
 */
-.fin-outer{
-  margin:1rem;
-  border-radius:16px;
-  border:1px solid var(--brd);
-  overflow:hidden;
-  background:var(--surf);
-}
-.fin-scroll{
-  overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
-}
+.fin-outer{margin:1rem;border-radius:16px;border:1px solid var(--brd);overflow:hidden;background:var(--surf);}
+.fin-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
 .fin-scroll::-webkit-scrollbar{height:4px;}
 .fin-scroll::-webkit-scrollbar-thumb{background:var(--brd2);border-radius:2px;}
 
-table.fin{
-  border-collapse:collapse;
-  width:max-content;
-  min-width:100%;
-  table-layout:auto;
-}
+table.fin{border-collapse:collapse;width:max-content;min-width:100%;}
 
-/* Sticky first column */
-table.fin th.sticky,
-table.fin td.sticky{
-  position:sticky;
-  left:0;
-  z-index:2;
-  background:inherit; /* inherits row background */
-}
-/* shadow on sticky col */
-table.fin th.sticky::after,
-table.fin td.sticky::after{
-  content:'';
-  position:absolute;
-  top:0;right:-8px;bottom:0;
-  width:8px;
-  background:linear-gradient(to right,rgba(0,0,0,.06),transparent);
-  pointer-events:none;
-}
+/* Sticky first column — explicit bg per row color */
+table.fin .sticky{position:sticky;left:0;z-index:2;}
+table.fin .sticky::after{content:'';position:absolute;top:0;right:-6px;bottom:0;width:6px;background:linear-gradient(to right,rgba(0,0,0,.05),transparent);pointer-events:none;}
 
-/* Header */
-table.fin thead tr{border-bottom:2px solid var(--brd2);}
+/* thead */
 table.fin thead th{
   font-size:11px;font-weight:600;color:var(--t3);
-  padding:10px 16px;text-align:right;white-space:nowrap;
-  background:var(--surf);
+  padding:9px 14px;text-align:right;white-space:nowrap;
+  background:#fff;border-bottom:2px solid var(--brd2);
 }
-table.fin thead th.sticky{text-align:left;min-width:160px;padding-left:14px;}
+table.fin thead th.sticky{text-align:left;min-width:155px;background:#fff;}
 
-/* All body rows same height via min-height on td */
-table.fin tbody tr{border-bottom:1px solid var(--brd);}
-table.fin tbody tr:last-child{border-bottom:none;}
-
-/* Section header rows */
+/* Section header rows — colored label, NO value cells */
 table.fin tr.r-sec td{
-  padding:7px 16px 6px;
-  font-size:12px;font-weight:700;
-  white-space:nowrap;
+  padding:8px 14px 7px;font-size:12px;font-weight:700;white-space:nowrap;
+  border-bottom:1px solid rgba(0,0,0,.06);
 }
-table.fin tr.r-sec td.sticky{padding-left:14px;}
-
-/* Main metric rows */
-table.fin tr.r-main td{padding:0;}
-.cell-name{
-  display:flex;flex-direction:column;justify-content:center;
-  padding:7px 14px 5px;
-  font-size:12px;font-weight:700;color:var(--t1);
-  white-space:nowrap;min-height:var(--row-h);
-}
-.cell-val{
-  display:flex;flex-direction:column;justify-content:center;align-items:flex-end;
-  padding:7px 16px 5px;min-height:var(--row-h);
-}
+/* Main data rows */
+table.fin tr.r-main td{border-bottom:1px solid var(--brd);}
+table.fin tr.r-main:last-child td{border-bottom:none;}
+.cn{padding:8px 14px 6px;font-size:12px;font-weight:700;color:var(--t1);white-space:nowrap;min-height:40px;display:flex;flex-direction:column;justify-content:center;}
+.cv{padding:7px 14px 5px;text-align:right;min-height:40px;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;}
 /* Sub rows */
-table.fin tr.r-sub td{padding:0;}
-.cell-sub-name{
-  display:flex;flex-direction:column;justify-content:center;
-  padding:5px 14px 4px 24px;
-  font-size:11px;font-weight:400;color:var(--t2);
-  white-space:nowrap;min-height:var(--sub-h);
-}
-.cell-sub-val{
-  display:flex;flex-direction:column;justify-content:center;align-items:flex-end;
-  padding:5px 16px 4px;min-height:var(--sub-h);
-}
+table.fin tr.r-sub td{border-bottom:1px solid var(--brd);}
+.csn{padding:6px 14px 5px 24px;font-size:11px;font-weight:400;color:var(--t2);white-space:nowrap;min-height:34px;display:flex;flex-direction:column;justify-content:center;}
+.csv{padding:5px 14px 4px;text-align:right;min-height:34px;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;}
 
 .vn{font-size:12px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums;}
 .vs{font-size:11px;font-weight:500;white-space:nowrap;font-variant-numeric:tabular-nums;}
@@ -209,41 +158,31 @@ table.fin tr.r-sub td{padding:0;}
 .vn.neu,.vs.neu{color:var(--t1);}.vn.mut,.vs.mut{color:var(--t2);}
 .yy.up{color:var(--green);}.yy.dn{color:var(--red);}
 
-/* Row color bands */
-.r-rev   td{background:#EDF5FF;}
-.r-rev   td.sticky{background:#EDF5FF;}
-.r-costs td{background:#FFF3F3;}
-.r-costs td.sticky{background:#FFF3F3;}
-.r-tax   td{background:#FFFAF0;}
-.r-div   td{background:#F0F4FF;}
-.r-gross td{background:#F0FFF4;}
-.r-net   td{background:#F5FFF5;}
-.r-sec.r-rev   td{background:#DFF0FF;}
-.r-sec.r-costs td{background:#FFE8E8;}
-.r-sec.r-tax   td{background:#FFF3DC;}
-.r-sec.r-div   td{background:#E4EAFF;}
-.r-sec.r-gross td{background:#D8FFE8;}
-.r-sec.r-net   td{background:#E0FFE4;}
+/* Row bands — explicit bg on sticky for correct scroll */
+.band-rev{background:#EDF5FF;}
+.band-costs{background:#FFF3F3;}
+.band-tax{background:#FFFAF0;}
+.band-div{background:#F0F4FF;}
+.band-gross{background:#F0FFF4;}
+.band-net{background:#F5FFF5;}
 
-/* Section name colors */
-.r-sec.r-rev   .cell-name,.r-sec.r-rev   td{color:#1D4E8F;font-weight:700;}
-.r-sec.r-costs .cell-name,.r-sec.r-costs td{color:#8B1A1A;font-weight:700;}
-.r-sec.r-tax   .cell-name,.r-sec.r-tax   td{color:#7A4F00;font-weight:700;}
-.r-sec.r-div   .cell-name,.r-sec.r-div   td{color:#3D2F9E;font-weight:700;}
-.r-sec.r-gross .cell-name,.r-sec.r-gross td{color:#1F5C2E;font-weight:700;}
-.r-sec.r-net   .cell-name,.r-sec.r-net   td{color:#1F5C2E;font-weight:700;}
+/* Section header darker shade */
+.sec-rev{background:#D8EDFF;color:#1A4A8A;font-weight:700;}
+.sec-costs{background:#FFE0E0;color:#8B1A1A;font-weight:700;}
+.sec-tax{background:#FFF0CC;color:#7A4500;font-weight:700;}
+.sec-div{background:#E0E6FF;color:#3D2F9E;font-weight:700;}
+.sec-gross{background:#D0F5DC;color:#1A5C2A;font-weight:700;}
+.sec-net{background:#DAFDE0;color:#1A5C2A;font-weight:700;}
 
-/* hover */
-table.fin tr.r-main:hover td,
-table.fin tr.r-sub:hover td{filter:brightness(.97);}
+table.fin tr.r-main:hover td,table.fin tr.r-sub:hover td{filter:brightness(.97);}
 
-/* ─── SKELETON / ERROR ─── */
+/* SKELETON / ERROR */
 .skrow{height:64px;border-radius:14px;margin-bottom:6px;border:1px solid var(--brd);background:linear-gradient(90deg,var(--surf) 25%,var(--surf2) 50%,var(--surf) 75%);background-size:200% 100%;animation:sh 1.2s infinite;}
 @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.errbox{background:var(--red-bg);border:1px solid rgba(163,45,45,.2);border-radius:14px;padding:1.25rem;text-align:center;color:var(--red);font-size:13px;line-height:1.6;margin:1rem;}
+.errbox{background:#FCEBEB;border:1px solid rgba(163,45,45,.2);border-radius:14px;padding:1.25rem;text-align:center;color:var(--red);font-size:13px;line-height:1.6;margin:1rem;}
 .retry{margin-top:.75rem;background:var(--t1);color:var(--bg);border:none;border-radius:10px;padding:8px 18px;font-family:'Golos Text',sans-serif;font-size:13px;cursor:pointer;}
 
-/* ─── LAYOUT ─── */
+/* LAYOUT */
 .m-opiu{padding:.875rem .875rem 3rem;}
 .m-report{padding-bottom:3rem;}
 .m-opiu.hide,.m-report.hide{display:none;}
@@ -253,12 +192,15 @@ table.fin tr.r-sub:hover td{filter:brightness(.97);}
   .m-opiu,.m-report{display:none!important;}
   .desk-opiu,.desk-report{display:flex;}
 
-  /* ОПиУ: right panel top-aligned with left */
+  /* FIX: align-items:flex-start ensures right panel starts at top */
   .desk-opiu{position:fixed;top:var(--tbh);left:0;right:0;bottom:0;overflow:hidden;align-items:flex-start;}
   .d-left{width:380px;flex-shrink:0;padding:1.5rem 1.25rem;overflow-y:auto;height:100%;border-right:1px solid var(--brd);}
-  .d-right{flex:1;padding:1.5rem 1.5rem 1.5rem 2rem;overflow-y:auto;height:100%;max-width:700px;}
+  /* FIX: padding-top:0 so right content starts at same height as left */
+  .d-right{flex:1;padding:0 1.5rem 1.5rem 2rem;overflow-y:auto;height:100%;max-width:700px;}
 
+  /* FIX: desk-report is a scroll container, so rpt-bar sticky top=0 */
   .desk-report{position:fixed;top:var(--tbh);left:0;right:0;bottom:0;overflow-y:auto;flex-direction:column;}
+  .desk-report .rpt-bar{top:0;}
   .desk-report .rpt-inner{width:100%;}
 
   .rn{font-size:15px;}.ra{font-size:16px;}
@@ -266,15 +208,13 @@ table.fin tr.r-sub:hover td{filter:brightness(.97);}
   .row{padding:14px 18px;border-radius:16px;}
   .stitle{font-size:12px;margin:1.5rem 0 .75rem;}
   .chart-c{height:200px;}
-
   table.fin thead th{font-size:12px;padding:10px 18px;}
-  table.fin thead th.sticky{min-width:180px;padding-left:16px;}
-  .cell-name{font-size:13px;padding:8px 16px 6px;}
-  .cell-val{padding:8px 18px 6px;}
-  .cell-sub-name{font-size:12px;padding:6px 16px 5px 28px;}
-  .cell-sub-val{padding:6px 18px 5px;}
+  table.fin thead th.sticky{min-width:175px;}
+  .cn{font-size:13px;padding:9px 18px 7px;}
+  .cv{padding:8px 18px 6px;}
+  .csn{font-size:12px;padding:7px 18px 6px 30px;}
+  .csv{padding:6px 18px 5px;}
   .vn{font-size:13px;}.vs{font-size:12px;}
-  --row-h:46px;--sub-h:38px;
 }
 .desk-opiu.hide,.desk-report.hide{display:none!important;}
 </style>
@@ -379,33 +319,28 @@ function setSec(s){
   $('d-opiu').classList.toggle('hide',s!=='opiu');
   $('d-report').classList.toggle('hide',s!=='report');
   if(s==='report'&&DATA.length)renderReport();
-  window.scrollTo({top:0});
+  // FIX: scroll the report container, not window
+  if(s==='report'){$('d-report').scrollTop=0;}else{window.scrollTo({top:0});}
 }
 function toggleDrawer(){const o=$('dr').classList.toggle('on');$('ov').classList.toggle('on',o);$('burger').classList.toggle('open',o);}
 function closeDrawer(){$('dr').classList.remove('on');$('ov').classList.remove('on');$('burger').classList.remove('open');}
 
-/* ── ОПиУ ── */
+/* OPIU */
 function heroMobileH(m){
   const pc=m.profit>=0?'pos':'neg',ps=m.profit>=0?'+':'−';
-  return`<div class="hero">
-    <div class="hm-top">
-      <div><div class="hm-month">${m.name}</div><div class="hm-year">${m.year}</div></div>
-      <div style="text-align:right"><div class="hm-amt ${pc}">${ps} ${fmt(m.profit)}</div><div class="hm-lbl">чистая прибыль</div></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      <div class="ms"><div class="ms-l">Доходы</div><div class="ms-v pos">+ ${fmt(m.rev)}</div></div>
-      <div class="ms"><div class="ms-l">Расходы</div><div class="ms-v neg">− ${fmt(m.costs)}</div></div>
-    </div>
-  </div>`;
+  return`<div class="hero"><div class="hm-top">
+    <div><div class="hm-month">${m.name}</div><div class="hm-year">${m.year}</div></div>
+    <div style="text-align:right"><div class="hm-amt ${pc}">${ps} ${fmt(m.profit)}</div><div class="hm-lbl">чистая прибыль</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <div class="ms"><div class="ms-l">Доходы</div><div class="ms-v pos">+ ${fmt(m.rev)}</div></div>
+    <div class="ms"><div class="ms-l">Расходы</div><div class="ms-v neg">− ${fmt(m.costs)}</div></div>
+  </div></div>`;
 }
-
 function heroDeskH(m){
   const pc=m.profit>=0?'pos':'neg',ps=m.profit>=0?'+':'−';
   return`<div class="hero">
-    <div class="hd-top">
-      <div class="hd-month">${m.name}</div>
-      <div class="hd-year">${m.year}</div>
-    </div>
+    <div class="hd-top"><div class="hd-month">${m.name}</div><div class="hd-year">${m.year}</div></div>
     <div class="hd-profit-lbl">Чистая прибыль</div>
     <div class="hd-amt ${pc}">${ps} ${fmt(m.profit)}</div>
     <div class="hd-hr"></div>
@@ -415,7 +350,6 @@ function heroDeskH(m){
     </div>
   </div>`;
 }
-
 function rowsH(m){
   const inc=[
     m.shows&&{ic:'🎭',n:'Концерты',s:'Прибыль по мероприятиям',a:m.shows,bg:'#EAF3DE',cl:'pos'},
@@ -434,7 +368,6 @@ function rowsH(m){
   exp.forEach(c=>h+=`<div class="row"><div class="rl"><div class="ic" style="background:${c.bg}">${c.ic}</div><div><div class="rn">${c.n}</div><div class="rs">${c.s}</div></div></div><div class="rr"><div class="ra ${c.cl}">− ${fmt(Math.abs(c.a))}</div></div></div>`);
   return h;
 }
-
 function renderNav(){
   $('mnav').innerHTML=DATA.map((m,i)=>`<button class="mtab ${i===cur?'on':''}" onclick="sel(${i})">${m.name} ${m.year.slice(-2)}</button>`).join('');
   requestAnimationFrame(()=>{const a=document.querySelector('.mtab.on');if(a)a.scrollIntoView({inline:'center',block:'nearest'});});
@@ -446,16 +379,15 @@ function renderOpiu(){
   $('d-left').innerHTML=heroDeskH(m);$('d-right').innerHTML=rowsH(m);
 }
 
-/* ── Отчётность ── */
+/* REPORT */
 const SERIES=[
-  {key:'rev',   label:'Выручка',      color:'#378ADD'},
-  {key:'gross', label:'Общ. прибыль', color:'#639922'},
-  {key:'profit',label:'Чист. прибыль',color:'#9FE1CB'},
-  {key:'costs', label:'Расходы',      color:'#E24B4A'},
-  {key:'tax',   label:'Налоги',       color:'#EF9F27'},
-  {key:'div',   label:'Дивиденды',    color:'#7F77DD'},
+  {key:'rev',   label:'Выручка',       color:'#378ADD'},
+  {key:'gross', label:'Общ. прибыль',  color:'#639922'},
+  {key:'profit',label:'Чист. прибыль', color:'#9FE1CB'},
+  {key:'costs', label:'Расходы',       color:'#E24B4A'},
+  {key:'tax',   label:'Налоги',        color:'#EF9F27'},
+  {key:'div',   label:'Дивиденды',     color:'#7F77DD'},
 ];
-
 function getPeriods(){
   if(period==='annual'){
     return[...new Set(DATA.map(m=>m.yr))].sort().map(y=>({label:`${y}`,data:DATA.filter(m=>m.yr===y)}));
@@ -471,11 +403,9 @@ function getPeriods(){
 function pStats(data){
   const s=k=>data.reduce((a,m)=>a+m[k],0);
   const avg=k=>{const nz=data.filter(m=>m[k]);return nz.length?nz.reduce((a,m)=>a+m[k],0)/nz.length:0;};
-  return{
-    rev:s('rev'),shows:Math.max(0,s('shows')),fin:Math.max(0,s('fin')),merch:Math.max(0,s('merch')),
+  return{rev:s('rev'),shows:Math.max(0,s('shows')),fin:Math.max(0,s('fin')),merch:Math.max(0,s('merch')),
     costs:s('costs'),sal:s('sal'),off:s('off'),tax:s('tax'),div:s('div'),
-    gross:s('gross'),profit:s('profit'),nm:avg('nm'),gm:avg('gm')
-  };
+    gross:s('gross'),profit:s('profit'),nm:avg('nm'),gm:avg('gm')};
 }
 function yoyStr(curr,prev,inv=false){
   if(!prev)return'';
@@ -483,155 +413,122 @@ function yoyStr(curr,prev,inv=false){
   const up=inv?d<=0:d>=0;
   return`<div class="yy ${up?'up':'dn'}">${d>=0?'+':''}${d.toFixed(1)}%</div>`;
 }
-function yoy(allStats,i,key,inv=false){
-  return i===0?'':yoyStr(allStats[i][key],allStats[i-1][key],inv);
-}
+function yoy(all,i,key,inv=false){return i===0?'':yoyStr(all[i][key],all[i-1][key],inv);}
 
+/* FIX: chart renders into whichever canvas is currently visible */
 function buildChart(periods,allStats){
   if(chartInst){chartInst.destroy();chartInst=null;}
-  const canvas=document.querySelector('.chart-c canvas');
+  // find the visible canvas (desktop or mobile)
+  let canvas=null;
+  document.querySelectorAll('.chart-c canvas').forEach(c=>{
+    if(c.offsetParent!==null)canvas=c;
+  });
   if(!canvas)return;
   chartInst=new Chart(canvas.getContext('2d'),{
     type:'bar',
-    data:{
-      labels:periods.map(p=>p.label),
+    data:{labels:periods.map(p=>p.label),
       datasets:SERIES.filter(s=>activeCharts.has(s.key)).map(s=>({
         label:s.label,
         data:allStats.map(st=>s.key==='costs'?-st[s.key]:st[s.key]),
         backgroundColor:s.color+'CC',borderRadius:3,
-      }))
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
+      }))},
+    options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${fmtM(c.raw)}`}}},
-      scales:{
-        x:{grid:{display:false},ticks:{font:{size:10},color:'#9E9D97',maxRotation:45}},
-        y:{grid:{color:'rgba(0,0,0,.04)'},ticks:{font:{size:10},color:'#9E9D97',callback:v=>fmtM(v)}}
-      }
-    }
+      scales:{x:{grid:{display:false},ticks:{font:{size:10},color:'#9E9D97',maxRotation:45}},
+        y:{grid:{color:'rgba(0,0,0,.04)'},ticks:{font:{size:10},color:'#9E9D97',callback:v=>fmtM(v)}}}}
   });
 }
-
 function toggleChart(key){
-  if(activeCharts.has(key))activeCharts.delete(key);
-  else activeCharts.add(key);
+  if(activeCharts.has(key))activeCharts.delete(key);else activeCharts.add(key);
   document.querySelectorAll('.ctog').forEach(el=>el.classList.toggle('on',activeCharts.has(el.dataset.key)));
-  const periods=getPeriods(),allStats=periods.map(p=>pStats(p.data));
-  buildChart(periods,allStats);
+  buildChart(getPeriods(),getPeriods().map(p=>pStats(p.data)));
 }
 
-/* 
-  Single <table> with sticky first column.
-  All rows defined once — heights guaranteed to match.
-*/
+/* TABLE — single <table>, sticky first col with explicit bg colors */
 function buildTable(periods,allStats){
+  const ths=periods.map(p=>`<th style="min-width:100px">${p.label}</th>`).join('');
+  function vm(i,key,cls,inv=false,fn=fmtM,band=''){
+    const v=allStats[i][key];
+    return`<td class="${band}"><div class="cv"><div class="vn ${cls(v)}">${fn(v)}</div>${yoy(allStats,i,key,inv)}</div></td>`;
+  }
+  function vs_(i,key,cls,inv=false,fn=fmtM,band=''){
+    const v=allStats[i][key];
+    return`<td class="${band}"><div class="csv"><div class="vs ${cls(v)}">${fn(v)}</div>${yoy(allStats,i,key,inv)}</div></td>`;
+  }
+  const pf=v=>v.toFixed(1)+'%';
+  const gcl=v=>v>=0?'pos':'neg';
+  const ncl=()=>'neu';
+  const mcl=()=>'mut';
+  const ngcl=()=>'neg';
   const N=periods.length;
+  const empties=periods.map(()=>`<td></td>`).join('');
 
-  // value cell helpers
-  function vMain(i,key,cls,inv=false,fn=fmtM){
-    const v=allStats[i][key];
-    return`<td><div class="cell-val"><div class="vn ${cls(v)}">${fn(v)}</div>${yoy(allStats,i,key,inv)}</div></td>`;
-  }
-  function vSub(i,key,cls,inv=false,fn=fmtM){
-    const v=allStats[i][key];
-    return`<td><div class="cell-sub-val"><div class="vs ${cls(v)}">${fn(v)}</div>${yoy(allStats,i,key,inv)}</div></td>`;
-  }
-  function pf(v){return v.toFixed(1)+'%';}
-  function gcl(v){return v>=0?'pos':'neg';}
-  function ncl(){return 'neu';}
-  function mcl(){return 'mut';}
-  function ngcl(){return 'neg';}
-
-  // Period header cells
-  const yrThs=periods.map(p=>`<th>${p.label}</th>`).join('');
-
-  // Build tbody rows
+  /* FIX: section header row merges the colored label — NO separate empty data row.
+     The first data row immediately follows without a gap. */
   const rows=[];
-  // Helper to push a section header
-  function sec(label,cls){
-    rows.push(`<tr class="r-sec ${cls}">
-      <td class="sticky"><div class="cell-name">${label}</div></td>
-      ${periods.map(()=>`<td></td>`).join('')}
-    </tr>`);
+  function secRow(label,secCls,band){
+    rows.push(`<tr class="r-sec"><td class="sticky ${secCls}">${label}</td>${periods.map(()=>`<td class="${band}"></td>`).join('')}</tr>`);
   }
-  function main(nameLabel,key,cls,inv=false,fn=fmtM,rowCls=''){
-    rows.push(`<tr class="r-main ${rowCls}">
-      <td class="sticky"><div class="cell-name">${nameLabel}</div></td>
-      ${periods.map((_,i)=>vMain(i,key,cls,inv,fn)).join('')}
-    </tr>`);
+  function mainRow(label,key,cls,inv,fn=fmtM,band){
+    rows.push(`<tr class="r-main"><td class="sticky ${band}"><div class="cn">${label}</div></td>${periods.map((_,i)=>vm(i,key,cls,inv,fn,band)).join('')}</tr>`);
   }
-  function sub(nameLabel,key,cls,inv=false,fn=fmtM,rowCls=''){
-    rows.push(`<tr class="r-sub ${rowCls}">
-      <td class="sticky"><div class="cell-sub-name">${nameLabel}</div></td>
-      ${periods.map((_,i)=>vSub(i,key,cls,inv,fn)).join('')}
-    </tr>`);
+  function subRow(label,key,cls,inv,fn=fmtM,band){
+    rows.push(`<tr class="r-sub"><td class="sticky ${band}"><div class="csn">${label}</div></td>${periods.map((_,i)=>vs_(i,key,cls,inv,fn,band)).join('')}</tr>`);
   }
 
-  sec('Выручка','r-rev');
-  main('Мероприятия','shows',ncl,false,fmtM,'r-rev');
-  sub('• Мерчендайзинг','merch',mcl,false,fmtM,'r-rev');
-  sub('• Фин. операции','fin',mcl,false,fmtM,'r-rev');
-  sec('Расходы','r-costs');
-  main('Сотрудники','sal',ngcl,true,fmtM,'r-costs');
-  sub('• Офис и сервисы','off',ngcl,true,fmtM,'r-costs');
-  sec('Налоги','r-tax');
-  rows.push(`<tr class="r-main r-tax">
-    <td class="sticky"><div class="cell-name">Налоги</div></td>
-    ${periods.map((_,i)=>vMain(i,'tax',ngcl,true)).join('')}
-  </tr>`);
-  sec('Дивиденды','r-div');
-  rows.push(`<tr class="r-main r-div">
-    <td class="sticky"><div class="cell-name">Дивиденды</div></td>
-    ${periods.map((_,i)=>vMain(i,'div',ngcl,true)).join('')}
-  </tr>`);
-  sec('Общ. прибыль','r-gross');
-  main('Общ. прибыль','gross',gcl,false,fmtM,'r-gross');
-  sub('• Общ. маржа %','gm',gcl,false,pf,'r-gross');
-  sub('• Мероприятия','shows',mcl,false,fmtM,'r-gross');
-  sub('• Мерчендайзинг','merch',mcl,false,fmtM,'r-gross');
-  sub('• Фин. операции','fin',mcl,false,fmtM,'r-gross');
-  sec('Чистая прибыль','r-net');
-  main('Чистая прибыль','profit',gcl,false,fmtM,'r-net');
-  sub('• Чист. маржа %','nm',gcl,false,pf,'r-net');
+  secRow('Выручка','sec-rev','band-rev');
+  mainRow('Мероприятия','shows',ncl,false,fmtM,'band-rev');
+  subRow('• Мерчендайзинг','merch',mcl,false,fmtM,'band-rev');
+  subRow('• Фин. операции','fin',mcl,false,fmtM,'band-rev');
+  secRow('Расходы','sec-costs','band-costs');
+  mainRow('Сотрудники','sal',ngcl,true,fmtM,'band-costs');
+  subRow('• Офис и сервисы','off',ngcl,true,fmtM,'band-costs');
+  secRow('Налоги','sec-tax','band-tax');
+  mainRow('Налоги','tax',ngcl,true,fmtM,'band-tax');
+  secRow('Дивиденды','sec-div','band-div');
+  mainRow('Дивиденды','div',ngcl,true,fmtM,'band-div');
+  secRow('Общ. прибыль','sec-gross','band-gross');
+  mainRow('Общ. прибыль','gross',gcl,false,fmtM,'band-gross');
+  subRow('• Общ. маржа %','gm',gcl,false,pf,'band-gross');
+  subRow('• Мероприятия','shows',mcl,false,fmtM,'band-gross');
+  subRow('• Мерчендайзинг','merch',mcl,false,fmtM,'band-gross');
+  subRow('• Фин. операции','fin',mcl,false,fmtM,'band-gross');
+  secRow('Чистая прибыль','sec-net','band-net');
+  mainRow('Чистая прибыль','profit',gcl,false,fmtM,'band-net');
+  subRow('• Чист. маржа %','nm',gcl,false,pf,'band-net');
 
-  return`<div class="fin-outer"><div class="fin-scroll">
-    <table class="fin">
-      <thead><tr>
-        <th class="sticky" style="min-width:160px;text-align:left;padding-left:14px">Показатель</th>
-        ${yrThs}
-      </tr></thead>
-      <tbody>${rows.join('')}</tbody>
-    </table>
-  </div></div>`;
+  return`<div class="fin-outer"><div class="fin-scroll"><table class="fin">
+    <thead><tr><th class="sticky" style="min-width:155px;text-align:left">Показатель</th>${ths}</tr></thead>
+    <tbody>${rows.join('')}</tbody>
+  </table></div></div>`;
 }
 
 function rptHTML(){
   const periods=getPeriods(),allStats=periods.map(p=>pStats(p.data));
-  const togsH=SERIES.map(s=>`
-    <button class="ctog ${activeCharts.has(s.key)?'on':''}" data-key="${s.key}" onclick="toggleChart('${s.key}')">
-      <span class="cdot" style="background:${s.color}"></span>${s.label}
-    </button>`).join('');
-  return`
-    <div class="rpt-bar">
-      <span class="rpt-bar-title">Отчёт о прибылях и убытках</span>
-      <div class="ptabs">
-        <button class="ptab ${period==='annual'?'on':''}" onclick="setPeriod('annual')">Год</button>
-        <button class="ptab ${period==='quarterly'?'on':''}" onclick="setPeriod('quarterly')">Квартал</button>
-      </div>
+  const togsH=SERIES.map(s=>`<button class="ctog ${activeCharts.has(s.key)?'on':''}" data-key="${s.key}" onclick="toggleChart('${s.key}')"><span class="cdot" style="background:${s.color}"></span>${s.label}</button>`).join('');
+  return`<div class="rpt-bar">
+    <span style="font-size:13px;font-weight:600;color:var(--t1)">Отчёт о прибылях и убытках</span>
+    <div class="ptabs">
+      <button class="ptab ${period==='annual'?'on':''}" onclick="setPeriod('annual')">Год</button>
+      <button class="ptab ${period==='quarterly'?'on':''}" onclick="setPeriod('quarterly')">Квартал</button>
     </div>
-    <div class="chart-section">
-      <div class="chart-toggles">${togsH}</div>
-      <div class="chart-c"><canvas></canvas></div>
-    </div>
-    ${buildTable(periods,allStats)}`;
+  </div>
+  <div class="chart-section">
+    <div class="chart-toggles">${togsH}</div>
+    <div class="chart-c"><canvas></canvas></div>
+  </div>
+  ${buildTable(periods,allStats)}`;
 }
 
 function renderReport(){
   const html=rptHTML();
-  $('m-rpt').innerHTML=html;
-  $('d-rpt').innerHTML=html;
+  // Only render into the visible container
+  const isDesk=window.innerWidth>=900;
+  if(isDesk){$('d-rpt').innerHTML=html;}
+  else{$('m-rpt').innerHTML=html;}
   const periods=getPeriods(),allStats=periods.map(p=>pStats(p.data));
-  setTimeout(()=>buildChart(periods,allStats),80);
+  // FIX: wait for DOM then render chart into the visible canvas
+  requestAnimationFrame(()=>setTimeout(()=>buildChart(periods,allStats),50));
 }
 function setPeriod(p){period=p;renderReport();}
 
@@ -656,6 +553,11 @@ async function load(){
 }
 load();
 setInterval(load,5*60*1000);
+// Re-render report on resize (mobile/desktop switch)
+let lastW=window.innerWidth;
+window.addEventListener('resize',()=>{
+  if(Math.abs(window.innerWidth-lastW)>50){lastW=window.innerWidth;if(sec==='report'&&DATA.length)renderReport();}
+});
 </script>
 </body>
 </html>
