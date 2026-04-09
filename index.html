@@ -505,11 +505,11 @@ function buildTable(periods,allStats){
   function subRow(label,key,cls,inv,fn=fmtM,band){
     rows.push(`<tr class="r-sub"><td class="sticky ${band}"><div class="csn">${label}</div></td>${periods.map((_,i)=>vs_(i,key,cls,inv,fn,band)).join('')}</tr>`);
   }
-  // topRow: colored section label above metric name — no empty row, everything in one tr
+  // topRow: single colored label — no duplication
   function topRow(label,key,cls,inv,fn=fmtM,band,secCls){
     const colorMap={'sec-rev':'#1A4A8A','sec-costs':'#8B1A1A','sec-tax':'#7A4500','sec-div':'#3D2F9E','sec-gross':'#1A5C2A','sec-net':'#1A5C2A'};
     const col=colorMap[secCls]||'#333';
-    rows.push(`<tr class="r-top"><td class="sticky ${band}"><div class="cn-top"><span style="color:${col};font-size:11px;font-weight:700">${label}</span><span style="color:var(--t1);font-size:12px;font-weight:700">${label} (всего)</span></div></td>${periods.map((_,i)=>vtop(i,key,cls,inv,fn,band)).join('')}</tr>`);
+    rows.push(`<tr class="r-top"><td class="sticky ${band}"><div class="cn" style="color:${col}">${label}</div></td>${periods.map((_,i)=>vtop(i,key,cls,inv,fn,band)).join('')}</tr>`);
   }
 
   // No separate secRow — label is a top-line inside the mainRow sticky cell
