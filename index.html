@@ -199,6 +199,12 @@ table.fin tr.r-sub td.sticky{background:#fff!important;}
 .vn.pos,.vs.pos{color:var(--green);}.vn.neg,.vs.neg{color:var(--red);}
 .vn.neu,.vs.neu{color:var(--t1);}.vn.mut,.vs.mut{color:var(--t2);}
 .yy.up{color:var(--green);}.yy.dn{color:var(--red);}
+/* FIX: sub rows — values always dark grey regardless of sign */
+table.fin tr.r-sub .vs{color:var(--t1)!important;}
+table.fin tr.r-sub .vn{color:var(--t1)!important;}
+/* FIX: Дивиденды row — values blue like the label */
+table.fin tr.r-top.band-div .vn{color:#3D2F9E!important;}
+table.fin tr.r-main.band-div .vn{color:#3D2F9E!important;}
 
 /* FIX 2: value cells — number top, yoy bottom, consistent height */
 .cv{padding:7px 14px 5px;min-height:44px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;}
