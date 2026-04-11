@@ -136,21 +136,11 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 /* REPORT BAR — sticky relative to its scroll container */
 /* On mobile: inside .page (no scroll) → needs topbar offset */
 /* On desktop: inside .desk-report (scroll container) → top:0 */
-.rpt-bar{
-  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
-  padding:.75rem 1.25rem;background:var(--surf);border-bottom:1px solid var(--brd);
-  position:sticky;top:0;z-index:50;
+/* Period switcher — sits between chart and table */
+.period-switcher{
+  display:flex;justify-content:flex-end;
+  padding:.5rem .75rem;
 }
-/* Mobile: .m-report is not a scroll container so sticky doesn't work — use fixed */
-.m-report .rpt-bar{
-  position:fixed;
-  top:var(--tbh);
-  left:0;right:0;
-  z-index:150;
-}
-/* Push content below fixed rpt-bar. 
-   rpt-bar height = ~52px (padding .75rem top+bottom + text line) */
-.m-report #m-rpt{padding-top:52px;}
 .ptabs{display:flex;gap:2px;background:var(--surf2);border-radius:8px;padding:2px;}
 .ptab{font-family:'Golos Text',sans-serif;font-size:12px;font-weight:500;color:var(--t3);padding:5px 14px;border-radius:6px;cursor:pointer;border:none;background:none;transition:all .15s;white-space:nowrap;}
 .ptab.on{background:var(--surf);color:var(--t1);box-shadow:0 1px 3px rgba(0,0,0,.08);}
@@ -265,7 +255,7 @@ table.fin tr.r-main:hover td,table.fin tr.r-sub:hover td{filter:brightness(.97);
 
 /* LAYOUT */
 .m-opiu{padding:.875rem .875rem 3rem;}
-.m-report{padding-bottom:3rem;padding-top:0;}
+.m-report{padding-bottom:3rem;}
 .m-opiu.hide,.m-report.hide{display:none;}
 .desk-opiu,.desk-report{display:none;}
 /* FIX 4: no top gap on report page — .page padding is for opiu only */
@@ -292,9 +282,7 @@ table.fin tr.r-main:hover td,table.fin tr.r-sub:hover td{filter:brightness(.97);
   /* FIX: padding-top:0 so right content starts at same height as left */
   .d-right{flex:1;padding:0 1.5rem 1.5rem 2rem;overflow-y:auto;height:100%;max-width:700px;}
 
-  /* FIX: desk-report is a scroll container, so rpt-bar sticky top=0 */
   .desk-report{position:fixed;top:var(--tbh);left:0;right:0;bottom:0;overflow-y:auto;flex-direction:column;}
-  .desk-report .rpt-bar{top:0;}
   .desk-report .rpt-inner{width:100%;}
 
   .rn{font-size:15px;}.ra{font-size:16px;}
@@ -306,6 +294,9 @@ table.fin tr.r-main:hover td,table.fin tr.r-sub:hover td{filter:brightness(.97);
   table.fin thead th.sticky{min-width:175px;width:175px;max-width:175px;}
   table.fin td.sticky{min-width:175px;width:175px;max-width:175px;}
   .cn,.csn{-webkit-mask-image:none;mask-image:none;overflow:visible;}
+  .chart-section{margin:1rem 0 0;}
+  .period-switcher{padding:.625rem 0;}
+  .fin-outer{margin:.5rem 0 1rem;}
   .cn{font-size:13px;padding:9px 18px 7px;}
   .cv{padding:8px 18px 6px;}
   .csn{font-size:12px;padding:7px 18px 6px 30px;}
@@ -639,16 +630,16 @@ function buildTable(periods,allStats){
 function rptHTML(){
   const periods=getPeriods(),allStats=periods.map(p=>pStats(p.data));
   const togsH=SERIES.map(s=>`<button class="ctog ${activeCharts.has(s.key)?'on':''}" data-key="${s.key}" onclick="toggleChart('${s.key}')"><span class="cdot" style="background:${s.color}"></span>${s.label}</button>`).join('');
-  return`<div class="rpt-bar">
-    <span style="font-size:13px;font-weight:600;color:var(--t1)">Отчёт о прибылях и убытках</span>
+  return`
+  <div class="chart-section">
+    <div class="chart-toggles">${togsH}</div>
+    <div class="chart-c"><canvas></canvas></div>
+  </div>
+  <div class="period-switcher">
     <div class="ptabs">
       <button class="ptab ${period==='annual'?'on':''}" onclick="setPeriod('annual')">Год</button>
       <button class="ptab ${period==='quarterly'?'on':''}" onclick="setPeriod('quarterly')">Квартал</button>
     </div>
-  </div>
-  <div class="chart-section">
-    <div class="chart-toggles">${togsH}</div>
-    <div class="chart-c"><canvas></canvas></div>
   </div>
   ${buildTable(periods,allStats)}`;
 }
