@@ -167,16 +167,7 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 .fin-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;position:relative;}
 .fin-scroll::-webkit-scrollbar{height:4px;}
 .fin-scroll::-webkit-scrollbar-thumb{background:var(--brd2);border-radius:2px;}
-/* Mobile: narrow sticky col + blur text at right edge */
-@media(max-width:899px){
-  table.fin thead th.sticky{min-width:100px;width:100px;max-width:100px;}
-  table.fin td.sticky{min-width:100px;width:100px;max-width:100px;}
-  .cn,.csn{
-    overflow:hidden;white-space:nowrap;
-    -webkit-mask-image:linear-gradient(to right,#000 65%,transparent 95%);
-    mask-image:linear-gradient(to right,#000 65%,transparent 95%);
-  }
-}
+
 
 table.fin{border-collapse:collapse;width:max-content;min-width:100%;}
 
@@ -272,6 +263,17 @@ table.fin tr.r-main:hover td,table.fin tr.r-sub:hover td{filter:brightness(.97);
 .desk-opiu,.desk-report{display:none;}
 /* FIX 4: no top gap on report page — .page padding is for opiu only */
 .page.report-mode{padding-top:0;}
+
+/* Mobile: narrow sticky col + blur text at right edge */
+@media(max-width:899px){
+  table.fin thead th.sticky{min-width:100px;width:100px;max-width:100px;}
+  table.fin td.sticky{min-width:100px;width:100px;max-width:100px;}
+  .cn,.csn{
+    overflow:hidden;white-space:nowrap;
+    -webkit-mask-image:linear-gradient(to right,#000 65%,transparent 95%);
+    mask-image:linear-gradient(to right,#000 65%,transparent 95%);
+  }
+}
 
 @media(min-width:900px){
   .m-opiu,.m-report{display:none!important;}
