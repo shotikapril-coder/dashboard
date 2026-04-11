@@ -148,8 +148,9 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
   left:0;right:0;
   z-index:150;
 }
-/* Add padding so content isn't hidden behind fixed rpt-bar (~48px tall) */
-.m-report{padding-top:48px;}
+/* Push content below fixed rpt-bar. 
+   rpt-bar height = ~52px (padding .75rem top+bottom + text line) */
+.m-report #m-rpt{padding-top:52px;}
 .ptabs{display:flex;gap:2px;background:var(--surf2);border-radius:8px;padding:2px;}
 .ptab{font-family:'Golos Text',sans-serif;font-size:12px;font-weight:500;color:var(--t3);padding:5px 14px;border-radius:6px;cursor:pointer;border:none;background:none;transition:all .15s;white-space:nowrap;}
 .ptab.on{background:var(--surf);color:var(--t1);box-shadow:0 1px 3px rgba(0,0,0,.08);}
@@ -264,7 +265,7 @@ table.fin tr.r-main:hover td,table.fin tr.r-sub:hover td{filter:brightness(.97);
 
 /* LAYOUT */
 .m-opiu{padding:.875rem .875rem 3rem;}
-.m-report{padding-bottom:3rem;}
+.m-report{padding-bottom:3rem;padding-top:0;}
 .m-opiu.hide,.m-report.hide{display:none;}
 .desk-opiu,.desk-report{display:none;}
 /* FIX 4: no top gap on report page — .page padding is for opiu only */
