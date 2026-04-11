@@ -92,20 +92,19 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 .ra.pos{color:var(--green);}.ra.neg{color:var(--red);}.ra.blue{color:var(--blue);}
 
 /* Expandable rows */
-.row-expandable{cursor:pointer;user-select:none;transition:border-color .15s,border-radius .2s;}
-.row-expandable:hover{border-color:var(--brd2);}
-.row-expandable.is-open{border-radius:14px 14px 0 0;border-bottom-color:transparent;}
+.row-wrap{margin-bottom:6px;border-radius:14px;overflow:hidden;border:1px solid var(--brd);transition:border-color .15s;}
+.row-wrap:hover{border-color:var(--brd2);}
+.row-expandable{cursor:pointer;user-select:none;border:none!important;border-radius:0!important;margin-bottom:0!important;}
+.row-expandable.is-open{}
 .row-arrow{color:var(--t3);transition:transform .25s cubic-bezier(.4,0,.2,1);flex-shrink:0;}
 .row-arrow.open{transform:rotate(180deg);}
 
-/* Detail list — slides in below row, shares rounded card */
+/* Detail list — inside row-wrap, clean corners from parent overflow:hidden */
 .detail-list{
   max-height:0;overflow:hidden;
   transition:max-height .3s cubic-bezier(.4,0,.2,1);
   background:var(--surf);
-  border:1px solid var(--brd);border-top:none;
-  border-radius:0 0 14px 14px;
-  margin-top:-1px;margin-bottom:6px;
+  border-top:1px solid var(--brd);
 }
 
 .detail-items{padding:4px 0 6px;}
@@ -295,7 +294,8 @@ table.fin tr.r-main:hover td,table.fin tr.r-sub:hover td{filter:brightness(.97);
 
   .rn{font-size:15px;}.ra{font-size:16px;}
   .ic{width:42px;height:42px;font-size:20px;border-radius:13px;}
-  .row{padding:14px 18px;border-radius:16px;}
+  .row{padding:14px 18px;}
+  .row-wrap{border-radius:16px;}
   .stitle{font-size:12px;margin:1.5rem 0 .75rem;}
   .chart-c{height:200px;}
   table.fin thead th{font-size:12px;padding:10px 18px;}
@@ -467,22 +467,23 @@ function rowsH(m){
   ].filter(Boolean);
 
   function makeRow(c,sign,amtStr){
-    // Use real sign from amount value
     const realSign=c.a>=0?'+':'−';
     const realCl=c.a>=0?(c.cl==='blue'?'blue':'pos'):'neg';
-    return`<div class="row row-expandable" onclick="toggleDetail(this,'${c.sec}')">
-      <div class="rl">
-        <div class="ic" style="background:${c.bg}">${c.ic}</div>
-        <div><div class="rn">${c.n}</div><div class="rs">${c.s}</div></div>
+    return`<div class="row-wrap">
+      <div class="row row-expandable" onclick="toggleDetail(this,'${c.sec}')">
+        <div class="rl">
+          <div class="ic" style="background:${c.bg}">${c.ic}</div>
+          <div><div class="rn">${c.n}</div><div class="rs">${c.s}</div></div>
+        </div>
+        <div class="rr" style="display:flex;align-items:center;gap:8px">
+          <div class="ra ${realCl}">${realSign} ${fmt(c.a)}</div>
+          <svg class="row-arrow" viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <polyline points="2,4 6,8 10,4"/>
+          </svg>
+        </div>
       </div>
-      <div class="rr" style="display:flex;align-items:center;gap:8px">
-        <div class="ra ${realCl}">${realSign} ${fmt(c.a)}</div>
-        <svg class="row-arrow" viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-          <polyline points="2,4 6,8 10,4"/>
-        </svg>
-      </div>
-    </div>
-    <div class="detail-list"></div>`;
+      <div class="detail-list"></div>
+    </div>`;
   }
 
   let h='<div class="stitle">Доходы</div>';
