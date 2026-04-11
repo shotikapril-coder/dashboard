@@ -92,51 +92,62 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 .ra.pos{color:var(--green);}.ra.neg{color:var(--red);}.ra.blue{color:var(--blue);}
 
 /* Expandable rows */
-.row-expandable{cursor:pointer;user-select:none;}
+.row-expandable{cursor:pointer;user-select:none;transition:border-color .15s,border-radius .2s;}
 .row-expandable:hover{border-color:var(--brd2);}
-.row-arrow{color:var(--t3);transition:transform .2s;flex-shrink:0;}
+.row-expandable.is-open{border-radius:14px 14px 0 0;border-bottom-color:transparent;}
+.row-arrow{color:var(--t3);transition:transform .25s cubic-bezier(.4,0,.2,1);flex-shrink:0;}
 .row-arrow.open{transform:rotate(180deg);}
+
+/* Detail list — slides in below row, shares rounded card */
 .detail-list{
-  max-height:0;opacity:0;overflow:hidden;
-  transition:max-height .25s ease,opacity .2s ease;
-  background:var(--surf);border-radius:0 0 14px 14px;
-  margin-top:-8px;margin-bottom:6px;
+  max-height:0;overflow:hidden;
+  transition:max-height .3s cubic-bezier(.4,0,.2,1);
+  background:var(--surf);
   border:1px solid var(--brd);border-top:none;
+  border-radius:0 0 14px 14px;
+  margin-top:-1px;margin-bottom:6px;
 }
-.detail-items{padding:.5rem 0;}
+
+.detail-items{padding:4px 0 6px;}
 .detail-item{
   display:flex;justify-content:space-between;align-items:center;
-  padding:7px 14px;font-size:13px;color:var(--t2);
-  border-bottom:1px solid var(--brd);
+  padding:9px 16px;font-size:13px;color:var(--t1);
+  border-bottom:1px solid rgba(0,0,0,.04);
 }
 .detail-item:last-of-type{border-bottom:none;}
-.detail-name{flex:1;min-width:0;margin-right:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.detail-amt{font-weight:600;white-space:nowrap;flex-shrink:0;}
+.detail-name{flex:1;min-width:0;margin-right:12px;color:var(--t2);font-size:12px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.detail-amt{font-size:13px;font-weight:600;white-space:nowrap;flex-shrink:0;}
 .detail-amt.pos{color:var(--green);}.detail-amt.neg{color:var(--red);}
+
 .detail-total{
   display:flex;justify-content:space-between;align-items:center;
-  padding:8px 14px;font-size:13px;color:var(--t1);
-  border-top:2px solid var(--brd2);margin-top:2px;
-  background:var(--surf2);border-radius:0 0 13px 13px;
+  padding:10px 16px;font-size:13px;
+  border-top:1px solid var(--brd);
+  background:var(--surf2);
+  border-radius:0 0 13px 13px;
+  color:var(--t2);
 }
-.detail-loading,.detail-empty{padding:12px 14px;font-size:12px;color:var(--t3);text-align:center;}
+.detail-total span:last-child{font-weight:700;color:var(--t1);}
+.detail-loading,.detail-empty{
+  padding:16px;font-size:12px;color:var(--t3);text-align:center;font-style:italic;
+}
 
 /* REPORT BAR — sticky relative to its scroll container */
 /* On mobile: inside .page (no scroll) → needs topbar offset */
 /* On desktop: inside .desk-report (scroll container) → top:0 */
 .rpt-bar{
   display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
-  padding:.75rem 1rem;background:var(--surf);border-bottom:1px solid var(--brd);
-  position:sticky;top:0;z-index:50;margin-top:0;
+  padding:.75rem 1.25rem;background:var(--surf);border-bottom:1px solid var(--brd);
+  position:sticky;top:0;z-index:50;
 }
-/* mobile rpt-bar needs topbar offset since it's inside non-scroll .page */
 .m-report .rpt-bar{top:var(--tbh);}
 .ptabs{display:flex;gap:2px;background:var(--surf2);border-radius:8px;padding:2px;}
 .ptab{font-family:'Golos Text',sans-serif;font-size:12px;font-weight:500;color:var(--t3);padding:5px 14px;border-radius:6px;cursor:pointer;border:none;background:none;transition:all .15s;white-space:nowrap;}
 .ptab.on{background:var(--surf);color:var(--t1);box-shadow:0 1px 3px rgba(0,0,0,.08);}
 
 .chart-section{padding:.875rem 1rem .75rem;background:var(--surf);border-bottom:none;
-  margin:1rem 1rem 0;border-radius:16px;border:1px solid var(--brd);}
+  margin:.75rem .75rem 0;border-radius:16px;border:1px solid var(--brd);}
 .chart-toggles{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.75rem;}
 .ctog{font-family:'Golos Text',sans-serif;font-size:11px;font-weight:500;padding:4px 10px;border-radius:12px;cursor:pointer;border:1.5px solid var(--brd);background:var(--surf);color:var(--t3);transition:all .15s;display:flex;align-items:center;gap:5px;}
 .ctog .cdot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
@@ -150,8 +161,8 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
    3. No empty sec rows — sec header merged with first data row via rowspan or labels
    4. Removed duplicate empty sec rows
 */
-.fin-outer{margin:1rem;border-radius:16px;border:1px solid var(--brd);overflow:hidden;background:var(--surf);}
-.fin-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fin-outer{margin:.75rem;border-radius:16px;border:1px solid var(--brd);overflow:hidden;background:var(--surf);}
+.fin-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;position:relative;}
 .fin-scroll::-webkit-scrollbar{height:4px;}
 .fin-scroll::-webkit-scrollbar-thumb{background:var(--brd2);border-radius:2px;}
 
@@ -167,8 +178,13 @@ table.fin thead th{
   padding:9px 14px;text-align:right;white-space:nowrap;
   background:#fff;border-bottom:2px solid var(--brd2);
 }
-table.fin thead th.sticky{text-align:left;min-width:155px;width:155px;background:#fff;}
-table.fin td.sticky{min-width:155px;width:155px;}
+table.fin thead th.sticky{text-align:left;min-width:110px;width:110px;background:#fff;}
+table.fin td.sticky{min-width:110px;width:110px;}
+/* blur overflow text in sticky col on mobile */
+table.fin th.sticky,.cn,.csn,.cn-top{
+  -webkit-mask-image:linear-gradient(to right,black 80%,transparent 100%);
+  mask-image:linear-gradient(to right,black 80%,transparent 100%);
+}
 
 /* Section header rows — colored label, NO value cells */
 table.fin tr.r-sec td{
@@ -271,7 +287,9 @@ table.fin tr.r-main:hover td,table.fin tr.r-sub:hover td{filter:brightness(.97);
   .stitle{font-size:12px;margin:1.5rem 0 .75rem;}
   .chart-c{height:200px;}
   table.fin thead th{font-size:12px;padding:10px 18px;}
-  table.fin thead th.sticky{min-width:175px;}
+  table.fin thead th.sticky{min-width:175px;width:175px;}
+  table.fin td.sticky{min-width:175px;width:175px;}
+  table.fin th.sticky,.cn,.csn,.cn-top{-webkit-mask-image:none;mask-image:none;}
   .cn{font-size:13px;padding:9px 18px 7px;}
   .cv{padding:8px 18px 6px;}
   .csn{font-size:12px;padding:7px 18px 6px 30px;}
@@ -688,9 +706,11 @@ function getDetailItems(rows, monthName, year, section){
     const name=(r[7]||'').trim();
     if(!name||name==='Не указан')return false;
 
+    const name=(r[7]||'').trim();
+    const isMagaz=name.startsWith('Магазин ');
     if(section==='shows') return city!=='';
-    if(section==='merch') return cat==='Магазины';
-    if(section==='fin')   return cat==='Прибыль'&&city==='';
+    if(section==='merch') return cat==='Магазины'||isMagaz; // Магазины cat + any "Магазин X" names
+    if(section==='fin')   return cat==='Прибыль'&&city===''&&!isMagaz; // exclude Магазин names
     if(section==='sal')   return cat==='Зарплаты';
     if(section==='off')   return cat==='Расходы';
     if(section==='tax')   return cat==='Налоги';
@@ -700,11 +720,16 @@ function getDetailItems(rows, monthName, year, section){
     const name=(r[7]||'').trim();
     const city=(r[8]||'').trim();
     const label=city?`${name} — ${city}`:name;
+    // Get signed amounts from correct columns
+    const finResult=pnum(r[9]);   // col J — positive = income
+    const costs=pnum(r[10]);      // col K — positive = expense
+    const taxes=pnum(r[11]);      // col L — positive = tax
+    const divs=pnum(r[12]);       // col M — positive = dividend
     let amount=0;
-    if(section==='sal'||section==='off') amount=pnum(r[10]);
-    else if(section==='tax')             amount=pnum(r[11]);
-    else if(section==='div')             amount=pnum(r[12]);
-    else                                 amount=pnum(r[9]);
+    if(section==='sal'||section==='off') amount=-Math.abs(costs);
+    else if(section==='tax')             amount=-Math.abs(taxes);
+    else if(section==='div')             amount=-Math.abs(divs);
+    else                                 amount=finResult; // keep original sign
     return{label,amount};
   }).filter(x=>x.amount!==0);
 }
@@ -718,8 +743,8 @@ async function toggleDetail(el, section){
   // close if already open
   if(expandedRow===el){
     container.style.maxHeight='0';
-    container.style.opacity='0';
-    setTimeout(()=>{container.innerHTML='';},250);
+    setTimeout(()=>{container.innerHTML='';},300);
+    el.classList.remove('is-open');
     expandedRow=null;
     el.querySelector('.row-arrow')?.classList.remove('open');
     return;
@@ -727,15 +752,16 @@ async function toggleDetail(el, section){
   // close previous
   if(expandedRow){
     const prev=expandedRow.nextElementSibling;
-    if(prev){prev.style.maxHeight='0';prev.style.opacity='0';setTimeout(()=>{prev.innerHTML='';},250);}
+    if(prev){prev.style.maxHeight='0';setTimeout(()=>{prev.innerHTML='';},300);}
+    expandedRow.classList.remove('is-open');
     expandedRow.querySelector('.row-arrow')?.classList.remove('open');
   }
   expandedRow=el;
+  el.classList.add('is-open');
   el.querySelector('.row-arrow')?.classList.add('open');
 
   container.innerHTML='<div class="detail-loading">Загрузка...</div>';
-  container.style.maxHeight='400px';
-  container.style.opacity='1';
+  container.style.maxHeight='600px';
 
   try{
     const m=DATA[cur];
