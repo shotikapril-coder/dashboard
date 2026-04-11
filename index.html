@@ -81,7 +81,7 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 
 /* OPIU ROWS */
 .stitle{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin:1.25rem 0 .5rem;}
-.row{display:flex;align-items:center;justify-content:space-between;background:var(--surf);padding:12px 14px;gap:8px;}
+.row{display:flex;align-items:center;justify-content:space-between;background:var(--surf);border-radius:14px;padding:12px 14px;margin-bottom:0;border:none;gap:8px;}
 .row:hover{border-color:var(--brd2);}
 .rl{display:flex;align-items:center;gap:12px;flex:1;min-width:0;}
 .ic{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
@@ -92,10 +92,10 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 .ra.pos{color:var(--green);}.ra.neg{color:var(--red);}.ra.blue{color:var(--blue);}
 
 /* Expandable rows */
-.row-wrap{margin-bottom:6px;border-radius:14px;overflow:hidden;border:1px solid var(--brd);transition:border-color .15s;}
-.row-wrap:hover{border-color:var(--brd2);}
-.row-expandable{cursor:pointer;user-select:none;border:none!important;border-radius:0!important;margin-bottom:0!important;}
-.row-expandable.is-open{}
+.row-wrap{margin-bottom:6px;}
+.row-expandable{cursor:pointer;user-select:none;border:1px solid var(--brd)!important;border-radius:14px!important;transition:border-color .15s;}
+.row-expandable:hover{border-color:var(--brd2)!important;}
+.row-expandable.is-open{border-radius:14px 14px 0 0!important;border-bottom-color:transparent!important;}
 .row-arrow{color:var(--t3);transition:transform .25s cubic-bezier(.4,0,.2,1);flex-shrink:0;}
 .row-arrow.open{transform:rotate(180deg);}
 
@@ -104,9 +104,10 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
   max-height:0;overflow:hidden;
   transition:max-height .3s cubic-bezier(.4,0,.2,1);
   background:var(--surf);
-  border-top:0px solid var(--brd);
+  border:1px solid var(--brd);border-top:none;
+  border-radius:0 0 14px 14px;
+  margin-top:-1px;
 }
-.detail-list.open-list{border-top-width:1px;}
 
 .detail-items{padding:4px 0 6px;}
 .detail-item{
@@ -295,8 +296,10 @@ table.fin tr.r-main:hover td,table.fin tr.r-sub:hover td{filter:brightness(.97);
 
   .rn{font-size:15px;}.ra{font-size:16px;}
   .ic{width:42px;height:42px;font-size:20px;border-radius:13px;}
+  .row-expandable{border-radius:16px!important;}
+  .row-expandable.is-open{border-radius:16px 16px 0 0!important;}
+  .detail-list{border-radius:0 0 16px 16px;}
   .row{padding:14px 18px;}
-  .row-wrap{border-radius:16px;}
   .stitle{font-size:12px;margin:1.5rem 0 .75rem;}
   .chart-c{height:200px;}
   table.fin thead th{font-size:12px;padding:10px 18px;}
@@ -762,7 +765,6 @@ async function toggleDetail(el, section){
   // close if already open
   if(expandedRow===el){
     container.style.maxHeight='0';
-    container.classList.remove('open-list');
     setTimeout(()=>{container.innerHTML='';},300);
     el.classList.remove('is-open');
     expandedRow=null;
@@ -772,7 +774,7 @@ async function toggleDetail(el, section){
   // close previous
   if(expandedRow){
     const prev=expandedRow.nextElementSibling;
-    if(prev){prev.style.maxHeight='0';prev.classList.remove('open-list');setTimeout(()=>{prev.innerHTML='';},300);}
+    if(prev){prev.style.maxHeight='0';setTimeout(()=>{prev.innerHTML='';},300);}
     expandedRow.classList.remove('is-open');
     expandedRow.querySelector('.row-arrow')?.classList.remove('open');
   }
@@ -782,7 +784,6 @@ async function toggleDetail(el, section){
 
   container.innerHTML='<div class="detail-loading">Загрузка...</div>';
   container.style.maxHeight='600px';
-  container.classList.add('open-list');
 
   try{
     const m=DATA[cur];
