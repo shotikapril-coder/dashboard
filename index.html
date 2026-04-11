@@ -138,15 +138,15 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 /* On desktop: inside .desk-report (scroll container) → top:0 */
 /* Period switcher — sits between chart and table */
 .period-switcher{
-  display:flex;justify-content:flex-end;
-  padding:.5rem 1rem;
+  display:flex;justify-content:flex-end;align-items:center;
+  padding:.75rem 1rem;
 }
 .ptabs{display:flex;gap:2px;background:var(--surf2);border-radius:8px;padding:2px;}
 .ptab{font-family:'Golos Text',sans-serif;font-size:12px;font-weight:500;color:var(--t3);padding:5px 14px;border-radius:6px;cursor:pointer;border:none;background:none;transition:all .15s;white-space:nowrap;}
 .ptab.on{background:var(--surf);color:var(--t1);box-shadow:0 1px 3px rgba(0,0,0,.08);}
 
 .chart-section{padding:.75rem 1rem .75rem;background:var(--surf);border-bottom:none;
-  margin:.75rem 1rem 0;border-radius:16px;border:1px solid var(--brd);}
+  margin:.75rem 1rem 0;border-radius:16px;border:1px solid var(--brd);margin-bottom:0;}
 .chart-toggles{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.75rem;}
 .ctog{font-family:'Golos Text',sans-serif;font-size:11px;font-weight:500;padding:4px 10px;border-radius:12px;cursor:pointer;border:1.5px solid var(--brd);background:var(--surf);color:var(--t3);transition:all .15s;display:flex;align-items:center;gap:5px;}
 .ctog .cdot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
@@ -259,7 +259,7 @@ table.fin tr.r-main:hover td,table.fin tr.r-sub:hover td{filter:brightness(.97);
 .m-opiu.hide,.m-report.hide{display:none;}
 .desk-opiu,.desk-report{display:none;}
 /* FIX 4: no top gap on report page — .page padding is for opiu only */
-.page.report-mode{padding-top:0;}
+.page.report-mode{padding-top:var(--tbh);}
 
 /* Mobile: narrow sticky col + blur text at right edge */
 @media(max-width:899px){
@@ -295,7 +295,7 @@ table.fin tr.r-main:hover td,table.fin tr.r-sub:hover td{filter:brightness(.97);
   table.fin td.sticky{min-width:175px;width:175px;max-width:175px;}
   .cn,.csn{-webkit-mask-image:none;mask-image:none;overflow:visible;}
   .chart-section{margin:1rem 1.5rem 0;}
-  .period-switcher{padding:.625rem 1.5rem;}
+  .period-switcher{padding:.75rem 1.5rem;}
   .fin-outer{margin:.75rem 1.5rem 1.5rem;}
   .cn{font-size:13px;padding:9px 18px 7px;}
   .cv{padding:8px 18px 6px;}
