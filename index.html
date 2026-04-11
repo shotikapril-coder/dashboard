@@ -104,8 +104,9 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
   max-height:0;overflow:hidden;
   transition:max-height .3s cubic-bezier(.4,0,.2,1);
   background:var(--surf);
-  border-top:1px solid var(--brd);
+  border-top:0px solid var(--brd);
 }
+.detail-list.open-list{border-top-width:1px;}
 
 .detail-items{padding:4px 0 6px;}
 .detail-item{
@@ -124,7 +125,7 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
   padding:10px 16px;font-size:13px;
   border-top:1px solid var(--brd);
   background:var(--surf2);
-  border-radius:0 0 13px 13px;
+
   color:var(--t2);
 }
 .detail-total span:last-child{font-weight:700;color:var(--t1);}
@@ -761,6 +762,7 @@ async function toggleDetail(el, section){
   // close if already open
   if(expandedRow===el){
     container.style.maxHeight='0';
+    container.classList.remove('open-list');
     setTimeout(()=>{container.innerHTML='';},300);
     el.classList.remove('is-open');
     expandedRow=null;
@@ -770,7 +772,7 @@ async function toggleDetail(el, section){
   // close previous
   if(expandedRow){
     const prev=expandedRow.nextElementSibling;
-    if(prev){prev.style.maxHeight='0';setTimeout(()=>{prev.innerHTML='';},300);}
+    if(prev){prev.style.maxHeight='0';prev.classList.remove('open-list');setTimeout(()=>{prev.innerHTML='';},300);}
     expandedRow.classList.remove('is-open');
     expandedRow.querySelector('.row-arrow')?.classList.remove('open');
   }
@@ -780,6 +782,7 @@ async function toggleDetail(el, section){
 
   container.innerHTML='<div class="detail-loading">Загрузка...</div>';
   container.style.maxHeight='600px';
+  container.classList.add('open-list');
 
   try{
     const m=DATA[cur];
