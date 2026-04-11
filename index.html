@@ -784,17 +784,18 @@ async function toggleDetail(el, section){
       return;
     }
     const total=items.reduce((s,x)=>s+x.amount,0);
-    const isNeg=section==='sal'||section==='off'||section==='tax'||section==='div';
     container.innerHTML=`
       <div class="detail-items">
-        ${items.map(x=>`
-          <div class="detail-item">
+        ${items.map(x=>{
+          const neg=x.amount<0;
+          return`<div class="detail-item">
             <span class="detail-name">${x.label}</span>
-            <span class="detail-amt ${isNeg?'neg':'pos'}">${isNeg?'− ':'+ '}${fmt(Math.abs(x.amount))}</span>
-          </div>`).join('')}
+            <span class="detail-amt ${neg?'neg':'pos'}">${neg?'− ':'+ '}${fmt(Math.abs(x.amount))}</span>
+          </div>`;
+        }).join('')}
         <div class="detail-total">
           <span>Итого</span>
-          <span class="${isNeg?'neg':'pos'}" style="font-weight:700">${isNeg?'− ':'+ '}${fmt(Math.abs(total))}</span>
+          <span class="${total<0?'neg':'pos'}" style="font-weight:700">${total<0?'− ':'+ '}${fmt(Math.abs(total))}</span>
         </div>
       </div>`;
   }catch(e){
