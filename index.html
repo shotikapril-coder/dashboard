@@ -141,13 +141,15 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
   padding:.75rem 1.25rem;background:var(--surf);border-bottom:1px solid var(--brd);
   position:sticky;top:0;z-index:50;
 }
+/* on mobile rpt-bar is inside .page (non-scroll), needs topbar offset */
 .m-report .rpt-bar{top:var(--tbh);}
+/* on desktop rpt-bar is inside .desk-report (scroll container) → top:0 already correct */
 .ptabs{display:flex;gap:2px;background:var(--surf2);border-radius:8px;padding:2px;}
 .ptab{font-family:'Golos Text',sans-serif;font-size:12px;font-weight:500;color:var(--t3);padding:5px 14px;border-radius:6px;cursor:pointer;border:none;background:none;transition:all .15s;white-space:nowrap;}
 .ptab.on{background:var(--surf);color:var(--t1);box-shadow:0 1px 3px rgba(0,0,0,.08);}
 
-.chart-section{padding:.875rem 1rem .75rem;background:var(--surf);border-bottom:none;
-  margin:.75rem .75rem 0;border-radius:16px;border:1px solid var(--brd);}
+.chart-section{padding:.75rem 1rem .75rem;background:var(--surf);border-bottom:none;
+  margin:.5rem .75rem 0;border-radius:16px;border:1px solid var(--brd);}
 .chart-toggles{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.75rem;}
 .ctog{font-family:'Golos Text',sans-serif;font-size:11px;font-weight:500;padding:4px 10px;border-radius:12px;cursor:pointer;border:1.5px solid var(--brd);background:var(--surf);color:var(--t3);transition:all .15s;display:flex;align-items:center;gap:5px;}
 .ctog .cdot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
@@ -161,10 +163,20 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
    3. No empty sec rows — sec header merged with first data row via rowspan or labels
    4. Removed duplicate empty sec rows
 */
-.fin-outer{margin:.75rem;border-radius:16px;border:1px solid var(--brd);overflow:hidden;background:var(--surf);}
+.fin-outer{margin:.5rem .75rem .75rem;border-radius:16px;border:1px solid var(--brd);overflow:hidden;background:var(--surf);}
 .fin-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;position:relative;}
 .fin-scroll::-webkit-scrollbar{height:4px;}
 .fin-scroll::-webkit-scrollbar-thumb{background:var(--brd2);border-radius:2px;}
+/* Mobile: narrow sticky col + blur text at right edge */
+@media(max-width:899px){
+  table.fin thead th.sticky{min-width:100px;width:100px;max-width:100px;}
+  table.fin td.sticky{min-width:100px;width:100px;max-width:100px;}
+  .cn,.csn{
+    overflow:hidden;white-space:nowrap;
+    -webkit-mask-image:linear-gradient(to right,#000 65%,transparent 95%);
+    mask-image:linear-gradient(to right,#000 65%,transparent 95%);
+  }
+}
 
 table.fin{border-collapse:collapse;width:max-content;min-width:100%;}
 
@@ -178,13 +190,8 @@ table.fin thead th{
   padding:9px 14px;text-align:right;white-space:nowrap;
   background:#fff;border-bottom:2px solid var(--brd2);
 }
-table.fin thead th.sticky{text-align:left;min-width:110px;width:110px;background:#fff;}
-table.fin td.sticky{min-width:110px;width:110px;}
-/* blur overflow text in sticky col on mobile */
-table.fin th.sticky,.cn,.csn,.cn-top{
-  -webkit-mask-image:linear-gradient(to right,black 80%,transparent 100%);
-  mask-image:linear-gradient(to right,black 80%,transparent 100%);
-}
+table.fin thead th.sticky{text-align:left;min-width:155px;width:155px;background:#fff;}
+table.fin td.sticky{min-width:155px;width:155px;}
 
 /* Section header rows — colored label, NO value cells */
 table.fin tr.r-sec td{
@@ -287,9 +294,9 @@ table.fin tr.r-main:hover td,table.fin tr.r-sub:hover td{filter:brightness(.97);
   .stitle{font-size:12px;margin:1.5rem 0 .75rem;}
   .chart-c{height:200px;}
   table.fin thead th{font-size:12px;padding:10px 18px;}
-  table.fin thead th.sticky{min-width:175px;width:175px;}
-  table.fin td.sticky{min-width:175px;width:175px;}
-  table.fin th.sticky,.cn,.csn,.cn-top{-webkit-mask-image:none;mask-image:none;}
+  table.fin thead th.sticky{min-width:175px;width:175px;max-width:175px;}
+  table.fin td.sticky{min-width:175px;width:175px;max-width:175px;}
+  .cn,.csn{-webkit-mask-image:none;mask-image:none;overflow:visible;}
   .cn{font-size:13px;padding:9px 18px 7px;}
   .cv{padding:8px 18px 6px;}
   .csn{font-size:12px;padding:7px 18px 6px 30px;}
