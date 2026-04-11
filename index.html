@@ -706,7 +706,6 @@ function getDetailItems(rows, monthName, year, section){
     const name=(r[7]||'').trim();
     if(!name||name==='Не указан')return false;
 
-    const name=(r[7]||'').trim();
     const isMagaz=name.startsWith('Магазин ');
     if(section==='shows') return city!=='';
     if(section==='merch') return cat==='Магазины'||isMagaz; // Магазины cat + any "Магазин X" names
