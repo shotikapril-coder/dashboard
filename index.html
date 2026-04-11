@@ -203,8 +203,10 @@ table.fin tr.r-sub td.sticky{background:#fff!important;}
 table.fin tr.r-sub .vs{color:var(--t1)!important;}
 table.fin tr.r-sub .vn{color:var(--t1)!important;}
 /* FIX: Дивиденды row — values blue like the label */
-table.fin tr.r-top.band-div .vn{color:#3D2F9E!important;}
-table.fin tr.r-main.band-div .vn{color:#3D2F9E!important;}
+table.fin tr.r-top.band-div .vn,
+table.fin tr.r-top.band-div .vs,
+table.fin tr.r-main.band-div .vn,
+table.fin tr.r-main.band-div .vs{color:#3D2F9E!important;}
 
 /* FIX 2: value cells — number top, yoy bottom, consistent height */
 .cv{padding:7px 14px 5px;min-height:44px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;}
@@ -606,7 +608,7 @@ function buildTable(periods,allStats){
   function topRow(label,key,cls,inv,fn=fmtM,band,secCls){
     const colorMap={'sec-rev':'#1A4A8A','sec-costs':'#8B1A1A','sec-tax':'#7A4500','sec-div':'#3D2F9E','sec-gross':'#1A5C2A','sec-net':'#1A5C2A'};
     const col=colorMap[secCls]||'#333';
-    rows.push(`<tr class="r-top"><td class="sticky ${band}"><div class="cn" style="color:${col}">${label}</div></td>${periods.map((_,i)=>vtop(i,key,cls,inv,fn,band)).join('')}</tr>`);
+    rows.push(`<tr class="r-top ${band}"><td class="sticky ${band}"><div class="cn" style="color:${col}">${label}</div></td>${periods.map((_,i)=>vtop(i,key,cls,inv,fn,band)).join('')}</tr>`);
   }
 
   // No separate secRow — label is a top-line inside the mainRow sticky cell
