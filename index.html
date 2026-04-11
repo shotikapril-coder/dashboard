@@ -460,10 +460,10 @@ function rowsH(m){
     m.merch&&{ic:'🛒',n:'Магазины',s:'Прибыль по мерчендайзингу',a:m.merch,bg:'#FAEEDA',cl:m.merch>=0?'pos':'neg',sec:'merch'},
   ].filter(Boolean);
   const exp=[
-    m.sal&&{ic:'👔',n:'Зарплаты',s:'Фонд оплаты труда',a:m.sal,bg:'#F1EFE8',cl:'neg',sec:'sal'},
-    m.off&&{ic:'🏢',n:'Офис и сервисы',s:'Содержание бизнеса',a:m.off,bg:'#F1EFE8',cl:'neg',sec:'off'},
-    m.tax&&{ic:'📮',n:'Налоги',s:'Вся налоговая нагрузка',a:m.tax,bg:'#FCEBEB',cl:'neg',sec:'tax'},
-    m.div&&{ic:'🧳',n:'Дивиденды',s:'Див. зарплата + инвестиции',a:m.div,bg:'#E6F1FB',cl:'blue',sec:'div'},
+    m.sal&&{ic:'👔',n:'Зарплаты',s:'Фонд оплаты труда',a:-Math.abs(m.sal),bg:'#F1EFE8',cl:'neg',sec:'sal'},
+    m.off&&{ic:'🏢',n:'Офис и сервисы',s:'Содержание бизнеса',a:-Math.abs(m.off),bg:'#F1EFE8',cl:'neg',sec:'off'},
+    m.tax&&{ic:'📮',n:'Налоги',s:'Вся налоговая нагрузка',a:-Math.abs(m.tax),bg:'#FCEBEB',cl:'neg',sec:'tax'},
+    m.div&&{ic:'🧳',n:'Дивиденды',s:'Див. зарплата + инвестиции',a:-Math.abs(m.div),bg:'#E6F1FB',cl:'blue',sec:'div'},
   ].filter(Boolean);
 
   function makeRow(c,sign,amtStr){
