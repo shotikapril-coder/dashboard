@@ -139,14 +139,14 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
 /* Period switcher — sits between chart and table */
 .period-switcher{
   display:flex;justify-content:flex-end;
-  padding:.5rem .75rem;
+  padding:.5rem 1rem;
 }
 .ptabs{display:flex;gap:2px;background:var(--surf2);border-radius:8px;padding:2px;}
 .ptab{font-family:'Golos Text',sans-serif;font-size:12px;font-weight:500;color:var(--t3);padding:5px 14px;border-radius:6px;cursor:pointer;border:none;background:none;transition:all .15s;white-space:nowrap;}
 .ptab.on{background:var(--surf);color:var(--t1);box-shadow:0 1px 3px rgba(0,0,0,.08);}
 
 .chart-section{padding:.75rem 1rem .75rem;background:var(--surf);border-bottom:none;
-  margin:.5rem .75rem 0;border-radius:16px;border:1px solid var(--brd);}
+  margin:.75rem 1rem 0;border-radius:16px;border:1px solid var(--brd);}
 .chart-toggles{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.75rem;}
 .ctog{font-family:'Golos Text',sans-serif;font-size:11px;font-weight:500;padding:4px 10px;border-radius:12px;cursor:pointer;border:1.5px solid var(--brd);background:var(--surf);color:var(--t3);transition:all .15s;display:flex;align-items:center;gap:5px;}
 .ctog .cdot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
@@ -160,7 +160,7 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
    3. No empty sec rows — sec header merged with first data row via rowspan or labels
    4. Removed duplicate empty sec rows
 */
-.fin-outer{margin:.5rem .75rem .75rem;border-radius:16px;border:1px solid var(--brd);overflow:hidden;background:var(--surf);}
+.fin-outer{margin:.75rem 1rem 1rem;border-radius:16px;border:1px solid var(--brd);overflow:hidden;background:var(--surf);}
 .fin-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;position:relative;}
 .fin-scroll::-webkit-scrollbar{height:4px;}
 .fin-scroll::-webkit-scrollbar-thumb{background:var(--brd2);border-radius:2px;}
@@ -294,9 +294,9 @@ table.fin tr.r-main:hover td,table.fin tr.r-sub:hover td{filter:brightness(.97);
   table.fin thead th.sticky{min-width:175px;width:175px;max-width:175px;}
   table.fin td.sticky{min-width:175px;width:175px;max-width:175px;}
   .cn,.csn{-webkit-mask-image:none;mask-image:none;overflow:visible;}
-  .chart-section{margin:1rem 0 0;}
-  .period-switcher{padding:.625rem 0;}
-  .fin-outer{margin:.5rem 0 1rem;}
+  .chart-section{margin:1rem 1.5rem 0;}
+  .period-switcher{padding:.625rem 1.5rem;}
+  .fin-outer{margin:.75rem 1.5rem 1.5rem;}
   .cn{font-size:13px;padding:9px 18px 7px;}
   .cv{padding:8px 18px 6px;}
   .csn{font-size:12px;padding:7px 18px 6px 30px;}
