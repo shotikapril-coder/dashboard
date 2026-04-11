@@ -141,9 +141,15 @@ body{font-family:'Golos Text',sans-serif;background:var(--bg);color:var(--t1);mi
   padding:.75rem 1.25rem;background:var(--surf);border-bottom:1px solid var(--brd);
   position:sticky;top:0;z-index:50;
 }
-/* on mobile rpt-bar is inside .page (non-scroll), needs topbar offset */
-.m-report .rpt-bar{top:var(--tbh);}
-/* on desktop rpt-bar is inside .desk-report (scroll container) → top:0 already correct */
+/* Mobile: .m-report is not a scroll container so sticky doesn't work — use fixed */
+.m-report .rpt-bar{
+  position:fixed;
+  top:var(--tbh);
+  left:0;right:0;
+  z-index:150;
+}
+/* Add padding so content isn't hidden behind fixed rpt-bar (~48px tall) */
+.m-report{padding-top:48px;}
 .ptabs{display:flex;gap:2px;background:var(--surf2);border-radius:8px;padding:2px;}
 .ptab{font-family:'Golos Text',sans-serif;font-size:12px;font-weight:500;color:var(--t3);padding:5px 14px;border-radius:6px;cursor:pointer;border:none;background:none;transition:all .15s;white-space:nowrap;}
 .ptab.on{background:var(--surf);color:var(--t1);box-shadow:0 1px 3px rgba(0,0,0,.08);}
@@ -266,12 +272,12 @@ table.fin tr.r-main:hover td,table.fin tr.r-sub:hover td{filter:brightness(.97);
 
 /* Mobile: narrow sticky col + blur text at right edge */
 @media(max-width:899px){
-  table.fin thead th.sticky{min-width:100px;width:100px;max-width:100px;}
-  table.fin td.sticky{min-width:100px;width:100px;max-width:100px;}
-  .cn,.csn{
-    overflow:hidden;white-space:nowrap;
-    -webkit-mask-image:linear-gradient(to right,#000 65%,transparent 95%);
-    mask-image:linear-gradient(to right,#000 65%,transparent 95%);
+  table.fin thead th.sticky{min-width:100px!important;width:100px!important;max-width:100px!important;}
+  table.fin td.sticky{min-width:100px!important;width:100px!important;max-width:100px!important;}
+  .cn,.csn,.cn-top{
+    overflow:hidden!important;white-space:nowrap!important;
+    -webkit-mask-image:linear-gradient(to right,#000 60%,transparent 92%);
+    mask-image:linear-gradient(to right,#000 60%,transparent 92%);
   }
 }
 
